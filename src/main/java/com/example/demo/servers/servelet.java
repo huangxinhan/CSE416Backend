@@ -23,6 +23,7 @@ public class servelet {
     {
         return stateHandler.getPrecint();
     }
+
     @RequestMapping("/index")
     String index(){
         //mapped to hostname:port/home/index/

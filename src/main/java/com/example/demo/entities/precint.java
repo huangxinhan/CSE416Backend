@@ -7,7 +7,19 @@ import javax.persistence.*;
 public class precint {
     private String districtID;
     private String precintID;
+    private Long population;
     private String countyID;
+
+
+
+    public precint(String districtID, String precintID, Long population, String countyID) {
+        this.districtID = districtID;
+        this.precintID = precintID;
+        this.population = population;
+        this.countyID = countyID;
+    }
+
+
 
     public precint(String districtID, String precintID, String countyID) {
         this.districtID = districtID;
@@ -53,11 +65,20 @@ public class precint {
         this.countyID = countyID;
     }
 
+    public Long getPopulation() {
+        return population;
+    }
+
+    public void setPopulation(Long population) {
+        this.population = population;
+    }
+
     @Override
     public String toString() {
         return "precint{" +
                 "districtID='" + districtID + '\'' +
                 ", precintID='" + precintID + '\'' +
+                ", population=" + population +
                 ", countyID='" + countyID + '\'' +
                 '}';
     }
