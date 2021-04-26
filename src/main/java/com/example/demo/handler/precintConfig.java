@@ -50,7 +50,7 @@ public class precintConfig {
 
             ArrayList<precint> allPrecint = new ArrayList<precint>();
 
-            for( int i=0; i < precintProperties.size(); i++)
+            for( int i=0; i < 10; i++)
             {
                 JSONObject precintINFO = precintProperties.get(i);
                 precint newPrecint = new precint(
