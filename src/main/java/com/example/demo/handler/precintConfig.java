@@ -34,7 +34,6 @@ public class precintConfig {
         {
             precints.add((JSONObject) pArray.get(i));
         }
-
         ArrayList<JSONObject> precintProperties = new ArrayList<JSONObject>();
 
         for(int i =0; i< precints.size(); i++)
@@ -42,29 +41,94 @@ public class precintConfig {
             precintProperties.add( (JSONObject) precints.get(i).get("properties") );
         }
 
+        //------------------------------------------------------------------------------------------
+
+        ArrayList<JSONObject> precintGeos = new ArrayList<JSONObject>();
+
+        for(int i =0; i< precints.size(); i++)
+        {
+            precintGeos.add( (JSONObject) precints.get(i).get("geometry") );
+        }
+
+        ArrayList<JSONArray> coordinatesJSON = new ArrayList<JSONArray>();
+
+        for(int i =0; i< precintGeos.size(); i++)
+        {
+            coordinatesJSON.add((JSONArray) precintGeos.get(0).get("coordinates") );
+        }
+
+        ArrayList<ArrayList<ArrayList<Double>>> coordinatesColletion = new ArrayList<ArrayList<ArrayList<Double>>>();
+
+
+
+
+        for(int k= 0; k< coordinatesJSON.size(); k++)
+        {
+            JSONArray realList = (JSONArray)coordinatesJSON.get(k).get(0);
+            ArrayList<ArrayList<Double>> coordinates = new ArrayList<ArrayList<Double>>();
+            for(int i =0; i< realList.size();i++)
+            {
+                JSONArray realPair = (JSONArray) realList.get(i);
+
+                ArrayList<Double> inner = new ArrayList<Double>();
+
+                for( int j =0; j< realPair.size(); j++)
+                {
+                    inner.add((Double) realPair.get(j));
+                }
+
+                coordinates.add(inner);
+            }
+
+            coordinatesColletion.add(coordinates);
+
+        }
+
+            //System.out.println(coordinatesColletion.get(0));
+
+
+
 
 
         return args -> {
 
 
 
-            ArrayList<precint> allPrecint = new ArrayList<precint>();
+//            ArrayList<precint> allPrecint = new ArrayList<precint>();
+//
+//            for( int i=0; i < precintProperties.size(); i++)
+//            {
+//                JSONObject precintINFO = precintProperties.get(i);
+//                precint newPrecint = new precint(
+//                        (String) precintINFO.get("GEOID10"),
+//                        (String) precintINFO.get("VTDI10"),
+//                        (Long) precintINFO.get("TOTPOP"),
+//                        (String) "123"
+//
+//                );
+//
+//                allPrecint.add(newPrecint);
+//            }
 
-            for( int i=0; i < 10; i++)
-            {
-                JSONObject precintINFO = precintProperties.get(i);
-                precint newPrecint = new precint(
-                        (String) precintINFO.get("GEOID10"),
-                        (String) precintINFO.get("VTDI10"),
-                        (Long) precintINFO.get("TOTPOP"),
-                        (String) "123"
-                );
-
-                allPrecint.add(newPrecint);
-            }
 
 
-            precintRepository.saveAll(allPrecint);
+
+
+            precint test = new precint(
+                    "123",
+                    "123",
+                    123L,
+                    "123",
+                    coordinatesColletion.get(0)
+
+
+
+
+            );
+
+
+            precintRepository.save(test);
+//            precintRepository.deleteAll();
         };
 
 

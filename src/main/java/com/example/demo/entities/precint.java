@@ -1,30 +1,40 @@
 package com.example.demo.entities;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 
-public class precint {
+public class precint  {
     private String districtID;
     private String precintID;
     private Long population;
     private String countyID;
 
 
+    @ElementCollection
+    private ArrayList< ArrayList<Double> > coordinates;
+//    private String geoType;
+//    private ArrayList<ArrayList<Float>> geometry;
 
-    public precint(String districtID, String precintID, Long population, String countyID) {
+
+
+    public precint(String districtID, String precintID, Long population, String countyID, ArrayList<ArrayList<Double>> coordinates) {
         this.districtID = districtID;
         this.precintID = precintID;
         this.population = population;
         this.countyID = countyID;
+        this.coordinates = coordinates;
     }
 
+    public ArrayList<ArrayList<Double>> getCoordinates() {
+        return coordinates;
+    }
 
-
-    public precint(String districtID, String precintID, String countyID) {
-        this.districtID = districtID;
-        this.precintID = precintID;
-        this.countyID = countyID;
+    public void setCoordinates(ArrayList<ArrayList<Double>> coordinates) {
+        this.coordinates = coordinates;
     }
 
     public precint() {
