@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class precint  {
+public class precint  implements Serializable{
     private String districtID;
     private String precintID;
     private Long population;
@@ -42,7 +42,7 @@ public class precint  {
 
 
 
-    @Id
+
 //    @SequenceGenerator(
 //            name ="precint_sequence",
 //            sequenceName = "precint_sequence",
@@ -54,22 +54,8 @@ public class precint  {
 //            generator = "precint_sequence"
 //    )
 
-    public Long getPopulation() {
-        return population;
-    }
 
-    public void setPopulation(Long population) {
-        this.population = population;
-    }
-
-    public String getDistrictID() {
-        return districtID;
-    }
-
-    public void setDistrictID(String districtID) {
-        this.districtID = districtID;
-    }
-
+    @Id
     public String getPrecintID() {
         return precintID;
     }
@@ -86,7 +72,21 @@ public class precint  {
         this.countyID = countyID;
     }
 
+    public Long getPopulation() {
+        return population;
+    }
 
+    public void setPopulation(Long population) {
+        this.population = population;
+    }
+
+    public String getDistrictID() {
+        return districtID;
+    }
+
+    public void setDistrictID(String districtID) {
+        this.districtID = districtID;
+    }
     public ArrayList<precint> getNeighbours() {
         return neighbours;
     }
