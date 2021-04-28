@@ -6,9 +6,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class precint implements Serializable  {
+public class precint  {
     private String districtID;
     private String precintID;
+    private Long population;
+
+
     private String countyID;
     @ManyToMany
     private ArrayList<precint> neighbours;
@@ -22,6 +25,14 @@ public class precint implements Serializable  {
     public precint() {
     }
 
+    public precint(String districtID, String precintID, Long population, String countyID, ArrayList<ArrayList<Double>> coordinates) {
+        this.districtID = districtID;
+        this.precintID = precintID;
+        this.population = population;
+        this.countyID = countyID;
+        this.coordinates = coordinates;
+    }
+
     public precint(String districtID, String precintID, String countyID, ArrayList<ArrayList<Double>> coordinates) {
         this.districtID = districtID;
         this.precintID = precintID;
@@ -29,14 +40,7 @@ public class precint implements Serializable  {
         this.coordinates = coordinates;
     }
 
-    public precint(String districtID, String precintID, String countyID, ArrayList<precint> neighbours, double compactness, ArrayList<ArrayList<Double>> coordinates) {
-        this.districtID = districtID;
-        this.precintID = precintID;
-        this.countyID = countyID;
-        this.neighbours = neighbours;
-        this.compactness = compactness;
-        this.coordinates = coordinates;
-    }
+
 
     @Id
 //    @SequenceGenerator(
@@ -49,6 +53,15 @@ public class precint implements Serializable  {
 //            strategy = GenerationType.SEQUENCE,
 //            generator = "precint_sequence"
 //    )
+
+    public Long getPopulation() {
+        return population;
+    }
+
+    public void setPopulation(Long population) {
+        this.population = population;
+    }
+
     public String getDistrictID() {
         return districtID;
     }
