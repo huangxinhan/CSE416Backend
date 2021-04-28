@@ -140,7 +140,7 @@ public class precintConfig {
 
 
             //precintRepository.save();
-            precintRepository.saveAll(allPrecint.values());
+           // precintRepository.saveAll(allPrecint.values());
 //            precintRepository.deleteAll();
         };
 
