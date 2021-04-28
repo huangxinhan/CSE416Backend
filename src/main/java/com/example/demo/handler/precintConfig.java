@@ -86,52 +86,70 @@ public class precintConfig {
 
         return args -> {
 
+//
+//            HashMap<String,precint> allPrecint = new HashMap<String,precint>();
+//
+//            for( int i=0; i < precintProperties.size(); i++)
+//            {
+//
+//                JSONObject precintINFO = precintProperties.get(i);
+//
+//                String id = (String) precintINFO.get("GEOID10");
+//
+//                precint newPrecint = new precint(
+//                        (String) precintINFO.get("GEOID10"),
+//                        (String) precintINFO.get("VTDST10"),
+//                        ((String) precintINFO.get("COUNTYFP10")).substring(1),
+//                        coordinatesColletion.get(i)
+//
+//                );
+//
+//                allPrecint.put(id,newPrecint);
+//            }
+//
+//            for( String i : allPrecint.keySet())
+//            {
+//                precint toProcess = allPrecint.get(i);
+//
+//                Object obj1 = new JSONParser().parse(new FileReader("src/main/java/com/example/demo/orgJson/PA_precincts_seawulf.json"));
+//
+//                JSONObject jo1 = (JSONObject) obj1;
+//
+//                JSONObject seaWulfPrecint = (JSONObject) jo1.get(i);
+//
+//                if( seaWulfPrecint == null)
+//                {
+//                    System.out.println(i);
+//                }
+//                JSONArray adjacentNode = (JSONArray) seaWulfPrecint.get("adjacent_nodes");
+//
+//                ArrayList<precint> neighbours = new ArrayList<precint>();
+//
+//                for(int j =0; j < adjacentNode.size(); j++)
+//                {
+//                    String id = (String) adjacentNode.get(j);
+//
+//                    precint toAdd  = allPrecint.get(id);
+//
+//                    neighbours.add(toAdd);
+//                }
+//
+//                toProcess.setNeighbours(neighbours);
+//            }
 
-            HashMap<String,precint> allPrecint = new HashMap<String,precint>();
+        ArrayList<precint> k = new ArrayList<precint>();
 
-            for( int i=0; i < precintProperties.size(); i++)
-            {
+            precint haha = new precint(
+                    "1",
+                    "1",
+                    1234L,
+                    "1",
+                    coordinatesColletion.get(0)
 
-                JSONObject precintINFO = precintProperties.get(i);
 
-                String id = (String) precintINFO.get("GEOID10");
+            );
 
-                precint newPrecint = new precint(
-                        (String) precintINFO.get("GEOID10"),
-                        (String) precintINFO.get("VTDST10"),
-                        ((String) precintINFO.get("COUNTYFP10")).substring(1),
-                        coordinatesColletion.get(i)
-
-                );
-
-                allPrecint.put(id,newPrecint);
-            }
-
-            for( String i : allPrecint.keySet())
-            {
-                precint toProcess = allPrecint.get(i);
-
-                Object obj1 = new JSONParser().parse(new FileReader("src/main/java/com/example/demo/orgJson/PA_precincts_seawulf.json"));
-
-                JSONObject jo1 = (JSONObject) obj1;
-
-                JSONObject seaWulfPrecint = (JSONObject) jo1.get(i);
-
-                JSONArray adjacentNode = (JSONArray) seaWulfPrecint.get("adjacent_nodes");
-
-                ArrayList<precint> neighbours = new ArrayList<precint>();
-
-                for(int j =0; j < adjacentNode.size(); j++)
-                {
-                    String id = (String) adjacentNode.get(j);
-
-                    precint toAdd  = allPrecint.get(id);
-
-                    neighbours.add(toAdd);
-                }
-
-                toProcess.setNeighbours(neighbours);
-            }
+            haha.setNeighbours(k);
 
 
 
@@ -139,7 +157,7 @@ public class precintConfig {
 
 
 
-            //precintRepository.save();
+            precintRepository.save(haha);
            // precintRepository.saveAll(allPrecint.values());
 //            precintRepository.deleteAll();
         };
