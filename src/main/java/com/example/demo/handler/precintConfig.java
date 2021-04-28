@@ -151,15 +151,34 @@ public class precintConfig {
 
             haha.setNeighbours(k);
 
+            ArrayList<precint> a = new ArrayList<precint>();
+            a.add(haha);
+
+            precint papa = new precint(
+                    "2",
+                    "2",
+                    3333L,
+                    "2",
+                    coordinatesColletion.get(0)
+
+
+            );
+
+            papa.setNeighbours(a);
 
 
 
 
 
+            precint dd = (precint) precintRepository.findById("2").get();
 
-            precintRepository.save(haha);
+            System.out.println(dd.getNeighbours().get(0).getPrecintID());
+
+        //      precintRepository.deleteById("2");
+//           precintRepository.save(papa);
+//            precintRepository.save(haha);
            // precintRepository.saveAll(allPrecint.values());
-//            precintRepository.deleteAll();
+//           precintRepository.deleteAll();
         };
 
 
