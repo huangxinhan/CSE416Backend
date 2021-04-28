@@ -74,14 +74,6 @@ public class precint  {
         this.countyID = countyID;
     }
 
-    public Long getPopulation() {
-        return population;
-    }
-
-    public void setPopulation(Long population) {
-        this.population = population;
-    }
-
     @ManyToMany
     public ArrayList<precint> getNeighbours() {
         return neighbours;
