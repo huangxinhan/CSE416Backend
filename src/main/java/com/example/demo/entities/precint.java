@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class precint  {
+public class precint implements Serializable  {
     private String districtID;
     private String precintID;
     private String countyID;

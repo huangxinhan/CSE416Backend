@@ -109,6 +109,7 @@ public class precintConfig {
 
             for( String i : allPrecint.keySet())
             {
+
                 precint toProcess = allPrecint.get(i);
 
                 Object obj1 = new JSONParser().parse(new FileReader("src/main/java/com/example/demo/orgJson/PA_precincts_seawulf.json"));
@@ -140,7 +141,7 @@ public class precintConfig {
 
 
             //precintRepository.save();
-           // precintRepository.saveAll(allPrecint.values());
+            precintRepository.saveAll(allPrecint.values());
 //            precintRepository.deleteAll();
         };
 
