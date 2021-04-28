@@ -85,8 +85,8 @@ public class precintConfig {
 
 
         return args -> {
+        precint apple = (precint) precintRepository.findById("961").get();
 
-//
 //            HashMap<String,precint> allPrecint = new HashMap<String,precint>();
 //
 //            for( int i=0; i < precintProperties.size(); i++)
@@ -99,6 +99,7 @@ public class precintConfig {
 //                precint newPrecint = new precint(
 //                        (String) precintINFO.get("GEOID10"),
 //                        (String) precintINFO.get("VTDST10"),
+//                        (Long) precintINFO.get("TOTPOP"),
 //                        ((String) precintINFO.get("COUNTYFP10")).substring(1),
 //                        coordinatesColletion.get(i)
 //
@@ -106,9 +107,11 @@ public class precintConfig {
 //
 //                allPrecint.put(id,newPrecint);
 //            }
-//
+//            int counter = 0;
 //            for( String i : allPrecint.keySet())
 //            {
+//                counter++;
+//                System.out.println(counter);
 //                precint toProcess = allPrecint.get(i);
 //
 //                Object obj1 = new JSONParser().parse(new FileReader("src/main/java/com/example/demo/orgJson/PA_precincts_seawulf.json"));
@@ -135,7 +138,9 @@ public class precintConfig {
 //                }
 //
 //                toProcess.setNeighbours(neighbours);
+//
 //            }
+            //System.out.println(allPrecint);
 
         ArrayList<precint> k = new ArrayList<precint>();
 
@@ -165,19 +170,24 @@ public class precintConfig {
             );
 
             papa.setNeighbours(a);
+            System.out.println(papa);
+
+            k.add(papa);
+            k.add(haha);
+            apple.setNeighbours(k);
 
 
 
+            //System.out.println(allPrecint.values().toArray()[0]);
+            //precint dd = (precint) precintRepository.findById("2").get();
 
-
-            precint dd = (precint) precintRepository.findById("2").get();
-
-            System.out.println(dd.getNeighbours().get(0).getPrecintID());
+            //System.out.println(dd.getNeighbours().get(0).getPrecintID());
 
         //      precintRepository.deleteById("2");
 //           precintRepository.save(papa);
-//            precintRepository.save(haha);
-           // precintRepository.saveAll(allPrecint.values());
+            precintRepository.save(apple);
+            //precintRepository.save((precint) allPrecint.values().toArray()[0]);
+            //precintRepository.saveAll(allPrecint.values());
 //           precintRepository.deleteAll();
         };
 
