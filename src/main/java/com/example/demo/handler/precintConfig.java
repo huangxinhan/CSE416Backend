@@ -21,7 +21,7 @@ public class precintConfig {
     @Bean
     CommandLineRunner commandLineRunner( precintRepository precintRepository) throws IOException, ParseException {
 
-        Object obj = new JSONParser().parse(new FileReader("/Users/Zino/Downloads/CSE416Backend/src/main/java/com/example/demo/orgJson/PA_precincts.json"));
+        Object obj = new JSONParser().parse(new FileReader("src/main/java/com/example/demo/orgJson/PA_precincts.json"));
 
         JSONObject jo = (JSONObject) obj;
 
