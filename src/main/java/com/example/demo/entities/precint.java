@@ -10,13 +10,12 @@ public class precint  {
     private String districtID;
     private String precintID;
     private String countyID;
+    @ManyToMany
     private ArrayList<precint> neighbours;
+    @Transient
     private double compactness;
+    @ElementCollection
     private ArrayList< ArrayList<Double> > coordinates;
-
-
-
-
 
 
 
@@ -74,7 +73,7 @@ public class precint  {
         this.countyID = countyID;
     }
 
-    @ManyToMany
+
     public ArrayList<precint> getNeighbours() {
         return neighbours;
     }
@@ -83,7 +82,7 @@ public class precint  {
         this.neighbours = neighbours;
     }
 
-    @Transient
+
     public double getCompactness() {
         return compactness;
     }
@@ -92,7 +91,7 @@ public class precint  {
         this.compactness = compactness;
     }
 
-    @ElementCollection
+
     public ArrayList<ArrayList<Double>> getCoordinates() {
         return coordinates;
     }
