@@ -6,38 +6,37 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-
 public class precint  {
     private String districtID;
     private String precintID;
-    private Long population;
     private String countyID;
-
-
-    @ElementCollection
+    private ArrayList<precint> neighbours;
+    private double compactness;
     private ArrayList< ArrayList<Double> > coordinates;
-//    private String geoType;
-//    private ArrayList<ArrayList<Float>> geometry;
 
 
 
-    public precint(String districtID, String precintID, Long population, String countyID, ArrayList<ArrayList<Double>> coordinates) {
+
+
+
+
+    public precint() {
+    }
+
+    public precint(String districtID, String precintID, String countyID, ArrayList<ArrayList<Double>> coordinates) {
         this.districtID = districtID;
         this.precintID = precintID;
-        this.population = population;
         this.countyID = countyID;
         this.coordinates = coordinates;
     }
 
-    public ArrayList<ArrayList<Double>> getCoordinates() {
-        return coordinates;
-    }
-
-    public void setCoordinates(ArrayList<ArrayList<Double>> coordinates) {
+    public precint(String districtID, String precintID, String countyID, ArrayList<precint> neighbours, double compactness, ArrayList<ArrayList<Double>> coordinates) {
+        this.districtID = districtID;
+        this.precintID = precintID;
+        this.countyID = countyID;
+        this.neighbours = neighbours;
+        this.compactness = compactness;
         this.coordinates = coordinates;
-    }
-
-    public precint() {
     }
 
     @Id
@@ -83,13 +82,31 @@ public class precint  {
         this.population = population;
     }
 
-    @Override
-    public String toString() {
-        return "precint{" +
-                "districtID='" + districtID + '\'' +
-                ", precintID='" + precintID + '\'' +
-                ", population=" + population +
-                ", countyID='" + countyID + '\'' +
-                '}';
+    @ManyToMany
+    public ArrayList<precint> getNeighbours() {
+        return neighbours;
     }
+
+    public void setNeighbours(ArrayList<precint> neighbours) {
+        this.neighbours = neighbours;
+    }
+
+    @Transient
+    public double getCompactness() {
+        return compactness;
+    }
+
+    public void setCompactness(double compactness) {
+        this.compactness = compactness;
+    }
+
+    @ElementCollection
+    public ArrayList<ArrayList<Double>> getCoordinates() {
+        return coordinates;
+    }
+
+    public void setCoordinates(ArrayList<ArrayList<Double>> coordinates) {
+        this.coordinates = coordinates;
+    }
+
 }

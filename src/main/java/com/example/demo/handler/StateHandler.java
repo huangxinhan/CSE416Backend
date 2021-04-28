@@ -19,6 +19,8 @@ public class StateHandler {
 
     public List<precint> getPrecint()
     {
+
+
         return precintRepository.findAll();
     }
 }
