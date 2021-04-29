@@ -29,6 +29,14 @@ public class Job implements Serializable{
     public Job(){
 
     }
+
+    public Job(String JobID, List<Districting> districtings, HashMap<Param, Long> mgggParams, String stateName){
+        this.jobID = jobID;
+        this.districtings = districtings;
+        this.mgggParams = mgggParams;
+        this.stateName = stateName;
+    }
+
     @Id
     public String getJobID() {
         return jobID;
@@ -38,6 +46,7 @@ public class Job implements Serializable{
         this.jobID = jobID;
     }
 
+    @Transient
     public Constraints getConstraints() {
         return constraints;
     }
@@ -53,7 +62,7 @@ public class Job implements Serializable{
     public void setDistrictings(List<Districting> districtings) {
         this.districtings = districtings;
     }
-
+    @Transient
     public List<Districting> getTempConstrainedDistrictings() {
         return tempConstrainedDistrictings;
     }
@@ -61,7 +70,7 @@ public class Job implements Serializable{
     public void setTempConstrainedDistrictings(List<Districting> tempConstrainedDistrictings) {
         this.tempConstrainedDistrictings = tempConstrainedDistrictings;
     }
-
+    @Transient
     public ConstrainedDistrictings getConstrainedDistrictings() {
         return constrainedDistrictings;
     }
@@ -69,7 +78,7 @@ public class Job implements Serializable{
     public void setConstrainedDistrictings(ConstrainedDistrictings constrainedDistrictings) {
         this.constrainedDistrictings = constrainedDistrictings;
     }
-
+    @Transient
     public HashMap<Measures, Double> getWeights() {
         return weights;
     }
@@ -77,7 +86,7 @@ public class Job implements Serializable{
     public void setWeights(HashMap<Measures, Double> weights) {
         this.weights = weights;
     }
-
+    @Transient
     public List<Districting> getTopDistrictingsByOFScore() {
         return topDistrictingsByOFScore;
     }
@@ -85,7 +94,7 @@ public class Job implements Serializable{
     public void setTopDistrictingsByOFScore(List<Districting> topDistrictingsByOFScore) {
         this.topDistrictingsByOFScore = topDistrictingsByOFScore;
     }
-
+    @Transient
     public List<Districting> getTopDistrictingsByEnacted() {
         return topDistrictingsByEnacted;
     }
@@ -93,7 +102,7 @@ public class Job implements Serializable{
     public void setTopDistrictingsByEnacted(List<Districting> topDistrictingsByEnacted) {
         this.topDistrictingsByEnacted = topDistrictingsByEnacted;
     }
-
+    @Transient
     public List<Districting> getTopDistrictingsByHighScoreMajMinDistricts() {
         return topDistrictingsByHighScoreMajMinDistricts;
     }
@@ -101,7 +110,7 @@ public class Job implements Serializable{
     public void setTopDistrictingsByHighScoreMajMinDistricts(List<Districting> topDistrictingsByHighScoreMajMinDistricts) {
         this.topDistrictingsByHighScoreMajMinDistricts = topDistrictingsByHighScoreMajMinDistricts;
     }
-
+    @Transient
     public List<Districting> getTopDistrictingsBySigmaAvg() {
         return topDistrictingsBySigmaAvg;
     }
@@ -109,7 +118,7 @@ public class Job implements Serializable{
     public void setTopDistrictingsBySigmaAvg(List<Districting> topDistrictingsBySigmaAvg) {
         this.topDistrictingsBySigmaAvg = topDistrictingsBySigmaAvg;
     }
-
+    @Transient
     public List<Districting> getTopDistrictingsBySigmaEnacted() {
         return topDistrictingsBySigmaEnacted;
     }
@@ -117,7 +126,7 @@ public class Job implements Serializable{
     public void setTopDistrictingsBySigmaEnacted(List<Districting> topDistrictingsBySigmaEnacted) {
         this.topDistrictingsBySigmaEnacted = topDistrictingsBySigmaEnacted;
     }
-
+    @Transient
     public List<Districting> getTopDistrictingsByCompactness() {
         return topDistrictingsByCompactness;
     }
@@ -125,7 +134,7 @@ public class Job implements Serializable{
     public void setTopDistrictingsByCompactness(List<Districting> topDistrictingsByCompactness) {
         this.topDistrictingsByCompactness = topDistrictingsByCompactness;
     }
-
+    @Transient
     public List<Districting> getTopDistrictingsByAreaPairDeviation() {
         return topDistrictingsByAreaPairDeviation;
     }
@@ -133,7 +142,7 @@ public class Job implements Serializable{
     public void setTopDistrictingsByAreaPairDeviation(List<Districting> topDistrictingsByAreaPairDeviation) {
         this.topDistrictingsByAreaPairDeviation = topDistrictingsByAreaPairDeviation;
     }
-
+    @Transient
     public List<Districting> getTopDistrictingsBySimilarity() {
         return topDistrictingsBySimilarity;
     }
@@ -158,11 +167,6 @@ public class Job implements Serializable{
         this.stateName = stateName;
     }
 
-    public Job(String JobID, List<Districting> districtings, HashMap<Param, Long> mgggParams, String stateName){
-        this.jobID = jobID;
-        this.districtings = districtings;
-        this.mgggParams = mgggParams;
-        this.stateName = stateName;
-    }
+
 
 }

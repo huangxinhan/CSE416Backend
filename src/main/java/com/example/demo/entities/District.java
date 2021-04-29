@@ -44,12 +44,12 @@ public class District implements Serializable{
         Long tempAfricanAmericanPop = 0l;
         Long tempAsianPop = 0l;
         Long tempHispanicPop = 0l;
-//        for (int i = 0; i < this.precincts.size(); i++){
-//            tempTotalPop += this.precincts.get(i).getTotalPopulation();
-//            tempTotalPop += this.precincts.get(i).getAfricanAmericanPopulation();
-//            tempTotalPop += this.precincts.get(i).getAsiantalPopulation();
-//            tempTotalPop += this.precincts.get(i).getHispanicPopulation();
-//        }
+        for (int i = 0; i < this.precincts.size(); i++){
+            tempTotalPop += this.precincts.get(i).getTotalPopulation();
+            tempTotalPop += this.precincts.get(i).getAfricanAmericanPopulation();
+            tempTotalPop += this.precincts.get(i).getAsianPopulation();
+            tempTotalPop += this.precincts.get(i).getHispanicPopulation();
+        }
         this.totalPopulation = tempTotalPop;
         this.AfricanAmericanPopulation = tempAfricanAmericanPop;
         this.AsianPopulation = tempAsianPop;

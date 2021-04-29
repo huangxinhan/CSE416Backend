@@ -12,8 +12,10 @@ public class Precinct implements Serializable{
 
     //private District districtID;
     private String precinctID;
-    private Long population;
-
+    private Long totalPopulation;
+    private Long AfricanAmericanPopulation;
+    private Long AsianPopulation;
+    private Long HispanicPopulation;
 
     private County countyID;
     @ElementCollection
@@ -23,21 +25,27 @@ public class Precinct implements Serializable{
     @ElementCollection
     private ArrayList< ArrayList<Double> > coordinates;
 
-
+    private String IncumbentName;
 
     public Precinct() {
     }
 
-    public Precinct(String precinctID, Long population, ArrayList<String> neighbours, ArrayList<ArrayList<Double>> coordinates) {
+    public Precinct(String precinctID, Long totalPopulation, Long AfricanAmericanPopulation, Long AsianPopulation, Long HispanicPopulation, ArrayList<String> neighbours, ArrayList<ArrayList<Double>> coordinates) {
         this.precinctID = precinctID;
-        this.population = population;
+        this.totalPopulation = totalPopulation;
+        this.AfricanAmericanPopulation = AfricanAmericanPopulation;
+        this.AsianPopulation = AsianPopulation;
+        this.HispanicPopulation = HispanicPopulation;
         this.neighbours = neighbours;
         this.coordinates = coordinates;
     }
 
-    public Precinct(String precinctID, Long population, County countyID, ArrayList<String> neighbours, ArrayList<ArrayList<Double>> coordinates) {
+    public Precinct(String precinctID, Long totalPopulation, Long AfricanAmericanPopulation, Long AsianPopulation, Long HispanicPopulation, County countyID, ArrayList<String> neighbours, ArrayList<ArrayList<Double>> coordinates) {
         this.precinctID = precinctID;
-        this.population = population;
+        this.totalPopulation = totalPopulation;
+        this.AfricanAmericanPopulation = AfricanAmericanPopulation;
+        this.AsianPopulation = AsianPopulation;
+        this.HispanicPopulation = HispanicPopulation;
         this.countyID = countyID;
         this.neighbours = neighbours;
         this.coordinates = coordinates;
@@ -69,16 +77,49 @@ public class Precinct implements Serializable{
         return countyID;
     }
 
+    @Transient
+    public String getIncumbentName() {
+        return IncumbentName;
+    }
+
+    public void setIncumbentName(String incumbentName) {
+        IncumbentName = incumbentName;
+    }
+
     public void setCountyID(County countyID) {
         this.countyID = countyID;
     }
 
-    public Long getPopulation() {
-        return population;
+    public Long getTotalPopulation() {
+        return totalPopulation;
     }
 
-    public void setPopulation(Long population) {
-        this.population = population;
+    public void setTotalPopulation(Long totalPopulation) {
+        this.totalPopulation = totalPopulation;
+    }
+
+    public Long getAfricanAmericanPopulation() {
+        return AfricanAmericanPopulation;
+    }
+
+    public void setAfricanAmericanPopulation(Long africanAmericanPopulation) {
+        AfricanAmericanPopulation = africanAmericanPopulation;
+    }
+
+    public Long getAsianPopulation() {
+        return AsianPopulation;
+    }
+
+    public void setAsianPopulation(Long asianPopulation) {
+        AsianPopulation = asianPopulation;
+    }
+
+    public Long getHispanicPopulation() {
+        return HispanicPopulation;
+    }
+
+    public void setHispanicPopulation(Long hispanicPopulation) {
+        HispanicPopulation = hispanicPopulation;
     }
 
 //    public District getDistrictID() {
