@@ -18,8 +18,8 @@ public class Precinct implements Serializable{
     private Long HispanicPopulation;
 
     private County countyID;
-    @ElementCollection
-    private ArrayList<String> neighbours;
+
+    private List<Precinct> neighbours;
 
     private double compactness;
     @ElementCollection
@@ -30,26 +30,35 @@ public class Precinct implements Serializable{
     public Precinct() {
     }
 
-    public Precinct(String precinctID, Long totalPopulation, Long AfricanAmericanPopulation, Long AsianPopulation, Long HispanicPopulation, ArrayList<String> neighbours, ArrayList<ArrayList<Double>> coordinates) {
+    public Precinct(String precinctID) {
         this.precinctID = precinctID;
-        this.totalPopulation = totalPopulation;
-        this.AfricanAmericanPopulation = AfricanAmericanPopulation;
-        this.AsianPopulation = AsianPopulation;
-        this.HispanicPopulation = HispanicPopulation;
-        this.neighbours = neighbours;
-        this.coordinates = coordinates;
     }
 
-    public Precinct(String precinctID, Long totalPopulation, Long AfricanAmericanPopulation, Long AsianPopulation, Long HispanicPopulation, County countyID, ArrayList<String> neighbours, ArrayList<ArrayList<Double>> coordinates) {
+    public Precinct(String precinctID, List<Precinct> neighbours) {
         this.precinctID = precinctID;
-        this.totalPopulation = totalPopulation;
-        this.AfricanAmericanPopulation = AfricanAmericanPopulation;
-        this.AsianPopulation = AsianPopulation;
-        this.HispanicPopulation = HispanicPopulation;
-        this.countyID = countyID;
         this.neighbours = neighbours;
-        this.coordinates = coordinates;
     }
+
+//    public Precinct(String precinctID, Long totalPopulation, Long AfricanAmericanPopulation, Long AsianPopulation, Long HispanicPopulation, List<S> neighbours, ArrayList<ArrayList<Double>> coordinates) {
+//        this.precinctID = precinctID;
+//        this.totalPopulation = totalPopulation;
+//        this.AfricanAmericanPopulation = AfricanAmericanPopulation;
+//        this.AsianPopulation = AsianPopulation;
+//        this.HispanicPopulation = HispanicPopulation;
+//        this.neighbours = neighbours;
+//        this.coordinates = coordinates;
+//    }
+//
+//    public Precinct(String precinctID, Long totalPopulation, Long AfricanAmericanPopulation, Long AsianPopulation, Long HispanicPopulation, County countyID, ArrayList<String> neighbours, ArrayList<ArrayList<Double>> coordinates) {
+//        this.precinctID = precinctID;
+//        this.totalPopulation = totalPopulation;
+//        this.AfricanAmericanPopulation = AfricanAmericanPopulation;
+//        this.AsianPopulation = AsianPopulation;
+//        this.HispanicPopulation = HispanicPopulation;
+//        this.countyID = countyID;
+//        this.neighbours = neighbours;
+//        this.coordinates = coordinates;
+//    }
 
     //    @SequenceGenerator(
 //            name ="precinct_sequence",
@@ -130,12 +139,12 @@ public class Precinct implements Serializable{
 //        this.districtID = districtID;
 //    }
 
-
-    public ArrayList<String> getNeighbours() {
+    @ManyToMany(cascade = CascadeType.ALL)
+    public List<Precinct> getNeighbours() {
         return neighbours;
     }
 
-    public void setNeighbours(ArrayList<String> neighbours) {
+    public void setNeighbours(List<Precinct> neighbours) {
         this.neighbours = neighbours;
     }
 

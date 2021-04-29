@@ -87,38 +87,63 @@ public class precintConfig {
 
         return args -> {
 
-            ArrayList<String> k = new ArrayList<String>();
+            HashMap<String,Precinct> allprecinct = new HashMap<String,Precinct>();
+            for( int i=0; i < precinctProperties.size(); i++)
+            {
 
-            Precinct haha = new Precinct(
-                    "1",
-                    100L,
-                    k,
-                    coordinatesColletion.get(0)
+                JSONObject precinctINFO = precinctProperties.get(i);
+
+                String id = (String) precinctINFO.get("GEOID10");
+                System.out.println(id);
+
+                Precinct newprecinct = new Precinct(
+                        (String) precinctINFO.get("CD_2011").toString()
+                        //(String) precinctINFO.get("GEOID10"),
+                        //(Long) precinctINFO.get("TOTPOP"),
+                        //((String) precinctINFO.get("COUNTYFP10")).substring(1),
+                        //coordinatesColletion.get(i)
+
+                );
+
+                allprecinct.put(id,newprecinct);
+            }
+            int counter = 0;
+
+            for( String i : allprecinct.keySet())
+            {
+                counter++;
+                System.out.println(counter);
+                Precinct toProcess = allprecinct.get(i);
+
+                Object obj1 = new JSONParser().parse(new FileReader("src/main/java/com/example/demo/orgJson/PA_precincts_seawulf.json"));
+
+                JSONObject jo1 = (JSONObject) obj1;
+
+                JSONObject seaWulfprecinct = (JSONObject) jo1.get(i);
+
+                if( seaWulfprecinct == null)
+                {
+                    System.out.println(i);
+                }
+                JSONArray adjacentNode = (JSONArray) seaWulfprecinct.get("adjacent_nodes");
+
+                ArrayList<Precinct> neighbours = new ArrayList<Precinct>();
+
+                for(int j =0; j < adjacentNode.size(); j++)
+                {
+                    String id = (String) adjacentNode.get(j);
+
+                    Precinct toAdd  = allprecinct.get(id);
+
+                    neighbours.add(toAdd);
+                }
+                System.out.println(neighbours);
+                toProcess.setNeighbours(neighbours);
 
 
+            }
 
-            );
-
-            ArrayList<Precinct> temp = new ArrayList<Precinct>();
-
-
-            County kk = new County(
-                    "2",
-                    temp,
-                    coordinatesColletion.get(0)
-
-
-            );
-            temp.add(haha);
-
-            kk.setPrecincts(temp);
-            haha.setCountyID(kk);
-
-
-            countyRepository.deleteAll();
-
-
-
+            precinctRepository.saveAll(allprecinct.values());
 
 
 
