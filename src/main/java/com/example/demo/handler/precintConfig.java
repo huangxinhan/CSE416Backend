@@ -3,6 +3,7 @@ package com.example.demo.handler;
 import java.beans.Transient;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.*;
 
 import com.example.demo.entities.County;
@@ -143,10 +144,15 @@ public class precintConfig {
                 System.out.println(neighbours);
                 toProcess.setNeighbours(neighbours);
 
+                precinctRepository.save(toProcess);
+
+
 
             }
 
-            precinctRepository.saveAll(allprecinct.values());
+
+
+
             //precinctRepository.deleteAll();
 
 
