@@ -40,6 +40,7 @@ public class State implements Serializable{
         this.stateID = stateID;
     }
 
+    @OneToMany(cascade = CascadeType.ALL)
     public List<Precinct> getPrecincts() {
         return precincts;
     }
@@ -48,6 +49,7 @@ public class State implements Serializable{
         this.precincts = precincts;
     }
 
+    @OneToMany(cascade = CascadeType.ALL)
     public List<Job> getJobs() {
         return jobs;
     }
@@ -104,6 +106,7 @@ public class State implements Serializable{
         this.currentDistricting = currentDistricting;
     }
 
+    @OneToMany(cascade = CascadeType.ALL)
     public List<County> getCounties() {
         return counties;
     }

@@ -9,14 +9,13 @@ import java.util.List;
 @Entity
 public class Districting implements Serializable{
     private String districtingID;
-    @ElementCollection
-    private ArrayList<District> districts;
+
+    private List<District> districts;
     private double deviationFromAverage;
     private double deviationFromEnactedPop;
     private double deviationFromEnactedArea;
     private double objectiveFunctionScore;
     private double similarityToEnactedScore;
-    @ElementCollection
     private ArrayList<District> majorityMinorityDistricts;
     private int numberOfMajorityMinorityDistricts;
     private double compactness;
@@ -44,13 +43,15 @@ public class Districting implements Serializable{
         this.districtingID = districtingID;
     }
 
-    public ArrayList<District> getDistricts() {
+    @OneToMany(cascade = CascadeType.ALL)
+    public List<District> getDistricts() {
         return districts;
     }
 
-    public void setDistricts(ArrayList<District> districts) {
+    public void setDistricts(List<District> districts) {
         this.districts = districts;
     }
+
     @Transient
     public double getDeviationFromAverage() {
         return deviationFromAverage;
@@ -92,7 +93,7 @@ public class Districting implements Serializable{
         this.similarityToEnactedScore = similarityToEnactedScore;
     }
     @Transient
-    public List<District> getMajorityMinorityDistricts() {
+    public ArrayList<District> getMajorityMinorityDistricts() {
         return majorityMinorityDistricts;
     }
 
