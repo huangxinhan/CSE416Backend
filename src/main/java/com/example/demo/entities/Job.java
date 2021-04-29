@@ -54,7 +54,7 @@ public class Job implements Serializable{
     public void setConstraints(Constraints constraints) {
         this.constraints = constraints;
     }
-
+    @OneToMany(cascade = CascadeType.ALL)
     public List<Districting> getDistrictings() {
         return districtings;
     }
