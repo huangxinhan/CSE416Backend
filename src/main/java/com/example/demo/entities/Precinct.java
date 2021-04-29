@@ -15,8 +15,7 @@ public class Precinct implements Serializable{
 
 
     private String countyID;
-    @JsonIgnore
-    @ManyToMany
+    @ElementCollection
     private ArrayList<String> neighbours;
     @Transient
     private double compactness;
