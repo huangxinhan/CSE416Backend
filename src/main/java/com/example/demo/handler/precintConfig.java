@@ -87,6 +87,8 @@ public class precintConfig {
 
         return args -> {
 
+            Object obj1 = new JSONParser().parse(new FileReader("src/main/java/com/example/demo/orgJson/PA_precincts_seawulf.json"));
+
             HashMap<String,Precinct> allprecinct = new HashMap<String,Precinct>();
             for( int i=0; i < precinctProperties.size(); i++)
             {
@@ -94,10 +96,10 @@ public class precintConfig {
                 JSONObject precinctINFO = precinctProperties.get(i);
 
                 String id = (String) precinctINFO.get("GEOID10");
-                System.out.println(id);
+
 
                 Precinct newprecinct = new Precinct(
-                        (String) precinctINFO.get("CD_2011").toString()
+                        (String) precinctINFO.get("GEOID10").toString()
                         //(String) precinctINFO.get("GEOID10"),
                         //(Long) precinctINFO.get("TOTPOP"),
                         //((String) precinctINFO.get("COUNTYFP10")).substring(1),
@@ -109,13 +111,14 @@ public class precintConfig {
             }
             int counter = 0;
 
+            precinctRepository.saveAll(allprecinct.values());
+
             for( String i : allprecinct.keySet())
             {
                 counter++;
                 System.out.println(counter);
                 Precinct toProcess = allprecinct.get(i);
 
-                Object obj1 = new JSONParser().parse(new FileReader("src/main/java/com/example/demo/orgJson/PA_precincts_seawulf.json"));
 
                 JSONObject jo1 = (JSONObject) obj1;
 
@@ -143,7 +146,8 @@ public class precintConfig {
 
             }
 
-            precinctRepository.saveAll(allprecinct.values());
+            //precinctRepository.saveAll(allprecinct.values());
+            precinctRepository.deleteAll();
 
 
 
