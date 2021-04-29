@@ -1,6 +1,6 @@
 package com.example.demo.servers;
 import java.util.*;
-import com.example.demo.entities.precint;
+import com.example.demo.entities.Precinct;
 import com.example.demo.handler.StateHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +19,7 @@ public class servelet {
     }
 
     @GetMapping
-    public List<precint> getPrecint()
+    public List<Precinct> getPrecint()
     {
         return stateHandler.getPrecint();
     }

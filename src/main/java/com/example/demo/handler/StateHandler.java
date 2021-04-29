@@ -1,6 +1,6 @@
 package com.example.demo.handler;
 
-import com.example.demo.entities.precint;
+import com.example.demo.entities.Precinct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,7 +17,7 @@ public class StateHandler {
     }
 
 
-    public List<precint> getPrecint()
+    public List<Precinct> getPrecint()
     {
 
 

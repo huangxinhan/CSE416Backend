@@ -1,20 +1,23 @@
 package com.example.demo.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class precint  implements Serializable{
+public class Precinct implements Serializable{
     private String districtID;
-    private String precintID;
+    private String precinctID;
     private Long population;
 
 
     private String countyID;
+    @JsonIgnore
     @ManyToMany
-    private ArrayList<precint> neighbours;
+    private ArrayList<String> neighbours;
     @Transient
     private double compactness;
     @ElementCollection
@@ -22,46 +25,41 @@ public class precint  implements Serializable{
 
 
 
-    public precint() {
+    public Precinct() {
     }
 
-    public precint(String districtID, String precintID, Long population, String countyID, ArrayList<ArrayList<Double>> coordinates) {
+    public Precinct(String districtID, String precinctID, Long population, String countyID, ArrayList<ArrayList<Double>> coordinates) {
         this.districtID = districtID;
-        this.precintID = precintID;
+        this.precinctID = precinctID;
         this.population = population;
         this.countyID = countyID;
         this.coordinates = coordinates;
     }
 
-    public precint(String districtID, String precintID, String countyID, ArrayList<ArrayList<Double>> coordinates) {
-        this.districtID = districtID;
-        this.precintID = precintID;
-        this.countyID = countyID;
-        this.coordinates = coordinates;
-    }
+
 
 
 
 
 //    @SequenceGenerator(
-//            name ="precint_sequence",
-//            sequenceName = "precint_sequence",
+//            name ="precinct_sequence",
+//            sequenceName = "precinct_sequence",
 //            allocationSize = 1
 //
 //    )
 //    @GeneratedValue(
 //            strategy = GenerationType.SEQUENCE,
-//            generator = "precint_sequence"
+//            generator = "precinct_sequence"
 //    )
 
 
     @Id
-    public String getPrecintID() {
-        return precintID;
+    public String getprecinctID() {
+        return precinctID;
     }
 
-    public void setPrecintID(String precintID) {
-        this.precintID = precintID;
+    public void setprecinctID(String precinctID) {
+        this.precinctID = precinctID;
     }
 
     public String getCountyID() {
@@ -87,11 +85,11 @@ public class precint  implements Serializable{
     public void setDistrictID(String districtID) {
         this.districtID = districtID;
     }
-    public ArrayList<precint> getNeighbours() {
+    public ArrayList<String> getNeighbours() {
         return neighbours;
     }
 
-    public void setNeighbours(ArrayList<precint> neighbours) {
+    public void setNeighbours(ArrayList<String> neighbours) {
         this.neighbours = neighbours;
     }
 
