@@ -9,15 +9,16 @@ import java.util.List;
 
 @Entity
 public class Precinct implements Serializable{
-    private String districtID;
+
+    //private District districtID;
     private String precinctID;
     private Long population;
 
 
-    private String countyID;
+    private County countyID;
     @ElementCollection
     private ArrayList<String> neighbours;
-    @Transient
+
     private double compactness;
     @ElementCollection
     private ArrayList< ArrayList<Double> > coordinates;
@@ -27,20 +28,22 @@ public class Precinct implements Serializable{
     public Precinct() {
     }
 
-    public Precinct(String districtID, String precinctID, Long population, String countyID, ArrayList<ArrayList<Double>> coordinates) {
-        this.districtID = districtID;
+    public Precinct(String precinctID, Long population, ArrayList<String> neighbours, ArrayList<ArrayList<Double>> coordinates) {
         this.precinctID = precinctID;
         this.population = population;
-        this.countyID = countyID;
+        this.neighbours = neighbours;
         this.coordinates = coordinates;
     }
 
+    public Precinct(String precinctID, Long population, County countyID, ArrayList<String> neighbours, ArrayList<ArrayList<Double>> coordinates) {
+        this.precinctID = precinctID;
+        this.population = population;
+        this.countyID = countyID;
+        this.neighbours = neighbours;
+        this.coordinates = coordinates;
+    }
 
-
-
-
-
-//    @SequenceGenerator(
+    //    @SequenceGenerator(
 //            name ="precinct_sequence",
 //            sequenceName = "precinct_sequence",
 //            allocationSize = 1
@@ -61,11 +64,12 @@ public class Precinct implements Serializable{
         this.precinctID = precinctID;
     }
 
-    public String getCountyID() {
+    @ManyToOne
+    public County getCountyID() {
         return countyID;
     }
 
-    public void setCountyID(String countyID) {
+    public void setCountyID(County countyID) {
         this.countyID = countyID;
     }
 
@@ -77,13 +81,15 @@ public class Precinct implements Serializable{
         this.population = population;
     }
 
-    public String getDistrictID() {
-        return districtID;
-    }
+//    public District getDistrictID() {
+//        return districtID;
+//    }
+//
+//    public void setDistrictID(District districtID) {
+//        this.districtID = districtID;
+//    }
 
-    public void setDistrictID(String districtID) {
-        this.districtID = districtID;
-    }
+
     public ArrayList<String> getNeighbours() {
         return neighbours;
     }
@@ -92,7 +98,7 @@ public class Precinct implements Serializable{
         this.neighbours = neighbours;
     }
 
-
+    @Transient
     public double getCompactness() {
         return compactness;
     }
