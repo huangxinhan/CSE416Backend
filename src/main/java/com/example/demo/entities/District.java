@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class District {
+public class District implements Serializable{
 
     private String districtID;
     private int districtNumber;
