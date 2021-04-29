@@ -111,7 +111,7 @@ public class precintConfig {
             }
             int counter = 0;
 
-            precinctRepository.saveAll(allprecinct.values());
+           // precinctRepository.saveAll(allprecinct.values());
 
             for( String i : allprecinct.keySet())
             {
@@ -146,8 +146,8 @@ public class precintConfig {
 
             }
 
-            //precinctRepository.saveAll(allprecinct.values());
-            precinctRepository.deleteAll();
+            precinctRepository.saveAll(allprecinct.values());
+            //precinctRepository.deleteAll();
 
 
 
