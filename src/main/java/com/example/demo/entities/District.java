@@ -1,4 +1,4 @@
-/*package com.example.demo.entities;
+package com.example.demo.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -10,7 +10,7 @@ public class District {
 
     private String districtID;
     private int districtNumber;
-    private List<precint> precincts;
+    private List<Precinct> precincts;
     @Transient
     private double compactness;
     @Transient
@@ -30,7 +30,7 @@ public class District {
 
     }
 
-    public District(String districtID, int districtNumber, List<precint> precincts, double compactness, double deviationEnacted, double politicalFairness, int numberOfEdgeNodes, boolean isHigherThanPopThreshold, ArrayList<ArrayList<Double>> borderGeometry, Long population) {
+    public District(String districtID, int districtNumber, List<Precinct> precincts, double compactness, double deviationEnacted, double politicalFairness, int numberOfEdgeNodes, boolean isHigherThanPopThreshold, ArrayList<ArrayList<Double>> borderGeometry, Long population) {
         this.districtID = districtID;
         this.districtNumber = districtNumber;
         this.precincts = precincts;
@@ -43,5 +43,85 @@ public class District {
         this.population = population;
     }
 
+    @Id
+    public String getDistrictID() {
+        return districtID;
+    }
 
-}*/
+    public void setDistrictID(String districtID) {
+        this.districtID = districtID;
+    }
+
+    public int getDistrictNumber() {
+        return districtNumber;
+    }
+
+    public void setDistrictNumber(int districtNumber) {
+        this.districtNumber = districtNumber;
+    }
+
+    @OneToMany
+    public List<Precinct> getPrecincts() {
+        return precincts;
+    }
+
+    public void setPrecincts(List<Precinct> precincts) {
+        this.precincts = precincts;
+    }
+
+    public double getCompactness() {
+        return compactness;
+    }
+
+    public void setCompactness(double compactness) {
+        this.compactness = compactness;
+    }
+
+    public double getDeviationEnacted() {
+        return deviationEnacted;
+    }
+
+    public void setDeviationEnacted(double deviationEnacted) {
+        this.deviationEnacted = deviationEnacted;
+    }
+
+    public double getPoliticalFairness() {
+        return politicalFairness;
+    }
+
+    public void setPoliticalFairness(double politicalFairness) {
+        this.politicalFairness = politicalFairness;
+    }
+
+    public int getNumberOfEdgeNodes() {
+        return numberOfEdgeNodes;
+    }
+
+    public void setNumberOfEdgeNodes(int numberOfEdgeNodes) {
+        this.numberOfEdgeNodes = numberOfEdgeNodes;
+    }
+
+    public boolean isHigherThanPopThreshold() {
+        return isHigherThanPopThreshold;
+    }
+
+    public void setHigherThanPopThreshold(boolean higherThanPopThreshold) {
+        isHigherThanPopThreshold = higherThanPopThreshold;
+    }
+
+    public ArrayList<ArrayList<Double>> getBorderGeometry() {
+        return borderGeometry;
+    }
+
+    public void setBorderGeometry(ArrayList<ArrayList<Double>> borderGeometry) {
+        this.borderGeometry = borderGeometry;
+    }
+
+    public Long getPopulation() {
+        return population;
+    }
+
+    public void setPopulation(Long population) {
+        this.population = population;
+    }
+}
