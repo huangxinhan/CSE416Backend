@@ -10,7 +10,7 @@ public class District implements Serializable{
 
     private String districtID;
     private int districtNumber;
-    @OneToMany
+
     private List<Precinct> precincts;
     @Transient
     private double compactness;
@@ -44,18 +44,19 @@ public class District implements Serializable{
         Long tempAfricanAmericanPop = 0l;
         Long tempAsianPop = 0l;
         Long tempHispanicPop = 0l;
-        for (int i = 0; i < this.precincts.size(); i++){
-            tempTotalPop += this.precincts.get(i).getTotalPopulation();
-            tempTotalPop += this.precincts.get(i).getAfricanAmericanPopulation();
-            tempTotalPop += this.precincts.get(i).getAsiantalPopulation();
-            tempTotalPop += this.precincts.get(i).getHispanicPopulation();
-        }
+//        for (int i = 0; i < this.precincts.size(); i++){
+//            tempTotalPop += this.precincts.get(i).getTotalPopulation();
+//            tempTotalPop += this.precincts.get(i).getAfricanAmericanPopulation();
+//            tempTotalPop += this.precincts.get(i).getAsiantalPopulation();
+//            tempTotalPop += this.precincts.get(i).getHispanicPopulation();
+//        }
         this.totalPopulation = tempTotalPop;
         this.AfricanAmericanPopulation = tempAfricanAmericanPop;
         this.AsianPopulation = tempAsianPop;
         this.HispanicPopulation = tempHispanicPop;
     }
 
+    @Id
     public String getDistrictID() {
         return districtID;
     }
@@ -71,6 +72,7 @@ public class District implements Serializable{
     public void setDistrictNumber(int districtNumber) {
         this.districtNumber = districtNumber;
     }
+    @OneToMany(cascade = CascadeType.ALL)
 
     public List<Precinct> getPrecincts() {
         return precincts;

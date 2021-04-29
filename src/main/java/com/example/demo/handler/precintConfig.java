@@ -109,21 +109,18 @@ public class precintConfig {
 
 
             );
-
-
-
-            precinctRepository.save(haha);
-
-            countyRepository.save(kk);
-
             temp.add(haha);
 
             kk.setPrecincts(temp);
             haha.setCountyID(kk);
 
-            precinctRepository.save(haha);
 
             countyRepository.save(kk);
+
+
+
+
+
 
         };
 
