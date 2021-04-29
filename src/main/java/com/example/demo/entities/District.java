@@ -10,6 +10,7 @@ public class District {
 
     private String districtID;
     private int districtNumber;
+    @OneToMany
     private List<Precinct> precincts;
     @Transient
     private double compactness;
@@ -21,29 +22,40 @@ public class District {
     private int numberOfEdgeNodes;
     @Transient
     private boolean isHigherThanPopThreshold;
+    @ElementCollection
     private ArrayList< ArrayList<Double> > borderGeometry;
     //incumbents List<incumbents>
     //involvedCounties List<County>
-    private Long population;
+    private Long totalPopulation;
+    private Long AfricanAmericanPopulation;
+    private Long AsianPopulation;
+    private Long HispanicPopulation;
 
     public District(){
 
     }
 
-    public District(String districtID, int districtNumber, List<Precinct> precincts, double compactness, double deviationEnacted, double politicalFairness, int numberOfEdgeNodes, boolean isHigherThanPopThreshold, ArrayList<ArrayList<Double>> borderGeometry, Long population) {
+    public District(String districtID, int districtNumber, List<Precinct> precincts, ArrayList<ArrayList<Double>> borderGeometry, Long population) {
         this.districtID = districtID;
         this.districtNumber = districtNumber;
         this.precincts = precincts;
-        this.compactness = compactness;
-        this.deviationEnacted = deviationEnacted;
-        this.politicalFairness = politicalFairness;
-        this.numberOfEdgeNodes = numberOfEdgeNodes;
-        this.isHigherThanPopThreshold = isHigherThanPopThreshold;
         this.borderGeometry = borderGeometry;
-        this.population = population;
+        Long tempTotalPop = 0l;
+        Long tempAfricanAmericanPop = 0l;
+        Long tempAsianPop = 0l;
+        Long tempHispanicPop = 0l;
+        for (int i = 0; i < this.precincts.size(); i++){
+            tempTotalPop += this.precincts.get(i).getTotalPopulation();
+            tempTotalPop += this.precincts.get(i).getAfricanAmericanPopulation();
+            tempTotalPop += this.precincts.get(i).getAsiantalPopulation();
+            tempTotalPop += this.precincts.get(i).getHispanicPopulation();
+        }
+        this.totalPopulation = tempTotalPop;
+        this.AfricanAmericanPopulation = tempAfricanAmericanPop;
+        this.AsianPopulation = tempAsianPop;
+        this.HispanicPopulation = tempHispanicPop;
     }
 
-    @Id
     public String getDistrictID() {
         return districtID;
     }
@@ -60,7 +72,6 @@ public class District {
         this.districtNumber = districtNumber;
     }
 
-    @OneToMany
     public List<Precinct> getPrecincts() {
         return precincts;
     }
@@ -117,11 +128,35 @@ public class District {
         this.borderGeometry = borderGeometry;
     }
 
-    public Long getPopulation() {
-        return population;
+    public Long getTotalPopulation() {
+        return totalPopulation;
     }
 
-    public void setPopulation(Long population) {
-        this.population = population;
+    public void setTotalPopulation(Long totalPopulation) {
+        this.totalPopulation = totalPopulation;
+    }
+
+    public Long getAfricanAmericanPopulation() {
+        return AfricanAmericanPopulation;
+    }
+
+    public void setAfricanAmericanPopulation(Long africanAmericanPopulation) {
+        AfricanAmericanPopulation = africanAmericanPopulation;
+    }
+
+    public Long getAsianPopulation() {
+        return AsianPopulation;
+    }
+
+    public void setAsianPopulation(Long asianPopulation) {
+        AsianPopulation = asianPopulation;
+    }
+
+    public Long getHispanicPopulation() {
+        return HispanicPopulation;
+    }
+
+    public void setHispanicPopulation(Long hispanicPopulation) {
+        HispanicPopulation = hispanicPopulation;
     }
 }
