@@ -10,14 +10,14 @@ import java.util.List;
 public class Districting implements Serializable{
     private String districtingID;
     @ElementCollection
-    private List<District> districts;
+    private ArrayList<District> districts;
     private double deviationFromAverage;
     private double deviationFromEnactedPop;
     private double deviationFromEnactedArea;
     private double objectiveFunctionScore;
     private double similarityToEnactedScore;
     @ElementCollection
-    private List<District> majorityMinorityDistricts;
+    private ArrayList<District> majorityMinorityDistricts;
     private int numberOfMajorityMinorityDistricts;
     private double compactness;
     //incumbentDistribution: Map<district: District, List<incumbent>> Ignore
@@ -31,11 +31,11 @@ public class Districting implements Serializable{
 
     }
 
-    public Districting(String districtingID, List<District> districts){
+    public Districting(String districtingID, ArrayList<District> districts){
         this.districtingID = districtingID;
         this.districts = districts;
     }
-
+    @Id
     public String getDistrictingID() {
         return districtingID;
     }
@@ -44,11 +44,11 @@ public class Districting implements Serializable{
         this.districtingID = districtingID;
     }
 
-    public List<District> getDistricts() {
+    public ArrayList<District> getDistricts() {
         return districts;
     }
 
-    public void setDistricts(List<District> districts) {
+    public void setDistricts(ArrayList<District> districts) {
         this.districts = districts;
     }
     @Transient
@@ -96,7 +96,7 @@ public class Districting implements Serializable{
         return majorityMinorityDistricts;
     }
 
-    public void setMajorityMinorityDistricts(List<District> majorityMinorityDistricts) {
+    public void setMajorityMinorityDistricts(ArrayList<District> majorityMinorityDistricts) {
         this.majorityMinorityDistricts = majorityMinorityDistricts;
     }
     @Transient

@@ -115,7 +115,7 @@ public class precintConfig {
             haha.setCountyID(kk);
 
 
-            countyRepository.save(kk);
+            countyRepository.deleteAll();
 
 
 
