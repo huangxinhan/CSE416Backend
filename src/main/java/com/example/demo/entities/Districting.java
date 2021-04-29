@@ -9,7 +9,7 @@ import java.util.List;
 @Entity
 public class Districting implements Serializable{
     private String districtingID;
-    @ElementCollection
+    @OneToMany
     private List<District> districts;
     private double deviationFromAverage;
     private double deviationFromEnactedPop;
@@ -35,7 +35,7 @@ public class Districting implements Serializable{
         this.districtingID = districtingID;
         this.districts = districts;
     }
-
+    @Id
     public String getDistrictingID() {
         return districtingID;
     }
