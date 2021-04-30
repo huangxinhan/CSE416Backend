@@ -1,5 +1,6 @@
 package com.example.demo.entities;
 import com.example.demo.entities.enums.Measures;
+import com.example.demo.entities.enums.RaceType;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -25,6 +26,7 @@ public class Job implements Serializable{
     private List<Districting> topDistrictingsBySimilarity;
     private HashMap<String, String> mgggParams;
     private String stateName;
+    private Enum<RaceType> raceType;
 
     public Job(){
 
@@ -167,6 +169,22 @@ public class Job implements Serializable{
         this.stateName = stateName;
     }
 
+    @Transient
+    public Enum<RaceType> getRaceType() {
+        return raceType;
+    }
+
+    public void setRaceType(Enum<RaceType> raceType) {
+        this.raceType = raceType;
+    }
+
+    public void calculateTopDistrictingsByOF(HashMap<Measures, Double> measures, Enum<RaceType> raceType) {
+
+    }
+
+    public void sortDistrictingByOF(){
+
+    }
 
 
 }
