@@ -54,6 +54,10 @@ public class County implements Serializable {
         this.coordinates = coordinates;
     }
 
+    public void appendPrecinct(Precinct precinct){
+        this.getPrecincts().add(precinct);
+    }
+
     public County() {
     }
 

@@ -17,14 +17,14 @@ public class Job implements Serializable{
     private List<Districting> tempConstrainedDistrictings;
     private ConstrainedDistrictings constrainedDistrictings;
     private HashMap<Measures, Double> weights;
-    private List<Districting> topDistrictingsByOFScore;
-    private List<Districting> topDistrictingsByEnacted;
-    private List<Districting> topDistrictingsByHighScoreMajMinDistricts;
-    private List<Districting> topDistrictingsBySigmaAvg;
-    private List<Districting> topDistrictingsBySigmaEnacted;
-    private List<Districting> topDistrictingsByCompactness;
-    private List<Districting> topDistrictingsByAreaPairDeviation;
-    private List<Districting> topDistrictingsBySimilarity;
+    private ArrayList<Districting> topDistrictingsByOFScore;
+    private ArrayList<Districting> topDistrictingsByEnacted;
+    private ArrayList<Districting> topDistrictingsByHighScoreMajMinDistricts;
+    private ArrayList<Districting> topDistrictingsBySigmaAvg;
+    private ArrayList<Districting> topDistrictingsBySigmaEnacted;
+    private ArrayList<Districting> topDistrictingsByCompactness;
+    private ArrayList<Districting> topDistrictingsByAreaPairDeviation;
+    private ArrayList<Districting> topDistrictingsBySimilarity;
     private HashMap<String, String> mgggParams;
     private String stateName;
     private Enum<RaceType> raceType;
@@ -70,7 +70,7 @@ public class Job implements Serializable{
         return tempConstrainedDistrictings;
     }
 
-    public void setTempConstrainedDistrictings(List<Districting> tempConstrainedDistrictings) {
+    public void setTempConstrainedDistrictings(ArrayList<Districting> tempConstrainedDistrictings) {
         this.tempConstrainedDistrictings = tempConstrainedDistrictings;
     }
     @Transient
@@ -90,67 +90,67 @@ public class Job implements Serializable{
         this.weights = weights;
     }
     @Transient
-    public List<Districting> getTopDistrictingsByOFScore() {
+    public ArrayList<Districting> getTopDistrictingsByOFScore() {
         return topDistrictingsByOFScore;
     }
 
-    public void setTopDistrictingsByOFScore(List<Districting> topDistrictingsByOFScore) {
+    public void setTopDistrictingsByOFScore(ArrayList<Districting> topDistrictingsByOFScore) {
         this.topDistrictingsByOFScore = topDistrictingsByOFScore;
     }
     @Transient
-    public List<Districting> getTopDistrictingsByEnacted() {
+    public ArrayList<Districting> getTopDistrictingsByEnacted() {
         return topDistrictingsByEnacted;
     }
 
-    public void setTopDistrictingsByEnacted(List<Districting> topDistrictingsByEnacted) {
+    public void setTopDistrictingsByEnacted(ArrayList<Districting> topDistrictingsByEnacted) {
         this.topDistrictingsByEnacted = topDistrictingsByEnacted;
     }
     @Transient
-    public List<Districting> getTopDistrictingsByHighScoreMajMinDistricts() {
+    public ArrayList<Districting> getTopDistrictingsByHighScoreMajMinDistricts() {
         return topDistrictingsByHighScoreMajMinDistricts;
     }
 
-    public void setTopDistrictingsByHighScoreMajMinDistricts(List<Districting> topDistrictingsByHighScoreMajMinDistricts) {
+    public void setTopDistrictingsByHighScoreMajMinDistricts(ArrayList<Districting> topDistrictingsByHighScoreMajMinDistricts) {
         this.topDistrictingsByHighScoreMajMinDistricts = topDistrictingsByHighScoreMajMinDistricts;
     }
     @Transient
-    public List<Districting> getTopDistrictingsBySigmaAvg() {
+    public ArrayList<Districting> getTopDistrictingsBySigmaAvg() {
         return topDistrictingsBySigmaAvg;
     }
 
-    public void setTopDistrictingsBySigmaAvg(List<Districting> topDistrictingsBySigmaAvg) {
+    public void setTopDistrictingsBySigmaAvg(ArrayList<Districting> topDistrictingsBySigmaAvg) {
         this.topDistrictingsBySigmaAvg = topDistrictingsBySigmaAvg;
     }
     @Transient
-    public List<Districting> getTopDistrictingsBySigmaEnacted() {
+    public ArrayList<Districting> getTopDistrictingsBySigmaEnacted() {
         return topDistrictingsBySigmaEnacted;
     }
 
-    public void setTopDistrictingsBySigmaEnacted(List<Districting> topDistrictingsBySigmaEnacted) {
+    public void setTopDistrictingsBySigmaEnacted(ArrayList<Districting> topDistrictingsBySigmaEnacted) {
         this.topDistrictingsBySigmaEnacted = topDistrictingsBySigmaEnacted;
     }
     @Transient
-    public List<Districting> getTopDistrictingsByCompactness() {
+    public ArrayList<Districting> getTopDistrictingsByCompactness() {
         return topDistrictingsByCompactness;
     }
 
-    public void setTopDistrictingsByCompactness(List<Districting> topDistrictingsByCompactness) {
+    public void setTopDistrictingsByCompactness(ArrayList<Districting> topDistrictingsByCompactness) {
         this.topDistrictingsByCompactness = topDistrictingsByCompactness;
     }
     @Transient
-    public List<Districting> getTopDistrictingsByAreaPairDeviation() {
+    public ArrayList<Districting> getTopDistrictingsByAreaPairDeviation() {
         return topDistrictingsByAreaPairDeviation;
     }
 
-    public void setTopDistrictingsByAreaPairDeviation(List<Districting> topDistrictingsByAreaPairDeviation) {
+    public void setTopDistrictingsByAreaPairDeviation(ArrayList<Districting> topDistrictingsByAreaPairDeviation) {
         this.topDistrictingsByAreaPairDeviation = topDistrictingsByAreaPairDeviation;
     }
     @Transient
-    public List<Districting> getTopDistrictingsBySimilarity() {
+    public ArrayList<Districting> getTopDistrictingsBySimilarity() {
         return topDistrictingsBySimilarity;
     }
 
-    public void setTopDistrictingsBySimilarity(List<Districting> topDistrictingsBySimilarity) {
+    public void setTopDistrictingsBySimilarity(ArrayList<Districting> topDistrictingsBySimilarity) {
         this.topDistrictingsBySimilarity = topDistrictingsBySimilarity;
     }
 
@@ -189,6 +189,15 @@ public class Job implements Serializable{
 
     public void sortDistrictingByEnacted(){
         this.getTopDistrictingsByEnacted().sort(Comparator.comparing(Districting::getDeviationFromEnactedPop));
+    }
+
+    public ArrayList<Districting> retrieveTopDistrictingsByOF(){
+        ArrayList<Districting> topTenDistrictings = new ArrayList<Districting>();
+        this.sortDistrictingByOF();
+        for (int i = 0; i < 10; i++){
+            topTenDistrictings.add(this.getTopDistrictingsByOFScore().get(i));
+        }
+        return topTenDistrictings;
     }
 
 

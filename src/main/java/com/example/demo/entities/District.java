@@ -199,6 +199,10 @@ public class District implements Serializable{
         this.OFScore = OFScore;
     }
 
+    public void appendPrecinct(Precinct precinct){
+        this.getPrecincts().add(precinct);
+    }
+
     public void calculateEdgeNodes(){
         ArrayList<Precinct> edgeNodes = new ArrayList<Precinct>();
         for (int i = 0; i < this.getPrecincts().size(); i++){
@@ -219,7 +223,8 @@ public class District implements Serializable{
         }
         this.setInvolvedCounties(counties);
     }
-    public void getAllPopulation(){
+
+    public void calculateAllPopulation(){
         Long tempTotalPop = 0l;
         Long tempAfricanAmericanPop = 0l;
         Long tempAsianPop = 0l;
@@ -231,6 +236,11 @@ public class District implements Serializable{
             tempAsianPop  += this.precincts.get(i).getAsianPopulation();
             tempHispanicPop += this.precincts.get(i).getHispanicPopulation();
         }
+
+        this.setTotalPopulation(tempTotalPop);
+        this.setAfricanAmericanPopulation(tempAfricanAmericanPop);
+        this.setAsianPopulation(tempAsianPop);
+        this.setHispanicPopulation(tempHispanicPop);
     }
 }
 
