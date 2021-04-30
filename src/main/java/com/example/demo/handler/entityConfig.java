@@ -118,8 +118,9 @@ public class entityConfig {
 //
 //            for( String i : allprecinct.keySet())
 //            {
-//                counter++;
-//                System.out.println(counter);
+//
+//
+//                System.out.println(i);
 //                Precinct toProcess = allprecinct.get(i);
 //
 //
@@ -150,12 +151,9 @@ public class entityConfig {
 //
 //
 //
+//
 //            }
 
-
-
-
-            //precinctRepository.deleteAll();
 
 
 

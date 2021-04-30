@@ -26,13 +26,18 @@ public class Precinct implements Serializable{
     @ElementCollection
     private ArrayList< ArrayList<Double> > coordinates;
 
-    private String IncumbentName;
+    private String incumbentName;
 
     public Precinct() {
     }
 
     public Precinct(String precinctID) {
         this.precinctID = precinctID;
+    }
+
+    public Precinct(String precinctID, Long totalPopulation) {
+        this.precinctID = precinctID;
+        this.totalPopulation = totalPopulation;
     }
 
     public Precinct(String precinctID, List<Precinct> neighbours) {
@@ -73,15 +78,15 @@ public class Precinct implements Serializable{
 //    )
 
 
+
     @Id
-    public String getprecinctID() {
+    public String getPrecinctID() {
         return precinctID;
     }
 
-    public void setprecinctID(String precinctID) {
+    public void setPrecinctID(String precinctID) {
         this.precinctID = precinctID;
     }
-
 
     public District getDefaultDistrictID() {
         return defaultDistrictID;
@@ -105,13 +110,13 @@ public class Precinct implements Serializable{
         return countyID;
     }
 
-    @Transient
+
     public String getIncumbentName() {
-        return IncumbentName;
+        return incumbentName;
     }
 
     public void setIncumbentName(String incumbentName) {
-        IncumbentName = incumbentName;
+        this.incumbentName = incumbentName;
     }
 
     public void setCountyID(County countyID) {
