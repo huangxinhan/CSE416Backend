@@ -1,7 +1,5 @@
 package com.example.demo.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -17,15 +15,11 @@ public class Precinct implements Serializable{
     private Long AfricanAmericanPopulation;
     private Long AsianPopulation;
     private Long HispanicPopulation;
-
     private County countyID;
-
     private List<Precinct> neighbours;
-
     private double compactness;
     @ElementCollection
     private ArrayList< ArrayList<Double> > coordinates;
-
     private String incumbentName;
 
     private ArrayList<Boolean> onEdge; //map by index to the list of districts DistrictID
@@ -134,7 +128,7 @@ public class Precinct implements Serializable{
     }
 
     public Long getAfricanAmericanPopulation() {
-        return AfricanAmericanPopulation;
+        return this.AfricanAmericanPopulation;
     }
 
     public void setAfricanAmericanPopulation(Long africanAmericanPopulation) {

@@ -26,6 +26,7 @@ public class Districting implements Serializable{
     private Long tempPopulationByType;
     private HashMap<County, Integer> splitCountyDetails;
 
+
     public Districting(){
 
     }

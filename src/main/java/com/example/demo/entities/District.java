@@ -24,8 +24,6 @@ public class District implements Serializable{
     private boolean isHigherThanPopThreshold;
     @ElementCollection
     private ArrayList< ArrayList<Double> > borderGeometry;
-    //incumbents List<incumbents>
-    //involvedCounties List<County>
     private Long totalPopulation;
     private Long AfricanAmericanPopulation;
     private Long AsianPopulation;
