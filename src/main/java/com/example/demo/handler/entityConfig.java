@@ -93,6 +93,12 @@ public class entityConfig {
             Object obj1 = new JSONParser().parse(new FileReader("src/main/java/com/example/demo/orgJson/PA_precincts_seawulf.json"));
 
             HashMap<String,Precinct> allprecinct = new HashMap<String,Precinct>();
+
+             for( Precinct p : precinctRepository.findAll())
+             {
+                 allprecinct.put(p.getPrecinctID(),p);
+             }
+
             for( int i=0; i < precinctProperties.size(); i++)
             {
 
@@ -100,7 +106,7 @@ public class entityConfig {
 
                 String id = (String) precinctINFO.get("GEOID10");
 
-                Precinct toProcess = precinctRepository.findById(id).get();
+                Precinct toProcess = allprecinct.get(id);
 
 
                 toProcess.setCoordinates(coordinatesColletion.get(i));
@@ -117,7 +123,7 @@ public class entityConfig {
 
 
 
-                allprecinct.put(id,toProcess);
+
             }
 
             precinctRepository.saveAll(allprecinct.values());
