@@ -13,24 +13,18 @@ public class District implements Serializable{
     private int districtNumber;
 
     private List<Precinct> precincts;
-
     private double compactness;
-
     private double deviationEnacted;
-
     private double politicalFairness;
-
     private int numberOfEdgeNodes;
-
     private boolean isHigherThanPopThreshold;
-
     private ArrayList< ArrayList<Double> > borderGeometry;
     private Long totalPopulation;
     private Long AfricanAmericanPopulation;
     private Long AsianPopulation;
     private Long HispanicPopulation;
 
-    private String districtingID;
+    private Districting districtingID;
 
     private double objectiveFunctionScore;
 
@@ -44,14 +38,14 @@ public class District implements Serializable{
 
     }
 
-    public District(String districtID, int districtNumber, List<Precinct> precincts, Long population, String districtingID) {
+    public District(String districtID) {
+        this.districtID = districtID;
+    }
+
+    public District(String districtID, int districtNumber, List<Precinct> precincts) {
         this.districtID = districtID;
         this.districtNumber = districtNumber;
         this.precincts = precincts;
-
-        String[] split = this.districtID.split("_");
-        String firstSubString = split[0];
-        this.districtingID = firstSubString;
     }
 
     @Id
@@ -79,7 +73,6 @@ public class District implements Serializable{
     public void setPrecincts(List<Precinct> precincts) {
         this.precincts = precincts;
     }
-
     @Transient
     public double getCompactness() {
         return compactness;
@@ -88,7 +81,6 @@ public class District implements Serializable{
     public void setCompactness(double compactness) {
         this.compactness = compactness;
     }
-
     @Transient
     public double getDeviationEnacted() {
         return deviationEnacted;
@@ -97,7 +89,6 @@ public class District implements Serializable{
     public void setDeviationEnacted(double deviationEnacted) {
         this.deviationEnacted = deviationEnacted;
     }
-
     @Transient
     public double getPoliticalFairness() {
         return politicalFairness;
@@ -106,7 +97,6 @@ public class District implements Serializable{
     public void setPoliticalFairness(double politicalFairness) {
         this.politicalFairness = politicalFairness;
     }
-
     @Transient
     public int getNumberOfEdgeNodes() {
         return numberOfEdgeNodes;
@@ -115,7 +105,6 @@ public class District implements Serializable{
     public void setNumberOfEdgeNodes(int numberOfEdgeNodes) {
         this.numberOfEdgeNodes = numberOfEdgeNodes;
     }
-
     @Transient
     public boolean isHigherThanPopThreshold() {
         return isHigherThanPopThreshold;
@@ -132,7 +121,6 @@ public class District implements Serializable{
     public void setBorderGeometry(ArrayList<ArrayList<Double>> borderGeometry) {
         this.borderGeometry = borderGeometry;
     }
-
     @Transient
     public Long getTotalPopulation() {
         return totalPopulation;
@@ -141,7 +129,6 @@ public class District implements Serializable{
     public void setTotalPopulation(Long totalPopulation) {
         this.totalPopulation = totalPopulation;
     }
-
     @Transient
     public Long getAfricanAmericanPopulation() {
         return AfricanAmericanPopulation;
@@ -150,7 +137,6 @@ public class District implements Serializable{
     public void setAfricanAmericanPopulation(Long africanAmericanPopulation) {
         AfricanAmericanPopulation = africanAmericanPopulation;
     }
-
     @Transient
     public Long getAsianPopulation() {
         return AsianPopulation;
@@ -159,7 +145,6 @@ public class District implements Serializable{
     public void setAsianPopulation(Long asianPopulation) {
         AsianPopulation = asianPopulation;
     }
-
     @Transient
     public Long getHispanicPopulation() {
         return HispanicPopulation;
@@ -169,11 +154,12 @@ public class District implements Serializable{
         HispanicPopulation = hispanicPopulation;
     }
 
-    public String getDistrictingID() {
+    @ManyToOne(cascade = CascadeType.ALL)
+    public Districting getDistrictingID() {
         return districtingID;
     }
 
-    public void setDistrictingID(String districtingID) {
+    public void setDistrictingID(Districting districtingID) {
         this.districtingID = districtingID;
     }
 
@@ -233,7 +219,6 @@ public class District implements Serializable{
         }
         this.setInvolvedCounties(counties);
     }
-
     public void getAllPopulation(){
         Long tempTotalPop = 0l;
         Long tempAfricanAmericanPop = 0l;
@@ -246,6 +231,7 @@ public class District implements Serializable{
             tempAsianPop  += this.precincts.get(i).getAsianPopulation();
             tempHispanicPop += this.precincts.get(i).getHispanicPopulation();
         }
-
     }
 }
+
+

@@ -201,7 +201,7 @@ public class Precinct implements Serializable{
         this.currentDistrictingId = currentDistrictingId;
         for (int i = 0; i < this.getDistrictCollection().size(); i++){
             District district = this.getDistrictCollection().get(i);
-            if (district.getDistrictingID() == currentDistrictingId){
+            if (district.getDistrictingID().getDistrictingID() == currentDistrictingId){
                 this.setCurrentDistrictId(district.getDistrictID());
                 break;
             }

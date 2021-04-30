@@ -7,6 +7,7 @@ import java.lang.reflect.Array;
 import java.util.*;
 
 import com.example.demo.entities.County;
+import com.example.demo.entities.District;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.*;
@@ -21,9 +22,9 @@ import java.io.FileNotFoundException;
 public class entityConfig {
 
     @Bean
-    CommandLineRunner commandLineRunner( precintRepository precinctRepository, countyRepository countyRepository) throws IOException, ParseException {
+    CommandLineRunner commandLineRunner( precintRepository precinctRepository, countyRepository countyRepository, DistrictRepository districtRepository) throws IOException, ParseException {
 
-        Object obj = new JSONParser().parse(new FileReader("C:\\Users\\huang\\Desktop\\demo\\src\\main\\java\\com\\example\\demo\\pa_county.json"));
+        Object obj = new JSONParser().parse(new FileReader("C:\\Users\\huang\\Desktop\\demo\\src\\main\\java\\com\\example\\demo\\PA_cd.json"));
 
         JSONObject jo = (JSONObject) obj;
 
@@ -86,38 +87,37 @@ public class entityConfig {
 
 
 
-            return args -> {
+        return args -> {
 
 
 
-                Object obj1 = new JSONParser().parse(new FileReader("C:\\Users\\huang\\Desktop\\demo\\src\\main\\java\\com\\example\\demo\\pa_county.json"));
+            Object obj1 = new JSONParser().parse(new FileReader("C:\\Users\\huang\\Desktop\\demo\\src\\main\\java\\com\\example\\demo\\PA_precincts_seawulf.json"));
 
-                HashMap<String,County> allcounty = new HashMap<String,County>();
+            HashMap<String,District> allcounty = new HashMap<String,District>();
 
 
-                for( int i=0; i < countyProperties.size(); i++)
-                {
+            for( int i=0; i < countyProperties.size(); i++)
+            {
 
-                    JSONObject precinctINFO = countyProperties.get(i);
+                JSONObject precinctINFO = countyProperties.get(i);
 
-                    String id = (String) precinctINFO.get("COUNTY_COD");
+                String id = (String) precinctINFO.get("LEG_DISTRI").toString();
 
-                    County newCounty = new County(id);
+                String tempString = "PAX_" + id;
+                District newDistrict = new District(tempString);
 
-                    newCounty.setCoordinates(coordinatesColletion.get(i));
+                newDistrict.setBorderGeometry(coordinatesColletion.get(i));
 
-                    allcounty.put(id,newCounty);
+                allcounty.put(id,newDistrict);
 
-                }
+            }
 
-                countyRepository.saveAll(allcounty.values());
-            };
-
+            districtRepository.saveAll(allcounty.values());
+        };
 
 
     };
 
 
 
-    }
-
+}
