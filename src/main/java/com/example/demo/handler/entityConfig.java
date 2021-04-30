@@ -29,32 +29,32 @@ public class entityConfig {
 
         JSONArray pArray = (JSONArray) jo.get("features");
 
-        ArrayList<JSONObject> precincts = new ArrayList<JSONObject>();
+        ArrayList<JSONObject> counties = new ArrayList<JSONObject>();
 
         for(int i =0; i< pArray.size(); i++)
         {
-            precincts.add((JSONObject) pArray.get(i));
+            counties.add((JSONObject) pArray.get(i));
         }
-        ArrayList<JSONObject> precinctProperties = new ArrayList<JSONObject>();
+        ArrayList<JSONObject> countyProperties = new ArrayList<JSONObject>();
 
-        for(int i =0; i< precincts.size(); i++)
+        for(int i =0; i< counties.size(); i++)
         {
-            precinctProperties.add( (JSONObject) precincts.get(i).get("properties") );
+            countyProperties.add( (JSONObject) counties.get(i).get("properties") );
         }
 
 
-        ArrayList<JSONObject> precinctGeos = new ArrayList<JSONObject>();
+        ArrayList<JSONObject> countyGeos = new ArrayList<JSONObject>();
 
-        for(int i =0; i< precincts.size(); i++)
+        for(int i =0; i< counties.size(); i++)
         {
-            precinctGeos.add( (JSONObject) precincts.get(i).get("geometry") );
+            countyGeos.add( (JSONObject) counties.get(i).get("geometry") );
         }
 
         ArrayList<JSONArray> coordinatesJSON = new ArrayList<JSONArray>();
 
-        for(int i =0; i< precinctGeos.size(); i++)
+        for(int i =0; i< countyGeos.size(); i++)
         {
-            coordinatesJSON.add((JSONArray) precinctGeos.get(0).get("coordinates") );
+            coordinatesJSON.add((JSONArray) countyGeos.get(0).get("coordinates") );
         }
 
         ArrayList<ArrayList<ArrayList<Double>>> coordinatesColletion = new ArrayList<ArrayList<ArrayList<Double>>>();
@@ -86,52 +86,39 @@ public class entityConfig {
 
 
 
-        return args -> {
+            return args -> {
 
 
 
-            Object obj1 = new JSONParser().parse(new FileReader("C:\\Users\\huang\\Desktop\\demo\\src\\main\\java\\com\\example\\demo\\PA_precincts_seawulf.json"));
+                Object obj1 = new JSONParser().parse(new FileReader("C:\\Users\\huang\\Desktop\\demo\\src\\main\\java\\com\\example\\demo\\PA_precincts_seawulf.json"));
 
-            HashMap<String,Precinct> allprecinct = new HashMap<String,Precinct>();
-
-             for( Precinct p : precinctRepository.findAll())
-             {
-                 allprecinct.put(p.getPrecinctID(),p);
-             }
-
-            for( int i=0; i < precinctProperties.size(); i++)
-            {
-
-                JSONObject precinctINFO = precinctProperties.get(i);
-
-                String id = (String) precinctINFO.get("GEOID10");
-
-                Precinct toProcess = allprecinct.get(id);
+                HashMap<String,County> allcounty = new HashMap<String,County>();
 
 
-                toProcess.setCoordinates(coordinatesColletion.get(i));
+                for( int i=0; i < countyProperties.size(); i++)
+                {
 
-                toProcess.setIncumbentName((String) precinctINFO.get("incumbent_name"));
+                    JSONObject precinctINFO = countyProperties.get(i);
 
-                toProcess.setTotalPopulation((Long) precinctINFO.get("TOTPOP"));
+                    String id = (String) precinctINFO.get("COUNTY_COD");
 
-                toProcess.setAfricanAmericanPopulation((Long) precinctINFO.get("NH_BLACK"));
+                    County toProcess = allcounty.get(id);
 
-                toProcess.setAsianPopulation((Long) precinctINFO.get("NH_ASIAN"));
+                    toProcess.setCountyID(id);
 
-                toProcess.setHispanicPopulation((Long) precinctINFO.get("HISP"));
+                    toProcess.setCoordinates(coordinatesColletion.get(i));
+
+
+                }
+
+                countyRepository.saveAll(allcounty.values());
+            };
 
 
 
-
-            }
-
-            precinctRepository.saveAll(allprecinct.values());
-        };
-
-
+    };
 
 
 
     }
-}
+

@@ -106,7 +106,7 @@ public class Precinct implements Serializable{
         DistrictCollection = districtID;
     }
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     public County getCountyID() {
         return countyID;
     }
