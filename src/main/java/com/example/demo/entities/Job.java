@@ -5,6 +5,7 @@ import com.example.demo.entities.enums.RaceType;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
@@ -183,8 +184,14 @@ public class Job implements Serializable{
     }
 
     public void sortDistrictingByOF(){
-
+        this.getTopDistrictingsByOFScore().sort(Comparator.comparing(Districting::getObjectiveFunctionScore));
     }
+
+    public void sortDistrictingByEnacted(){
+        this.getTopDistrictingsByEnacted().sort(Comparator.comparing(Districting::getDeviationFromEnactedPop));
+    }
+
+
 
 
 }

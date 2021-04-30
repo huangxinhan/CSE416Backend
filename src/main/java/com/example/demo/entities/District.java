@@ -13,17 +13,17 @@ public class District implements Serializable{
     private int districtNumber;
 
     private List<Precinct> precincts;
-    @Transient
+
     private double compactness;
-    @Transient
+
     private double deviationEnacted;
-    @Transient
+
     private double politicalFairness;
-    @Transient
+
     private int numberOfEdgeNodes;
-    @Transient
+
     private boolean isHigherThanPopThreshold;
-    @ElementCollection
+
     private ArrayList< ArrayList<Double> > borderGeometry;
     private Long totalPopulation;
     private Long AfricanAmericanPopulation;
@@ -44,25 +44,10 @@ public class District implements Serializable{
 
     }
 
-    public District(String districtID, int districtNumber, List<Precinct> precincts, ArrayList<ArrayList<Double>> borderGeometry, Long population, String districtingID) {
+    public District(String districtID, int districtNumber, List<Precinct> precincts, Long population, String districtingID) {
         this.districtID = districtID;
         this.districtNumber = districtNumber;
         this.precincts = precincts;
-        this.borderGeometry = borderGeometry;
-        Long tempTotalPop = 0l;
-        Long tempAfricanAmericanPop = 0l;
-        Long tempAsianPop = 0l;
-        Long tempHispanicPop = 0l;
-        for (int i = 0; i < this.precincts.size(); i++){
-            tempTotalPop += this.precincts.get(i).getTotalPopulation();
-            tempTotalPop += this.precincts.get(i).getAfricanAmericanPopulation();
-            tempTotalPop += this.precincts.get(i).getAsianPopulation();
-            tempTotalPop += this.precincts.get(i).getHispanicPopulation();
-        }
-        this.totalPopulation = tempTotalPop;
-        this.AfricanAmericanPopulation = tempAfricanAmericanPop;
-        this.AsianPopulation = tempAsianPop;
-        this.HispanicPopulation = tempHispanicPop;
 
         String[] split = this.districtID.split("_");
         String firstSubString = split[0];
@@ -95,6 +80,7 @@ public class District implements Serializable{
         this.precincts = precincts;
     }
 
+    @Transient
     public double getCompactness() {
         return compactness;
     }
@@ -103,6 +89,7 @@ public class District implements Serializable{
         this.compactness = compactness;
     }
 
+    @Transient
     public double getDeviationEnacted() {
         return deviationEnacted;
     }
@@ -111,6 +98,7 @@ public class District implements Serializable{
         this.deviationEnacted = deviationEnacted;
     }
 
+    @Transient
     public double getPoliticalFairness() {
         return politicalFairness;
     }
@@ -119,6 +107,7 @@ public class District implements Serializable{
         this.politicalFairness = politicalFairness;
     }
 
+    @Transient
     public int getNumberOfEdgeNodes() {
         return numberOfEdgeNodes;
     }
@@ -127,6 +116,7 @@ public class District implements Serializable{
         this.numberOfEdgeNodes = numberOfEdgeNodes;
     }
 
+    @Transient
     public boolean isHigherThanPopThreshold() {
         return isHigherThanPopThreshold;
     }
@@ -134,7 +124,7 @@ public class District implements Serializable{
     public void setHigherThanPopThreshold(boolean higherThanPopThreshold) {
         isHigherThanPopThreshold = higherThanPopThreshold;
     }
-
+    @Transient
     public ArrayList<ArrayList<Double>> getBorderGeometry() {
         return borderGeometry;
     }
@@ -143,6 +133,7 @@ public class District implements Serializable{
         this.borderGeometry = borderGeometry;
     }
 
+    @Transient
     public Long getTotalPopulation() {
         return totalPopulation;
     }
@@ -151,6 +142,7 @@ public class District implements Serializable{
         this.totalPopulation = totalPopulation;
     }
 
+    @Transient
     public Long getAfricanAmericanPopulation() {
         return AfricanAmericanPopulation;
     }
@@ -159,6 +151,7 @@ public class District implements Serializable{
         AfricanAmericanPopulation = africanAmericanPopulation;
     }
 
+    @Transient
     public Long getAsianPopulation() {
         return AsianPopulation;
     }
@@ -167,6 +160,7 @@ public class District implements Serializable{
         AsianPopulation = asianPopulation;
     }
 
+    @Transient
     public Long getHispanicPopulation() {
         return HispanicPopulation;
     }
@@ -238,5 +232,20 @@ public class District implements Serializable{
             }
         }
         this.setInvolvedCounties(counties);
+    }
+
+    public void getAllPopulation(){
+        Long tempTotalPop = 0l;
+        Long tempAfricanAmericanPop = 0l;
+        Long tempAsianPop = 0l;
+        Long tempHispanicPop = 0l;
+
+        for (int i = 0; i < this.getPrecincts().size(); i++){
+            tempTotalPop += this.precincts.get(i).getTotalPopulation();
+            tempAfricanAmericanPop += this.precincts.get(i).getAfricanAmericanPopulation();
+            tempAsianPop  += this.precincts.get(i).getAsianPopulation();
+            tempHispanicPop += this.precincts.get(i).getHispanicPopulation();
+        }
+
     }
 }
