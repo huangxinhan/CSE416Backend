@@ -57,6 +57,10 @@ public class County implements Serializable {
     public County() {
     }
 
+    public County(String countyID) {
+        this.countyID = countyID;
+    }
+
     public County(String countyID, List<Precinct> precincts, ArrayList<ArrayList<Double>> coordinates) {
         this.countyID = countyID;
         this.precincts = precincts;

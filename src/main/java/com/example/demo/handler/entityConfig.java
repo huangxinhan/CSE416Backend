@@ -102,12 +102,11 @@ public class entityConfig {
 
                     String id = (String) precinctINFO.get("COUNTY_COD");
 
-                    County toProcess = allcounty.get(id);
+                    County newCounty = new County(id);
 
-                    toProcess.setCountyID(id);
+                    newCounty.setCoordinates(coordinatesColletion.get(i));
 
-                    toProcess.setCoordinates(coordinatesColletion.get(i));
-
+                    allcounty.put(id,newCounty);
 
                 }
 
