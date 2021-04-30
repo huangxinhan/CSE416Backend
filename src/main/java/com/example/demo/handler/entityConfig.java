@@ -87,46 +87,46 @@ public class entityConfig {
 
 
         return args -> {
-//
-//
-//
-//            Object obj1 = new JSONParser().parse(new FileReader("C:\\Users\\huang\\Desktop\\demo\\src\\main\\java\\com\\example\\demo\\PA_precincts_seawulf.json"));
-//
-//            HashMap<String,Precinct> allprecinct = new HashMap<String,Precinct>();
-//
-//             for( Precinct p : precinctRepository.findAll())
-//             {
-//                 allprecinct.put(p.getPrecinctID(),p);
-//             }
-//
-//            for( int i=0; i < precinctProperties.size(); i++)
-//            {
-//
-//                JSONObject precinctINFO = precinctProperties.get(i);
-//
-//                String id = (String) precinctINFO.get("GEOID10");
-//
-//                Precinct toProcess = allprecinct.get(id);
-//
-//
-//                toProcess.setCoordinates(coordinatesColletion.get(i));
-//
-//                toProcess.setIncumbentName((String) precinctINFO.get("incumbent_name"));
-//
-//                toProcess.setTotalPopulation((Long) precinctINFO.get("TOTPOP"));
-//
-//                toProcess.setAfricanAmericanPopulation((Long) precinctINFO.get("NH_BLACK"));
-//
-//                toProcess.setAsianPopulation((Long) precinctINFO.get("NH_ASIAN"));
-//
-//                toProcess.setHispanicPopulation((Long) precinctINFO.get("HISP"));
-//
-//
-//
-//
-//            }
-//
-//            precinctRepository.saveAll(allprecinct.values());
+
+
+
+            Object obj1 = new JSONParser().parse(new FileReader("C:\\Users\\huang\\Desktop\\demo\\src\\main\\java\\com\\example\\demo\\PA_precincts_seawulf.json"));
+
+            HashMap<String,Precinct> allprecinct = new HashMap<String,Precinct>();
+
+             for( Precinct p : precinctRepository.findAll())
+             {
+                 allprecinct.put(p.getPrecinctID(),p);
+             }
+
+            for( int i=0; i < precinctProperties.size(); i++)
+            {
+
+                JSONObject precinctINFO = precinctProperties.get(i);
+
+                String id = (String) precinctINFO.get("GEOID10");
+
+                Precinct toProcess = allprecinct.get(id);
+
+
+                toProcess.setCoordinates(coordinatesColletion.get(i));
+
+                toProcess.setIncumbentName((String) precinctINFO.get("incumbent_name"));
+
+                toProcess.setTotalPopulation((Long) precinctINFO.get("TOTPOP"));
+
+                toProcess.setAfricanAmericanPopulation((Long) precinctINFO.get("NH_BLACK"));
+
+                toProcess.setAsianPopulation((Long) precinctINFO.get("NH_ASIAN"));
+
+                toProcess.setHispanicPopulation((Long) precinctINFO.get("HISP"));
+
+
+
+
+            }
+
+            precinctRepository.saveAll(allprecinct.values());
         };
 
 
