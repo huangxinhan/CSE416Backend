@@ -197,12 +197,24 @@ public class Precinct implements Serializable{
 
     /*calculates the arrayList of on edge*/
     public void onEdge(){
-        boolean onEdge = false;
         for (int i = 0; i < this.getDistrictID().size(); i++){
+            boolean onEdge = false;
             District currentDistrict = this.getDistrictID().get(i);
             String districtingID = currentDistrict.getDistrictingID();
             for (int j = 0; j < this.getNeighbours().size(); j++){
-
+                Precinct neighbour = this.getNeighbours().get(j);
+                for (int k = 0; k < neighbour.getDistrictID().size(); k++){
+                    District neighbourDistrict = neighbour.getDistrictID().get(k);
+                    String neighbourDistrictingID = neighbourDistrict.getDistrictingID();
+                    if (districtingID == neighbourDistrictingID){
+                        if(currentDistrict.getDistrictID() != neighbourDistrict.getDistrictID()){
+                            this.getOnEdge().add(i, true);
+                        }
+                        else{
+                            this.getOnEdge().add(i, false);
+                        }
+                    }
+                }
             }
         }
     }

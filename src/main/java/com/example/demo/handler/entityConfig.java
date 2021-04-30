@@ -23,7 +23,7 @@ public class entityConfig {
     @Bean
     CommandLineRunner commandLineRunner( precintRepository precinctRepository, countyRepository countyRepository) throws IOException, ParseException {
 
-        Object obj = new JSONParser().parse(new FileReader("src/main/java/com/example/demo/orgJson/PA_precincts.json"));
+        Object obj = new JSONParser().parse(new FileReader("C:\\Users\\huang\\Desktop\\demo\\src\\main\\java\\com\\example\\demo\\PA_precincts_with_incumbents.json"));
 
         JSONObject jo = (JSONObject) obj;
 
@@ -90,7 +90,7 @@ public class entityConfig {
 
 
 
-            Object obj1 = new JSONParser().parse(new FileReader("src/main/java/com/example/demo/orgJson/PA_precincts_seawulf.json"));
+            Object obj1 = new JSONParser().parse(new FileReader("C:\\Users\\huang\\Desktop\\demo\\src\\main\\java\\com\\example\\demo\\PA_precincts_seawulf.json"));
 
             HashMap<String,Precinct> allprecinct = new HashMap<String,Precinct>();
             for( int i=0; i < precinctProperties.size(); i++)
