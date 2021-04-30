@@ -44,6 +44,10 @@ public class District implements Serializable{
 
     }
 
+    public District(String districtID) {
+        this.districtID = districtID;
+    }
+
     public District(String districtID, int districtNumber, List<Precinct> precincts, ArrayList<ArrayList<Double>> borderGeometry, Long population, String districtingID) {
         this.districtID = districtID;
         this.districtNumber = districtNumber;
