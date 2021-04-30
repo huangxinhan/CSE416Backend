@@ -10,7 +10,7 @@ public class County implements Serializable {
 
     private String countyID;
 
-    private List<Precinct> precincts;
+    private List<Precinct> precincts = new ArrayList<Precinct>();
     //private List<District> districts;
 
     private int splitCountyNumber;
@@ -26,7 +26,7 @@ public class County implements Serializable {
         this.countyID = countyID;
     }
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 
     public List<Precinct> getPrecincts() {
         return precincts;
@@ -55,7 +55,9 @@ public class County implements Serializable {
     }
 
     public void appendPrecinct(Precinct precinct){
-        this.getPrecincts().add(precinct);
+        List<Precinct> temp = this.getPrecincts();
+        temp.add(precinct);
+        this.setPrecincts(temp);
     }
 
     public County() {

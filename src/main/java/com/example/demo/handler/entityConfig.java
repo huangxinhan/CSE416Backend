@@ -22,9 +22,9 @@ import java.io.FileNotFoundException;
 public class entityConfig {
 
     @Bean
-    CommandLineRunner commandLineRunner( precintRepository precinctRepository, countyRepository countyRepository, DistrictRepository districtRepository) throws IOException, ParseException {
+    CommandLineRunner commandLineRunner(precintRepository precinctRepository, countyRepository countyRepository, DistrictRepository districtRepository) throws IOException, ParseException {
 
-        Object obj = new JSONParser().parse(new FileReader("C:\\Users\\huang\\Desktop\\demo\\src\\main\\java\\com\\example\\demo\\PA_cd.json"));
+        Object obj = new JSONParser().parse(new FileReader("C:\\Users\\huang\\Desktop\\demo\\src\\main\\java\\com\\example\\demo\\PA_precincts_with_incumbents.json"));
 
         JSONObject jo = (JSONObject) obj;
 
@@ -32,49 +32,40 @@ public class entityConfig {
 
         ArrayList<JSONObject> counties = new ArrayList<JSONObject>();
 
-        for(int i =0; i< pArray.size(); i++)
-        {
+        for (int i = 0; i < pArray.size(); i++) {
             counties.add((JSONObject) pArray.get(i));
         }
         ArrayList<JSONObject> countyProperties = new ArrayList<JSONObject>();
 
-        for(int i =0; i< counties.size(); i++)
-        {
-            countyProperties.add( (JSONObject) counties.get(i).get("properties") );
+        for (int i = 0; i < counties.size(); i++) {
+            countyProperties.add((JSONObject) counties.get(i).get("properties"));
         }
 
 
         ArrayList<JSONObject> countyGeos = new ArrayList<JSONObject>();
 
-        for(int i =0; i< counties.size(); i++)
-        {
-            countyGeos.add( (JSONObject) counties.get(i).get("geometry") );
+        for (int i = 0; i < counties.size(); i++) {
+            countyGeos.add((JSONObject) counties.get(i).get("geometry"));
         }
 
         ArrayList<JSONArray> coordinatesJSON = new ArrayList<JSONArray>();
 
-        for(int i =0; i< countyGeos.size(); i++)
-        {
-            coordinatesJSON.add((JSONArray) countyGeos.get(0).get("coordinates") );
+        for (int i = 0; i < countyGeos.size(); i++) {
+            coordinatesJSON.add((JSONArray) countyGeos.get(0).get("coordinates"));
         }
 
         ArrayList<ArrayList<ArrayList<Double>>> coordinatesColletion = new ArrayList<ArrayList<ArrayList<Double>>>();
 
 
-
-
-        for(int k= 0; k< coordinatesJSON.size(); k++)
-        {
-            JSONArray realList = (JSONArray)coordinatesJSON.get(k).get(0);
+        for (int k = 0; k < coordinatesJSON.size(); k++) {
+            JSONArray realList = (JSONArray) coordinatesJSON.get(k).get(0);
             ArrayList<ArrayList<Double>> coordinates = new ArrayList<ArrayList<Double>>();
-            for(int i =0; i< realList.size();i++)
-            {
+            for (int i = 0; i < realList.size(); i++) {
                 JSONArray realPair = (JSONArray) realList.get(i);
 
                 ArrayList<Double> inner = new ArrayList<Double>();
 
-                for( int j =0; j< realPair.size(); j++)
-                {
+                for (int j = 0; j < realPair.size(); j++) {
                     inner.add((Double) realPair.get(j));
                 }
 
@@ -86,38 +77,62 @@ public class entityConfig {
         }
 
 
-
         return args -> {
 
 
-
-            Object obj1 = new JSONParser().parse(new FileReader("C:\\Users\\huang\\Desktop\\demo\\src\\main\\java\\com\\example\\demo\\PA_precincts_seawulf.json"));
-
-            HashMap<String,District> allcounty = new HashMap<String,District>();
+            // Object obj1 = new JSONParser().parse(new FileReader("C:\\Users\\huang\\Desktop\\demo\\src\\main\\java\\com\\example\\demo\\PA_precincts_seawulf.json"));
 
 
-            for( int i=0; i < countyProperties.size(); i++)
-            {
+            HashMap<String, Precinct> allprecinct = new HashMap<String, Precinct>();
+
+            ArrayList<County> allcounty = new ArrayList<>();
+
+            ArrayList<District> alldistrict = new ArrayList<>();
+
+//            for( Precinct p : precinctRepository.findAll())
+//            {
+//                allprecinct.put(p.getPrecinctID(),p);
+//            }
+
+            int counter = 0;
+
+            for (int i = 0; i < countyProperties.size(); i++) {
 
                 JSONObject precinctINFO = countyProperties.get(i);
 
-                String id = (String) precinctINFO.get("LEG_DISTRI").toString();
+                String id = (String) precinctINFO.get("GEOID10");
 
-                String tempString = "PAX_" + id;
-                District newDistrict = new District(tempString);
+                Precinct tempPrecinct = precinctRepository.findById(id).get();
 
-                newDistrict.setBorderGeometry(coordinatesColletion.get(i));
+                String districtID = (String) precinctINFO.get("CD_2011").toString();
 
-                allcounty.put(id,newDistrict);
+                District tempDistrict = districtRepository.findById("PAX_" + districtID).get();
 
+                String countyID = ((String) precinctINFO.get("COUNTYFP10"));
+
+                County tempCounty = countyRepository.findById(countyID).get();
+
+                tempPrecinct.setCountyID(tempCounty);
+                tempCounty.getPrecincts().add(tempPrecinct);
+
+
+                tempDistrict.getPrecincts().add(tempPrecinct);
+
+                tempPrecinct.getDistrictCollection().add(tempDistrict);
+
+                allprecinct.put(id, tempPrecinct);
+
+                allcounty.add(tempCounty);
+
+                alldistrict.add(tempDistrict);
+                precinctRepository.save(tempPrecinct);
+                countyRepository.save(tempCounty);
+                districtRepository.save(tempDistrict);
             }
 
-            districtRepository.saveAll(allcounty.values());
+            //precinctRepository.saveAll(allprecinct.values());
+//            countyRepository.saveAll(allcounty);
+//            districtRepository.saveAll(alldistrict);
         };
-
-
-    };
-
-
-
+    }
 }

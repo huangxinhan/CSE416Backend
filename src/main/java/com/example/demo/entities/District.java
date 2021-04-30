@@ -12,7 +12,7 @@ public class District implements Serializable{
     private String districtID;
     private int districtNumber;
 
-    private List<Precinct> precincts;
+    private List<Precinct> precincts = new ArrayList<Precinct>();
     private double compactness;
     private double deviationEnacted;
     private double politicalFairness;
@@ -65,7 +65,7 @@ public class District implements Serializable{
         this.districtNumber = districtNumber;
     }
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     public List<Precinct> getPrecincts() {
         return precincts;
     }
@@ -200,7 +200,9 @@ public class District implements Serializable{
     }
 
     public void appendPrecinct(Precinct precinct){
-        this.getPrecincts().add(precinct);
+        List<Precinct> temp = this.getPrecincts();
+        temp.add(precinct);
+        this.setPrecincts((temp));
     }
 
     public void calculateEdgeNodes(){

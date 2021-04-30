@@ -9,7 +9,7 @@ import java.util.List;
 public class Precinct implements Serializable{
 
     private District defaultDistrictID;
-    private List<District> DistrictCollection;
+    private List<District> DistrictCollection = new ArrayList<District>();
     private String precinctID;
     private Long totalPopulation;
     private Long AfricanAmericanPopulation;
@@ -26,7 +26,7 @@ public class Precinct implements Serializable{
 
     private String currentDistrictingId;
 
-    private String currentDistrictId = this.defaultDistrictID.getDistrictID();
+    private String currentDistrictId;
 
 
     public Precinct() {
@@ -198,7 +198,9 @@ public class Precinct implements Serializable{
     }
 
     public void appendDistrict(District district){
-        this.getDistrictCollection().add(district);
+        List<District> temp = this.getDistrictCollection();
+        temp.add(district);
+        this.setDistrictCollection((temp));
     }
 
     public void setCurrentDistrictingId(String currentDistrictingId) {
