@@ -9,7 +9,7 @@ import java.util.List;
 public class Precinct implements Serializable{
 
     private District defaultDistrictID;
-    private List<District> DistrictID;
+    private List<District> DistrictCollection;
     private String precinctID;
     private Long totalPopulation;
     private Long AfricanAmericanPopulation;
@@ -22,7 +22,12 @@ public class Precinct implements Serializable{
     private ArrayList< ArrayList<Double> > coordinates;
     private String incumbentName;
 
-    private ArrayList<Boolean> onEdge; //map by index to the list of districts DistrictID
+    private Boolean onEdge; //map by index to the list of districts DistrictID
+
+    private String currentDistrictingId;
+
+    private String currentDistrictId = this.defaultDistrictID.getDistrictID();
+
 
     public Precinct() {
     }
@@ -93,12 +98,12 @@ public class Precinct implements Serializable{
     }
 
     @ManyToMany(cascade = CascadeType.ALL)
-    public List<District> getDistrictID() {
-        return DistrictID;
+    public List<District> getDistrictCollection() {
+        return DistrictCollection;
     }
 
-    public void setDistrictID(List<District> districtID) {
-        DistrictID = districtID;
+    public void setDistrictCollection(List<District> districtID) {
+        DistrictCollection = districtID;
     }
 
     @ManyToOne
@@ -186,37 +191,78 @@ public class Precinct implements Serializable{
         this.coordinates = coordinates;
     }
 
+
     @Transient
-    public ArrayList<Boolean> getOnEdge() {
-        return onEdge;
+    public String getCurrentDistrictingId() {
+        return currentDistrictingId;
     }
 
-    public void setOnEdge(ArrayList<Boolean> onEdge) {
-        this.onEdge = onEdge;
-    }
-
-    /*calculates the arrayList of on edge*/
-    public void onEdge(){
-        for (int i = 0; i < this.getDistrictID().size(); i++){
-            boolean onEdge = false;
-            District currentDistrict = this.getDistrictID().get(i);
-            String districtingID = currentDistrict.getDistrictingID();
-            for (int j = 0; j < this.getNeighbours().size(); j++){
-                Precinct neighbour = this.getNeighbours().get(j);
-                for (int k = 0; k < neighbour.getDistrictID().size(); k++){
-                    District neighbourDistrict = neighbour.getDistrictID().get(k);
-                    String neighbourDistrictingID = neighbourDistrict.getDistrictingID();
-                    if (districtingID == neighbourDistrictingID){
-                        if(currentDistrict.getDistrictID() != neighbourDistrict.getDistrictID()){
-                            this.getOnEdge().add(i, true);
-                        }
-                        else{
-                            this.getOnEdge().add(i, false);
-                        }
-                    }
-                }
+    public void setCurrentDistrictingId(String currentDistrictingId) {
+        this.currentDistrictingId = currentDistrictingId;
+        for (int i = 0; i < this.getDistrictCollection().size(); i++){
+            District district = this.getDistrictCollection().get(i);
+            if (district.getDistrictingID() == currentDistrictingId){
+                this.setCurrentDistrictId(district.getDistrictID());
+                break;
             }
         }
     }
+
+    @Transient
+    public String getCurrentDistrictId() {
+        return currentDistrictId;
+    }
+
+    public void setCurrentDistrictId(String currentDistrictId) {
+        this.currentDistrictId = currentDistrictId;
+    }
+
+    @Transient
+    public Boolean getOnEdge() {
+        return onEdge;
+    }
+
+    public void setOnEdge(Boolean onEdge) {
+        this.onEdge = onEdge;
+    }
+
+    public void onEdge(){
+        for (int i = 0; i < this.getNeighbours().size(); i++){
+            Precinct neighbour = this.getNeighbours().get(i);
+            if (this.getCurrentDistrictId() == neighbour.getCurrentDistrictId()){
+                this.setOnEdge(false);
+            }
+            else{
+                this.setOnEdge((true));
+                break;
+            }
+        }
+    }
+
+
+
+//    /*calculates the arrayList of on edge*/
+//    public void onEdge(){
+//        for (int i = 0; i < this.getDistrictID().size(); i++){
+//            boolean onEdge = false;
+//            District currentDistrict = this.getDistrictID().get(i);
+//            String districtingID = currentDistrict.getDistrictingID();
+//            for (int j = 0; j < this.getNeighbours().size(); j++){
+//                Precinct neighbour = this.getNeighbours().get(j);
+//                for (int k = 0; k < neighbour.getDistrictID().size(); k++){
+//                    District neighbourDistrict = neighbour.getDistrictID().get(k);
+//                    String neighbourDistrictingID = neighbourDistrict.getDistrictingID();
+//                    if (districtingID == neighbourDistrictingID){
+//                        if(currentDistrict.getDistrictID() != neighbourDistrict.getDistrictID()){
+//                            this.getOnEdge().add(i, true);
+//                        }
+//                        else{
+//                            this.getOnEdge().add(i, false);
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    }
 
 }

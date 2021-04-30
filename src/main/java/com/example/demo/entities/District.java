@@ -2,6 +2,7 @@ package com.example.demo.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,7 +32,13 @@ public class District implements Serializable{
 
     private String districtingID;
 
+    private double objectiveFunctionScore;
 
+    private List<Precinct> edgeNodes;
+
+    private ArrayList<County> involvedCounties;
+
+    private double OFScore;
 
     public District(){
 
@@ -174,5 +181,62 @@ public class District implements Serializable{
 
     public void setDistrictingID(String districtingID) {
         this.districtingID = districtingID;
+    }
+
+    @Transient
+    public double getObjectiveFunctionScore() {
+        return objectiveFunctionScore;
+    }
+
+    public void setObjectiveFunctionScore(double objectiveFunctionScore) {
+        this.objectiveFunctionScore = objectiveFunctionScore;
+    }
+
+    @Transient
+    public List<Precinct> getEdgeNodes() {
+        return edgeNodes;
+    }
+
+    public void setEdgeNodes(List<Precinct> edgeNodes) {
+        this.edgeNodes = edgeNodes;
+    }
+
+    @Transient
+    public ArrayList<County> getInvolvedCounties() {
+        return involvedCounties;
+    }
+
+    public void setInvolvedCounties(ArrayList<County> involvedCounties) {
+        this.involvedCounties = involvedCounties;
+    }
+
+    @Transient
+    public double getOFScore() {
+        return OFScore;
+    }
+
+    public void setOFScore(double OFScore) {
+        this.OFScore = OFScore;
+    }
+
+    public void calculateEdgeNodes(){
+        ArrayList<Precinct> edgeNodes = new ArrayList<Precinct>();
+        for (int i = 0; i < this.getPrecincts().size(); i++){
+            if(this.getPrecincts().get(i).getOnEdge() == true){
+                edgeNodes.add(this.getPrecincts().get(i));
+            }
+        }
+        this.setEdgeNodes(edgeNodes);
+    }
+
+    public void calculateInvolvedCounties(){
+        //loop through every precinct in the district and get a list of counties from it
+        ArrayList<County> counties = new ArrayList<County>();
+        for (int i = 0; i < this.getPrecincts().size(); i++){
+            if(!counties.contains(this.getPrecincts().get(i).getCountyID())){
+                counties.add(this.getPrecincts().get(i).getCountyID());
+            }
+        }
+        this.setInvolvedCounties(counties);
     }
 }
