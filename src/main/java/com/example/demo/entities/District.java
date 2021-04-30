@@ -72,8 +72,8 @@ public class District implements Serializable{
     public void setDistrictNumber(int districtNumber) {
         this.districtNumber = districtNumber;
     }
-    @OneToMany(cascade = CascadeType.ALL)
 
+    @ManyToMany(cascade = CascadeType.ALL)
     public List<Precinct> getPrecincts() {
         return precincts;
     }

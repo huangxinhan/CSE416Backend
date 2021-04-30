@@ -10,7 +10,8 @@ import java.util.List;
 @Entity
 public class Precinct implements Serializable{
 
-    //private District districtID;
+    private District defaultDistrictID;
+    private List<District> DistrictID;
     private String precinctID;
     private Long totalPopulation;
     private Long AfricanAmericanPopulation;
@@ -79,6 +80,24 @@ public class Precinct implements Serializable{
 
     public void setprecinctID(String precinctID) {
         this.precinctID = precinctID;
+    }
+
+
+    public District getDefaultDistrictID() {
+        return defaultDistrictID;
+    }
+
+    public void setDefaultDistrictID(District defaultDistrictID) {
+        this.defaultDistrictID = defaultDistrictID;
+    }
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    public List<District> getDistrictID() {
+        return DistrictID;
+    }
+
+    public void setDistrictID(List<District> districtID) {
+        DistrictID = districtID;
     }
 
     @ManyToOne
