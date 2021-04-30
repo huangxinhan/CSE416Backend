@@ -1,4 +1,4 @@
-package com.example.demo.handler;
+package com.example.demo.Config;
 
 import java.beans.Transient;
 import java.io.FileReader;
@@ -7,6 +7,7 @@ import java.lang.reflect.Array;
 import java.util.*;
 
 import com.example.demo.entities.County;
+import com.example.demo.handler.precintRepository;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.*;
@@ -18,10 +19,10 @@ import java.io.FileNotFoundException;
 
 
 @Configuration
-public class precintConfig {
+public class precinctConfig {
 
     @Bean
-    CommandLineRunner commandLineRunner( precintRepository precinctRepository, countyRepository countyRepository) throws IOException, ParseException {
+    CommandLineRunner commandLineRunner(precintRepository precinctRepository) throws IOException, ParseException {
 
         Object obj = new JSONParser().parse(new FileReader("src/main/java/com/example/demo/orgJson/PA_precincts.json"));
 
@@ -88,6 +89,8 @@ public class precintConfig {
 
         return args -> {
 
+
+
             Object obj1 = new JSONParser().parse(new FileReader("src/main/java/com/example/demo/orgJson/PA_precincts_seawulf.json"));
 
             HashMap<String,Precinct> allprecinct = new HashMap<String,Precinct>();
@@ -112,7 +115,7 @@ public class precintConfig {
             }
             int counter = 0;
 
-           // precinctRepository.saveAll(allprecinct.values());
+            // precinctRepository.saveAll(allprecinct.values());
 
             for( String i : allprecinct.keySet())
             {
@@ -153,7 +156,7 @@ public class precintConfig {
 
 
 
-            //precinctRepository.deleteAll();
+            precinctRepository.deleteAll();
 
 
 

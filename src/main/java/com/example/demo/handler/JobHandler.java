@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class StateHandler {
+public class JobHandler {
 
     private final precintRepository precintRepository;
     private final DistrictingRepository districtingRepository;
@@ -19,7 +19,7 @@ public class StateHandler {
 
 
     @Autowired
-    public StateHandler(com.example.demo.handler.precintRepository precintRepository, DistrictingRepository districtingRepository, DistrictRepository districtRepository, com.example.demo.handler.countyRepository countyRepository, JobRepository jobRepository, StateRepository stateRepository) {
+    public JobHandler(com.example.demo.handler.precintRepository precintRepository, DistrictingRepository districtingRepository, DistrictRepository districtRepository, com.example.demo.handler.countyRepository countyRepository, JobRepository jobRepository, StateRepository stateRepository) {
         this.precintRepository = precintRepository;
         this.districtingRepository = districtingRepository;
         this.districtRepository = districtRepository;
