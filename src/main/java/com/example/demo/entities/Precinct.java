@@ -197,6 +197,10 @@ public class Precinct implements Serializable{
         return currentDistrictingId;
     }
 
+    public void appendDistrict(District district){
+        this.getDistrictCollection().add(district);
+    }
+
     public void setCurrentDistrictingId(String currentDistrictingId) {
         this.currentDistrictingId = currentDistrictingId;
         for (int i = 0; i < this.getDistrictCollection().size(); i++){
