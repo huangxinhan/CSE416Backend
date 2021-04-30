@@ -23,17 +23,17 @@ public class Job implements Serializable{
     private List<Districting> topDistrictingsByCompactness;
     private List<Districting> topDistrictingsByAreaPairDeviation;
     private List<Districting> topDistrictingsBySimilarity;
-    //private HashMap<Param, Long> mgggParams;
+    private HashMap<String, String> mgggParams;
     private String stateName;
 
     public Job(){
 
     }
 
-    public Job(String JobID, List<Districting> districtings, /*HashMap<Param, Long> mgggParams,*/ String stateName){
+    public Job(String JobID, List<Districting> districtings, HashMap<String, String> mgggParams, String stateName){
         this.jobID = jobID;
         this.districtings = districtings;
-        //this.mgggParams = mgggParams;
+        this.mgggParams = mgggParams;
         this.stateName = stateName;
     }
 
@@ -151,13 +151,13 @@ public class Job implements Serializable{
         this.topDistrictingsBySimilarity = topDistrictingsBySimilarity;
     }
 
-//    public HashMap<Param, Long> getMgggParams() {
-//        return mgggParams;
-//    }
-//
-//    public void setMgggParams(HashMap<Param, Long> mgggParams) {
-//        this.mgggParams = mgggParams;
-//    }
+    public HashMap<String, String> getMgggParams() {
+        return mgggParams;
+    }
+
+    public void setMgggParams(HashMap<String, String> mgggParams) {
+        this.mgggParams = mgggParams;
+    }
 
     public String getStateName() {
         return stateName;
