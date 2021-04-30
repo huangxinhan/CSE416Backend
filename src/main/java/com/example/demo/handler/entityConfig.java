@@ -89,75 +89,41 @@ public class entityConfig {
         return args -> {
 
 
-            
-//            Object obj1 = new JSONParser().parse(new FileReader("src/main/java/com/example/demo/orgJson/PA_precincts_seawulf.json"));
-//
-//            HashMap<String,Precinct> allprecinct = new HashMap<String,Precinct>();
-//            for( int i=0; i < precinctProperties.size(); i++)
-//            {
-//
-//                JSONObject precinctINFO = precinctProperties.get(i);
-//
-//                String id = (String) precinctINFO.get("GEOID10");
-//
-//
-//                Precinct newprecinct = new Precinct(
-//                        (String) precinctINFO.get("GEOID10").toString()
-//                        //(String) precinctINFO.get("GEOID10"),
-//                        //(Long) precinctINFO.get("TOTPOP"),
-//                        //((String) precinctINFO.get("COUNTYFP10")).substring(1),
-//                        //coordinatesColletion.get(i)
-//
-//                );
-//
-//                allprecinct.put(id,newprecinct);
-//            }
-//            int counter = 0;
-//
-//            // precinctRepository.saveAll(allprecinct.values());
-//
-//            for( String i : allprecinct.keySet())
-//            {
-//
-//
-//                System.out.println(i);
-//                Precinct toProcess = allprecinct.get(i);
-//
-//
-//                JSONObject jo1 = (JSONObject) obj1;
-//
-//                JSONObject seaWulfprecinct = (JSONObject) jo1.get(i);
-//
-//                if( seaWulfprecinct == null)
-//                {
-//                    System.out.println(i);
-//                }
-//                JSONArray adjacentNode = (JSONArray) seaWulfprecinct.get("adjacent_nodes");
-//
-//                ArrayList<Precinct> neighbours = new ArrayList<Precinct>();
-//
-//                for(int j =0; j < adjacentNode.size(); j++)
-//                {
-//                    String id = (String) adjacentNode.get(j);
-//
-//                    Precinct toAdd  = allprecinct.get(id);
-//
-//                    neighbours.add(toAdd);
-//                }
-//                System.out.println(neighbours);
-//                toProcess.setNeighbours(neighbours);
-//
-//                precinctRepository.save(toProcess);
-//
-//
-//
-//
-//            }
+
+            Object obj1 = new JSONParser().parse(new FileReader("src/main/java/com/example/demo/orgJson/PA_precincts_seawulf.json"));
+
+            HashMap<String,Precinct> allprecinct = new HashMap<String,Precinct>();
+            for( int i=0; i < precinctProperties.size(); i++)
+            {
+
+                JSONObject precinctINFO = precinctProperties.get(i);
+
+                String id = (String) precinctINFO.get("GEOID10");
+
+                Precinct toProcess = precinctRepository.findById(id).get();
+
+
+                toProcess.setCoordinates(coordinatesColletion.get(i));
+
+                toProcess.setIncumbentName((String) precinctINFO.get("incumbent_name"));
+
+                toProcess.setTotalPopulation((Long) precinctINFO.get("TOTPOP"));
+
+                toProcess.setAfricanAmericanPopulation((Long) precinctINFO.get("NH_BLACK"));
+
+                toProcess.setAsianPopulation((Long) precinctINFO.get("NH_ASIAN"));
+
+                toProcess.setHispanicPopulation((Long) precinctINFO.get("HISP"));
 
 
 
+                allprecinct.put(id,toProcess);
+            }
 
+            precinctRepository.saveAll(allprecinct.values());
         };
+
+
 
 
 
