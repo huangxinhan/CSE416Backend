@@ -22,6 +22,8 @@ public class Precinct implements Serializable{
     private ArrayList< ArrayList<Double> > coordinates;
     private String incumbentName;
 
+    private ArrayList<Boolean> onEdge; //map by index to the list of districts DistrictID
+
     public Precinct() {
     }
 
@@ -182,6 +184,27 @@ public class Precinct implements Serializable{
 
     public void setCoordinates(ArrayList<ArrayList<Double>> coordinates) {
         this.coordinates = coordinates;
+    }
+
+    @Transient
+    public ArrayList<Boolean> getOnEdge() {
+        return onEdge;
+    }
+
+    public void setOnEdge(ArrayList<Boolean> onEdge) {
+        this.onEdge = onEdge;
+    }
+
+    /*calculates the arrayList of on edge*/
+    public void onEdge(){
+        boolean onEdge = false;
+        for (int i = 0; i < this.getDistrictID().size(); i++){
+            District currentDistrict = this.getDistrictID().get(i);
+            String districtingID = currentDistrict.getDistrictingID();
+            for (int j = 0; j < this.getNeighbours().size(); j++){
+
+            }
+        }
     }
 
 }

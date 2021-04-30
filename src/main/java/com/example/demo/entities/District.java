@@ -29,11 +29,15 @@ public class District implements Serializable{
     private Long AsianPopulation;
     private Long HispanicPopulation;
 
+    private String districtingID;
+
+
+
     public District(){
 
     }
 
-    public District(String districtID, int districtNumber, List<Precinct> precincts, ArrayList<ArrayList<Double>> borderGeometry, Long population) {
+    public District(String districtID, int districtNumber, List<Precinct> precincts, ArrayList<ArrayList<Double>> borderGeometry, Long population, String districtingID) {
         this.districtID = districtID;
         this.districtNumber = districtNumber;
         this.precincts = precincts;
@@ -52,6 +56,10 @@ public class District implements Serializable{
         this.AfricanAmericanPopulation = tempAfricanAmericanPop;
         this.AsianPopulation = tempAsianPop;
         this.HispanicPopulation = tempHispanicPop;
+
+        String[] split = this.districtID.split("_");
+        String firstSubString = split[0];
+        this.districtingID = firstSubString;
     }
 
     @Id
@@ -158,5 +166,13 @@ public class District implements Serializable{
 
     public void setHispanicPopulation(Long hispanicPopulation) {
         HispanicPopulation = hispanicPopulation;
+    }
+
+    public String getDistrictingID() {
+        return districtingID;
+    }
+
+    public void setDistrictingID(String districtingID) {
+        this.districtingID = districtingID;
     }
 }
