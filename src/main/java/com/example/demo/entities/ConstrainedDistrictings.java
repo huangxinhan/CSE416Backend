@@ -4,6 +4,7 @@ import com.example.demo.entities.enums.RaceType;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 
 public class ConstrainedDistrictings {
     private ArrayList<Districting> districtings;
@@ -102,7 +103,7 @@ public class ConstrainedDistrictings {
         this.enactedDistrictingData = enactedDistrictingData;
     }
 
-    public Plot getPlotByType(RaceType raceType){
+    public Plot retrievePlotByType(RaceType raceType){
         ArrayList<Long> populationArray = this.getCurrentDistricting().retrievePopulationArrayByType(raceType);
         ArrayList<Long> totalPopulationArray = this.getCurrentDistricting().retrieveTotalPopulationArray();
         ArrayList<Double> populationPercentageArray = new ArrayList<Double>();
@@ -141,9 +142,10 @@ public class ConstrainedDistrictings {
             percentageList.add(percentages);
         }
         //now here we have an arraylist of list of sorted percentages to calculate average districting
+        this.calculateMeans(percentageList);
+        this.calculateClosestToAvgDistricting(this.getMeans(), raceType);
         this.getPlot().setMinorityType(raceType);
         this.getPlot().setPopulationPercentages(percentageList);
-        //now calculate enacted districting then set to the plot
         this.getPlot().setEnactedDistrictingData(this.calculateEnactedPercentages(raceType));
     }
 
@@ -160,10 +162,37 @@ public class ConstrainedDistrictings {
         this.setMeans(means);
     }
 
-    public void calculateClosestToAvgDistricting(ArrayList<Double> means){
-        //will need to sort districtings in here  as well
-        //take sorted Districting's district's population by type - the mean
-        //do a sum of squares of that and assign that to a particular districting
-        //now take the districting with the lowest sum of squares as the cloest to average.
+    public void calculateClosestToAvgDistricting(ArrayList<Double> means, RaceType raceType){
+        //first sort the districtings
+        for (int i = 0; i < this.getDistrictings().size(); i++){
+            if (raceType == raceType.AFRICAN_AMERICAN) {
+                this.getDistrictings().get(i).getDistricts().sort(Comparator.comparing(District::getAfricanAmericanPopulation));
+            }
+            else if (raceType == raceType.ASIAN){
+                this.getDistrictings().get(i).getDistricts().sort(Comparator.comparing(District::getAsianPopulation));
+            }
+            else if (raceType == raceType.HISPANIC){
+                this.getDistrictings().get(i).getDistricts().sort(Comparator.comparing(District::getHispanicPopulation));
+            }
+        }
+        ArrayList<Double> differences = new ArrayList<>();
+        for (int i = 0; i < this.getDistrictings().size(); i++){
+            double difference = 0;
+            for (int j = 0; j < this.getDistrictings().get(i).getDistricts().size(); j++){
+                if (raceType == raceType.AFRICAN_AMERICAN) {
+                    difference += Math.pow((means.get(j) - this.getDistrictings().get(i).getDistricts().get(j).getAfricanAmericanPopulation()), 2);
+                }
+                if (raceType == raceType.ASIAN) {
+                    difference += Math.pow((means.get(j) - this.getDistrictings().get(i).getDistricts().get(j).getAsianPopulation()),2);
+                }
+                if (raceType == raceType.HISPANIC) {
+                    difference += Math.pow((means.get(j) - this.getDistrictings().get(i).getDistricts().get(j).getHispanicPopulation()),2);
+                }
+            }
+            differences.add(difference);
+        }
+
+        int minimumDistrictingIndex = differences.indexOf(Collections.min(differences));
+        this.setClosesestDistrictingToTheAverage(this.getDistrictings().get(minimumDistrictingIndex));
     }
 }
