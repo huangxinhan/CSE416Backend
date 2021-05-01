@@ -226,6 +226,10 @@ public class Job implements Serializable{
         }
     }
 
+    
+
+
+
 
 //    filterMajorityMinorityDistrictings(districtings: Districtings, constraints.minorityRace, constraints.MajorMinorThres, constraints.populationType): List<Districting>
 //    filterPopulationEqualityDistrictings(districtings: Districtings, constraints.minorityRace, constraints.populationEqualityThres, constraints.populationType): List<Districting>
