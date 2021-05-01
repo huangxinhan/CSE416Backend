@@ -34,6 +34,10 @@ public class Districting implements Serializable{
 
     }
 
+    public Districting(String districtingID) {
+        this.districtingID = districtingID;
+    }
+
     public Districting(String districtingID, ArrayList<District> districts){
         this.districtingID = districtingID;
         this.districts = districts;
