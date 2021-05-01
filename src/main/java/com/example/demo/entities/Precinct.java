@@ -167,7 +167,7 @@ public class Precinct implements Serializable{
 //        this.districtID = districtID;
 //    }
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany()
     public List<Precinct> getNeighbours() {
         return neighbours;
     }

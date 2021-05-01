@@ -221,6 +221,7 @@ public class District implements Serializable{
         this.setInvolvedCounties(counties);
     }
 
+    //call this first
     public void calculateAllPopulation(){
         Long tempTotalPop = 0l;
         Long tempAfricanAmericanPop = 0l;

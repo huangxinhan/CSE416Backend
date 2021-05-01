@@ -12,6 +12,7 @@ public class Constraints {
     private double compactnessValue;
     private RaceType minorityType;
     private double majorMinorThres;
+    private int numberOfMajorityMinorityDistricts;
     private double populationEqualityThres;
     private Long populationValue;
     private ArrayList<Boolean> incumbentValue;
@@ -92,5 +93,13 @@ public class Constraints {
 
     public void setIncumbentValue(ArrayList<Boolean> incumbentValue) {
         this.incumbentValue = incumbentValue;
+    }
+
+    public int getNumberOfMajorityMinorityDistricts() {
+        return numberOfMajorityMinorityDistricts;
+    }
+
+    public void setNumberOfMajorityMinorityDistricts(int numberOfMajorityMinorityDistricts) {
+        this.numberOfMajorityMinorityDistricts = numberOfMajorityMinorityDistricts;
     }
 }

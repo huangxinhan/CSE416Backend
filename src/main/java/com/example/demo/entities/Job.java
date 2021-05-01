@@ -214,6 +214,18 @@ public class Job implements Serializable{
         this.constrainedDistrictings.calculateAverageDistricting(raceType);
     }
 
+    public void filterMajorityMinorityDistrictings(){
+        RaceType race = constraints.getMinorityType();
+        double majorMinorThres = constraints.getMajorMinorThres();
+        int numberOfMMDistricts = constraints.getNumberOfMajorityMinorityDistricts();
+        for (int i = 0; i < this.getDistrictings().size(); i++){
+            int number = this.getDistrictings().get(i).calculateNumberOfMajorityMinorityDistricts(race, majorMinorThres);
+            if (number >= numberOfMMDistricts){
+                this.getConstrainedDistrictings().getDistrictings().add(this.getDistrictings().get(i));
+            }
+        }
+    }
+
 
 //    filterMajorityMinorityDistrictings(districtings: Districtings, constraints.minorityRace, constraints.MajorMinorThres, constraints.populationType): List<Districting>
 //    filterPopulationEqualityDistrictings(districtings: Districtings, constraints.minorityRace, constraints.populationEqualityThres, constraints.populationType): List<Districting>

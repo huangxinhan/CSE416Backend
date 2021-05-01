@@ -185,4 +185,46 @@ public class Districting implements Serializable{
         }
         return tempPopulationArray;
     }
+
+    public Long getTotalMinorityPopulationByType(RaceType raceType){
+        Long totalPopulation = 0l;
+        if (raceType == raceType.AFRICAN_AMERICAN){
+            for (int i = 0; i < this.getDistricts().size(); i++){
+                totalPopulation += this.getDistricts().get(i).getAfricanAmericanPopulation();
+            }
+        }
+        else if (raceType == raceType.ASIAN){
+            for (int i = 0; i < this.getDistricts().size(); i++){
+                totalPopulation += this.getDistricts().get(i).getAsianPopulation();
+            }
+        }
+        else if (raceType == raceType.HISPANIC){
+            for (int i = 0; i < this.getDistricts().size(); i++){
+                totalPopulation += this.getDistricts().get(i).getHispanicPopulation();
+            }
+        }
+        return totalPopulation;
+    }
+
+    public int calculateNumberOfMajorityMinorityDistricts(RaceType raceType, double threshold){
+        int numberOfMajorMinorDistricts = 0;
+            for (int i = 0; i < this.getDistricts().size(); i++){
+
+                if (raceType == raceType.AFRICAN_AMERICAN){
+                    Long totalMinorityPopulation = this.getTotalMinorityPopulationByType(raceType);
+                    double currentThreshold = this.getDistricts().get(i).getAfricanAmericanPopulation()/totalMinorityPopulation;
+                    if (currentThreshold >= threshold){
+
+                    }
+                }
+                else if (raceType == raceType.ASIAN){
+
+                }
+                else if (raceType == raceType.HISPANIC){
+
+                }
+
+            }
+        return numberOfMajorMinorDistricts;
+    }
 }

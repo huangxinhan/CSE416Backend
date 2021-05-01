@@ -279,23 +279,23 @@ public class entityConfig {
 
             }
 
-//            countyRepository.saveAll(allcounty.values());
+            //countyRepository.saveAll(allcounty.values());
             //districtRepository.saveAll(alldistrict.values());
             //precinctRepository.saveAll(allprecinct.values());
 
            /////////////////////////////////////
 
             Object obj4 = new JSONParser().parse(new FileReader("src/main/java/com/example/demo/orgJson/PA_precincts_seawulf.json"));
+            ArrayList<Precinct> modifiedPrecincts = new ArrayList<Precinct>();
             for (String i : allprecinct.keySet()) {
 
-                Precinct toProcess = allprecinct.get(i);
-
+                Precinct toProcess = precinctRepository.findById(i).get();
 
 
                 JSONObject jo4 = (JSONObject) obj4;
 
                 JSONObject seaWulfprecinct = (JSONObject) jo4.get(i);
-
+                System.out.println(i);
                 if (seaWulfprecinct == null) {
                     System.out.println(i);
                 }
@@ -312,15 +312,15 @@ public class entityConfig {
                 }
 
                 toProcess.setNeighbours(neighbours);
-
+                modifiedPrecincts.add(toProcess);
 
 
             }
 
             //System.out.println(alldistrict);
-            precinctRepository.saveAll(allprecinct.values());
-            countyRepository.saveAll(allcounty.values());
-            districtRepository.saveAll(alldistrict.values());
+            precinctRepository.saveAll(modifiedPrecincts);
+            //countyRepository.saveAll(allcounty.values());
+            //districtRepository.saveAll(alldistrict.values());
         };
     }
 }
