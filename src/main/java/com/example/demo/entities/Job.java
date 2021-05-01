@@ -205,8 +205,13 @@ public class Job implements Serializable{
     //public void calculateDistrictGeometry{}
 
     //get box and whisker data based on the type that is passed
-    public Plot getBoxAndWhiskerData(Enum<RaceType> raceType){
+    public Plot getBoxAndWhiskerData(RaceType raceType){
         return this.getConstrainedDistrictings().getPlotByType(raceType);
+    }
+
+    //will calculate average districting AND generate the graph object
+    public void calculateAverageDistricting(Enum<RaceType> raceType){
+
     }
 
 
