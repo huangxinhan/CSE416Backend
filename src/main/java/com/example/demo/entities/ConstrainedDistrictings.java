@@ -160,7 +160,10 @@ public class ConstrainedDistrictings {
         this.setMeans(means);
     }
 
-    public void calculateClosestToAvgDistricting(ArrayList<ArrayList<Double>> percentageList){
+    public void calculateClosestToAvgDistricting(ArrayList<Double> means){
         //will need to sort districtings in here  as well
+        //take sorted Districting's district's population by type - the mean
+        //do a sum of squares of that and assign that to a particular districting
+        //now take the districting with the lowest sum of squares as the cloest to average.
     }
 }
