@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+
+
+//////////don't forget to change cascade when dealing with sea_wulf
 @Entity
 public class State implements Serializable{
     private String stateID;
@@ -23,6 +26,10 @@ public class State implements Serializable{
 
     }
 
+    public State(String stateID) {
+        this.stateID = stateID;
+    }
+
     public State(String stateID, List<Precinct> precincts, List<Job> jobs, Districting enactedDistricting, List<County> counties, ArrayList< ArrayList<Double> > stateBoundary){
         this.stateID = stateID;
         this.precincts = precincts;
@@ -40,7 +47,7 @@ public class State implements Serializable{
         this.stateID = stateID;
     }
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany()
     public List<Precinct> getPrecincts() {
         return precincts;
     }
@@ -49,7 +56,7 @@ public class State implements Serializable{
         this.precincts = precincts;
     }
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany()
     public List<Job> getJobs() {
         return jobs;
     }
@@ -66,6 +73,7 @@ public class State implements Serializable{
         this.currentJob = currentJob;
     }
 
+    @OneToOne
     public Districting getEnactedDistricting() {
         return enactedDistricting;
     }
@@ -106,7 +114,7 @@ public class State implements Serializable{
         this.currentDistricting = currentDistricting;
     }
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany()
     public List<County> getCounties() {
         return counties;
     }
