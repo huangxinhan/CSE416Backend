@@ -11,7 +11,7 @@ public class Constraints {
     private PopulationType populationType;
     private double compactnessValue;
     private RaceType minorityType;
-    private double MajorMinorThres;
+    private double majorMinorThres;
     private double populationEqualityThres;
     private Long populationValue;
     private ArrayList<Boolean> incumbentValue;
@@ -24,7 +24,7 @@ public class Constraints {
         this.populationType = populationType;
         this.compactnessValue = compactnessValue;
         this.minorityType = minorityType;
-        MajorMinorThres = majorMinorThres;
+        this.majorMinorThres = majorMinorThres;
         this.populationEqualityThres = populationEqualityThres;
         this.populationValue = populationValue;
         this.incumbentValue = incumbentValue;
@@ -63,11 +63,11 @@ public class Constraints {
     }
 
     public double getMajorMinorThres() {
-        return MajorMinorThres;
+        return majorMinorThres;
     }
 
     public void setMajorMinorThres(double majorMinorThres) {
-        MajorMinorThres = majorMinorThres;
+        majorMinorThres = majorMinorThres;
     }
 
     public double getPopulationEqualityThres() {
