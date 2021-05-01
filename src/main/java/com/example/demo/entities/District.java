@@ -60,7 +60,7 @@ public class District implements Serializable{
         this.districtNumber = districtNumber;
     }
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.ALL)
     public List<Precinct> getPrecincts() {
         return precincts;
     }

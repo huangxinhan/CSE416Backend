@@ -89,6 +89,7 @@ public class Precinct implements Serializable{
         this.precinctID = precinctID;
     }
 
+    @ManyToOne()
     public District getDefaultDistrictID() {
         return defaultDistrictID;
     }
