@@ -41,7 +41,9 @@ public class District implements Serializable{
         this.districtID = districtID;
     }
 
-
+    public District(Districting districtingID) {
+        this.districtingID = districtingID;
+    }
 
     @Id
     public String getDistrictID() {
