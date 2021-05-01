@@ -76,7 +76,7 @@ public class entityConfig {
         }
 
         ///////////////district////////////////
-        Object obj2 = new JSONParser().parse(new FileReader("/Users/Zino/Downloads/CSE416Backend/src/main/java/com/example/demo/orgJson/PA_cd.json"));
+        Object obj2 = new JSONParser().parse(new FileReader("src/main/java/com/example/demo/orgJson/PA_cd.json"));
 
         JSONObject jo2 = (JSONObject) obj2;
 
@@ -130,7 +130,7 @@ public class entityConfig {
         ///////////////district////////////////
 
         ///////////////county////////////////
-        Object obj3 = new JSONParser().parse(new FileReader("/Users/Zino/Downloads/CSE416Backend/src/main/java/com/example/demo/orgJson/pa_county.json"));
+        Object obj3 = new JSONParser().parse(new FileReader("src/main/java/com/example/demo/orgJson/pa_county.json"));
 
         JSONObject jo3 = (JSONObject) obj3;
 
