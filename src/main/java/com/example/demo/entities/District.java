@@ -23,7 +23,6 @@ public class District implements Serializable{
     private Long AfricanAmericanPopulation;
     private Long AsianPopulation;
     private Long HispanicPopulation;
-
     private Districting districtingID;
 
     private double objectiveFunctionScore;
@@ -42,11 +41,7 @@ public class District implements Serializable{
         this.districtID = districtID;
     }
 
-    public District(String districtID, int districtNumber, List<Precinct> precincts) {
-        this.districtID = districtID;
-        this.districtNumber = districtNumber;
-        this.precincts = precincts;
-    }
+
 
     @Id
     public String getDistrictID() {

@@ -103,8 +103,8 @@ public class ConstrainedDistrictings {
     }
 
     public Plot getPlotByType(RaceType raceType){
-        ArrayList<Long> populationArray = this.getCurrentDistricting().getPopulationArrayByType(raceType);
-        ArrayList<Long> totalPopulationArray = this.getCurrentDistricting().getTotalPopulationArray();
+        ArrayList<Long> populationArray = this.getCurrentDistricting().retrievePopulationArrayByType(raceType);
+        ArrayList<Long> totalPopulationArray = this.getCurrentDistricting().retrieveTotalPopulationArray();
         ArrayList<Double> populationPercentageArray = new ArrayList<Double>();
         for (int i = 0; i < populationArray.size(); i++){
             populationPercentageArray.add((double) populationArray.get(i)/totalPopulationArray.get(i));
@@ -116,8 +116,8 @@ public class ConstrainedDistrictings {
     }
 
     public ArrayList<Double> calculateEnactedPercentages(RaceType raceType){
-        ArrayList<Long> populationArray = this.getEnactedDistricting().getPopulationArrayByType(raceType);
-        ArrayList<Long> totalPopulationArray = this.getEnactedDistricting().getTotalPopulationArray();
+        ArrayList<Long> populationArray = this.getEnactedDistricting().retrievePopulationArrayByType(raceType);
+        ArrayList<Long> totalPopulationArray = this.getEnactedDistricting().retrieveTotalPopulationArray();
         ArrayList<Double> populationPercentageArray = new ArrayList<Double>();
         for (int i = 0; i < populationArray.size(); i++){
             populationPercentageArray.add((double) populationArray.get(i)/totalPopulationArray.get(i));
@@ -132,8 +132,8 @@ public class ConstrainedDistrictings {
         for (int i = 0; i < this.getDistrictings().size(); i++){
             ArrayList<Double> percentages = new ArrayList<Double>();
             Districting districting = this.getDistrictings().get(i);
-            ArrayList<Long> populationArray = districting.getPopulationArrayByType(raceType);
-            ArrayList<Long> totalPopulationArray = districting.getTotalPopulationArray();
+            ArrayList<Long> populationArray = districting.retrievePopulationArrayByType(raceType);
+            ArrayList<Long> totalPopulationArray = districting.retrieveTotalPopulationArray();
             for (int j = 0; j < populationArray.size(); j++){
                 percentages.add((double) populationArray.get(j)/totalPopulationArray.get(j));
             }

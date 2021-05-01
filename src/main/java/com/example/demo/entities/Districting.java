@@ -161,7 +161,8 @@ public class Districting implements Serializable{
         this.splitCountyDetails = splitCountyDetails;
     }
 
-    public ArrayList<Long> getTotalPopulationArray(){
+
+    public ArrayList<Long> retrieveTotalPopulationArray(){
         ArrayList<Long> tempPopulationArray = new ArrayList<Long>();
         for (int i = 0; i < this.getDistricts().size(); i++){
             tempPopulationArray.add(this.getDistricts().get(i).getTotalPopulation());
@@ -169,7 +170,7 @@ public class Districting implements Serializable{
         return tempPopulationArray;
     }
 
-    public ArrayList<Long> getPopulationArrayByType(Enum<RaceType> raceType){
+    public ArrayList<Long> retrievePopulationArrayByType(Enum<RaceType> raceType){
         ArrayList<Long> tempPopulationArray = new ArrayList<Long>();
         for (int i = 0; i < this.getDistricts().size(); i++){
             if(raceType == RaceType.AFRICAN_AMERICAN){
