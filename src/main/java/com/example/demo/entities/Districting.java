@@ -161,6 +161,14 @@ public class Districting implements Serializable{
         this.splitCountyDetails = splitCountyDetails;
     }
 
+    public ArrayList<Long> getTotalPopulationArray(){
+        ArrayList<Long> tempPopulationArray = new ArrayList<Long>();
+        for (int i = 0; i < this.getDistricts().size(); i++){
+            tempPopulationArray.add(this.getDistricts().get(i).getTotalPopulation());
+        }
+        return tempPopulationArray;
+    }
+
     public ArrayList<Long> getPopulationArrayByType(Enum<RaceType> raceType){
         ArrayList<Long> tempPopulationArray = new ArrayList<Long>();
         for (int i = 0; i < this.getDistricts().size(); i++){

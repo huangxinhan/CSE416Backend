@@ -10,7 +10,7 @@ public class ConstrainedDistrictings {
     private Districting currentDistricting;
     private Districting enactedDistricting;
     private ArrayList<Districting> sortedDistricting;
-    private ArrayList<Long> sortedCurrentDistrictingData;
+    private ArrayList<Double> sortedCurrentDistrictingData;
     private Plot plot;
     private ArrayList<Double> means;
     private Districting closesestDistrictingToTheAverage;
@@ -85,19 +85,24 @@ public class ConstrainedDistrictings {
         this.closesestDistrictingToTheAverage = closesestDistrictingToTheAverage;
     }
 
-    public ArrayList<Long> getSortedCurrentDistrictingData() {
+    public ArrayList<Double> getSortedCurrentDistrictingData() {
         return sortedCurrentDistrictingData;
     }
 
-    public void setSortedCurrentDistrictingData(ArrayList<Long> sortedCurrentDistrictingData) {
+    public void setSortedCurrentDistrictingData(ArrayList<Double> sortedCurrentDistrictingData) {
         this.sortedCurrentDistrictingData = sortedCurrentDistrictingData;
     }
 
     public Plot getPlotByType(Enum<RaceType> raceType){
         ArrayList<Long> populationArray = this.getEnactedDistricting().getPopulationArrayByType(raceType);
-        Collections.sort(populationArray); //sort by population
-        this.setSortedCurrentDistrictingData(populationArray);
-        this.getPlot().setCurrentDistrictingData(populationArray);
+        ArrayList<Long> totalPopulationArray = this.getEnactedDistricting().getTotalPopulationArray();
+        ArrayList<Double> populationPercentageArray = new ArrayList<Double>();
+        for (int i = 0; i < populationArray.size(); i++){
+            populationPercentageArray.add((double) populationArray.get(i)/totalPopulationArray.get(i));
+        }
+        Collections.sort(populationPercentageArray); //sort by population
+        this.setSortedCurrentDistrictingData(populationPercentageArray);
+        this.getPlot().setCurrentDistrictingData(populationPercentageArray);
         return this.getPlot();
     }
 }

@@ -8,15 +8,15 @@ import java.util.ArrayList;
 public class Plot {
     private PopulationType populationType;
     private RaceType minorityType;
-    private ArrayList<ArrayList<Long>> populationPercentages;
-    private ArrayList<Long> enactedDistrictingData;
-    private ArrayList<Long> currentDistrictingData;
+    private ArrayList<ArrayList<Double>> populationPercentages;
+    private ArrayList<Double> enactedDistrictingData;
+    private ArrayList<Double> currentDistrictingData;
 
     public Plot(){
 
     }
 
-    public Plot(PopulationType populationType, RaceType minorityType, ArrayList<ArrayList<Long>> populationPercentages, ArrayList<Long> enactedDistrictingData, ArrayList<Long> currentDistrictingData) {
+    public Plot(PopulationType populationType, RaceType minorityType, ArrayList<ArrayList<Double>> populationPercentages, ArrayList<Double> enactedDistrictingData, ArrayList<Double> currentDistrictingData) {
         this.populationType = populationType;
         this.minorityType = minorityType;
         this.populationPercentages = populationPercentages;
@@ -40,27 +40,27 @@ public class Plot {
         this.minorityType = minorityType;
     }
 
-    public ArrayList<ArrayList<Long>> getPopulationPercentages() {
+    public ArrayList<ArrayList<Double>> getPopulationPercentages() {
         return populationPercentages;
     }
 
-    public void setPopulationPercentages(ArrayList<ArrayList<Long>> populationPercentages) {
+    public void setPopulationPercentages(ArrayList<ArrayList<Double>> populationPercentages) {
         this.populationPercentages = populationPercentages;
     }
 
-    public ArrayList<Long> getEnactedDistrictingData() {
+    public ArrayList<Double> getEnactedDistrictingData() {
         return enactedDistrictingData;
     }
 
-    public void setEnactedDistrictingData(ArrayList<Long> enactedDistrictingData) {
+    public void setEnactedDistrictingData(ArrayList<Double> enactedDistrictingData) {
         this.enactedDistrictingData = enactedDistrictingData;
     }
 
-    public ArrayList<Long> getCurrentDistrictingData() {
+    public ArrayList<Double> getCurrentDistrictingData() {
         return currentDistrictingData;
     }
 
-    public void setCurrentDistrictingData(ArrayList<Long> currentDistrictingData) {
+    public void setCurrentDistrictingData(ArrayList<Double> currentDistrictingData) {
         this.currentDistrictingData = currentDistrictingData;
     }
 }
