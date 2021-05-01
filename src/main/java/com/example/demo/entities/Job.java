@@ -210,8 +210,8 @@ public class Job implements Serializable{
     }
 
     //will calculate average districting AND generate the graph object
-    public void calculateAverageDistricting(Enum<RaceType> raceType){
-
+    public void calculateAverageDistricting(RaceType raceType){
+        this.constrainedDistrictings.calculateAverageDistricting(raceType);
     }
 
 
