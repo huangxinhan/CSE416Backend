@@ -1,7 +1,10 @@
 package com.example.demo.entities;
 
+import com.example.demo.entities.enums.RaceType;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -156,5 +159,21 @@ public class Districting implements Serializable{
 
     public void setSplitCountyDetails(HashMap<County, Integer> splitCountyDetails) {
         this.splitCountyDetails = splitCountyDetails;
+    }
+
+    public ArrayList<Long> getPopulationArrayByType(Enum<RaceType> raceType){
+        ArrayList<Long> tempPopulationArray = new ArrayList<Long>();
+        for (int i = 0; i < this.getDistricts().size(); i++){
+            if(raceType == RaceType.AFRICAN_AMERICAN){
+                tempPopulationArray.add(this.getDistricts().get(i).getAfricanAmericanPopulation());
+            }
+            else if(raceType == RaceType.ASIAN){
+                tempPopulationArray.add(this.getDistricts().get(i).getAsianPopulation());
+            }
+            else if(raceType == RaceType.HISPANIC){
+                tempPopulationArray.add(this.getDistricts().get(i).getHispanicPopulation());
+            }
+        }
+        return tempPopulationArray;
     }
 }

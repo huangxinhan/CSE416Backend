@@ -200,6 +200,26 @@ public class Job implements Serializable{
         return topTenDistrictings;
     }
 
+    //public void createConstrainedObject{}
+
+    //public void calculateDistrictGeometry{}
+
+    //get box and whisker data based on the type that is passed
+    public Plot getBoxAndWhiskerData(Enum<RaceType> raceType){
+        return this.getConstrainedDistrictings().getPlotByType(raceType);
+    }
+
+
+
+//    filterMajorityMinorityDistrictings(districtings: Districtings, constraints.minorityRace, constraints.MajorMinorThres, constraints.populationType): List<Districting>
+//    filterPopulationEqualityDistrictings(districtings: Districtings, constraints.minorityRace, constraints.populationEqualityThres, constraints.populationType): List<Districting>
+//    filterIncumbentProtectionDistrictings(constrainedDistrictings: ConstrainedDistricting, constraints.incumbentProtectionThres) : List <Districting>
+//    filterCompactnessDistrictings(constrainedDistrictings: ConstrainedDistricting, constraints.incumbentProtectionThres) : List<Districting>
+//    getBoxAndWhiskerData(constraints.populationType : PopulationType, .constraints.minorityType: minorityType, constrainedDistrictings: ConstrainedDistrictings): Plot
+//    calculateSplitCountyScore(constrainedDistrictings: constrainedDistrictings)
+//    calculateDeviationFromAverageDistricting(constrainedDistricting: ConstrainedDistricting, constraints.populationType, constraints.minorityType): void
+//    getSplitCountyGeometry(disticting: Districting): List<geometry>
+//    getEqualPopulationDistricts(districting: Districting): List<District>
 
 
 

@@ -1,12 +1,16 @@
 package com.example.demo.entities;
 
+import com.example.demo.entities.enums.RaceType;
+
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class ConstrainedDistrictings {
     private ArrayList<Districting> districtings;
     private Districting currentDistricting;
     private Districting enactedDistricting;
     private ArrayList<Districting> sortedDistricting;
+    private ArrayList<Long> sortedCurrentDistrictingData;
     private Plot plot;
     private ArrayList<Double> means;
     private Districting closesestDistrictingToTheAverage;
@@ -79,5 +83,21 @@ public class ConstrainedDistrictings {
 
     public void setClosesestDistrictingToTheAverage(Districting closesestDistrictingToTheAverage) {
         this.closesestDistrictingToTheAverage = closesestDistrictingToTheAverage;
+    }
+
+    public ArrayList<Long> getSortedCurrentDistrictingData() {
+        return sortedCurrentDistrictingData;
+    }
+
+    public void setSortedCurrentDistrictingData(ArrayList<Long> sortedCurrentDistrictingData) {
+        this.sortedCurrentDistrictingData = sortedCurrentDistrictingData;
+    }
+
+    public Plot getPlotByType(Enum<RaceType> raceType){
+        ArrayList<Long> populationArray = this.getEnactedDistricting().getPopulationArrayByType(raceType);
+        Collections.sort(populationArray); //sort by population
+        this.setSortedCurrentDistrictingData(populationArray);
+        this.getPlot().setCurrentDistrictingData(populationArray);
+        return this.getPlot();
     }
 }
