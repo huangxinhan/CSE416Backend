@@ -1,5 +1,7 @@
 package com.example.demo.entities;
 
+import org.hibernate.annotations.Cascade;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -89,7 +91,7 @@ public class Precinct implements Serializable{
         this.precinctID = precinctID;
     }
 
-    @ManyToOne()
+    @ManyToOne(cascade = CascadeType.ALL)
     public District getDefaultDistrictID() {
         return defaultDistrictID;
     }
@@ -165,7 +167,7 @@ public class Precinct implements Serializable{
 //        this.districtID = districtID;
 //    }
 
-    @ManyToMany()
+    @ManyToMany(cascade = CascadeType.ALL)
     public List<Precinct> getNeighbours() {
         return neighbours;
     }

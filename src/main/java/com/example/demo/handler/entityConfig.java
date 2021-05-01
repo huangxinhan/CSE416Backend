@@ -23,7 +23,7 @@ public class entityConfig {
 
     @Bean
     CommandLineRunner commandLineRunner(precintRepository precinctRepository, countyRepository countyRepository, DistrictRepository districtRepository) throws IOException, ParseException {
-        Object obj = new JSONParser().parse(new FileReader("/Users/Zino/Downloads/CSE416Backend/src/main/java/com/example/demo/orgJson/PA_precincts_with_incumbents.json"));
+        Object obj = new JSONParser().parse(new FileReader("src/main/java/com/example/demo/orgJson/PA_precincts_with_incumbents.json"));
 
         JSONObject jo = (JSONObject) obj;
 
@@ -280,7 +280,7 @@ public class entityConfig {
             }
 
 //            countyRepository.saveAll(allcounty.values());
-//            districtRepository.saveAll(alldistrict.values());
+            //districtRepository.saveAll(alldistrict.values());
             //precinctRepository.saveAll(allprecinct.values());
 
            /////////////////////////////////////
@@ -317,7 +317,8 @@ public class entityConfig {
 
             }
 
-            //precinctRepository.saveAll(allprecinct.values());
+            //System.out.println(alldistrict);
+            precinctRepository.saveAll(allprecinct.values());
             countyRepository.saveAll(allcounty.values());
             districtRepository.saveAll(alldistrict.values());
         };
