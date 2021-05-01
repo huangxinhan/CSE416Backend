@@ -148,7 +148,16 @@ public class ConstrainedDistrictings {
     }
 
     public void calculateMeans(ArrayList<ArrayList<Double>> percentageList){
-
+        ArrayList<Double> means = new ArrayList<>();
+        for (int i = 0; i < percentageList.size(); i++){
+            double sum = 0;
+            for (int j = 0; j < percentageList.get(i).size(); j++){
+                sum += percentageList.get(i).get(j);
+            }
+            double mean = sum / percentageList.get(i).size();
+            means.add(mean);
+        }
+        this.setMeans(means);
     }
 
     public void calculateClosestToAvgDistricting(ArrayList<ArrayList<Double>> percentageList){
