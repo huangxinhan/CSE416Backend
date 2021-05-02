@@ -301,7 +301,7 @@
 //            for (String i : allprecinct.keySet()) {
 //
 //                Precinct toProcess = precinctRepository.findById(i).get();
-//
+//                Precinct aa = allprecinct.get(i);
 //
 //                JSONObject jo4 = (JSONObject) obj4;
 //
@@ -323,101 +323,109 @@
 //                }
 //
 //                toProcess.setNeighbours(neighbours);
+//                aa.setNeighbours(neighbours);
 //                modifiedPrecincts.add(toProcess);
-//
-//
-//            }
-//
-//
-//            //System.out.println(alldistrict);
-//            precinctRepository.saveAll(modifiedPrecincts);
-//            //countyRepository.saveAll(allcounty.values());
-//            //districtRepository.saveAll(alldistrict.values());
-//
-//
-//            Districting de = new Districting("PAX");
-//
-//            List<District> result = districtRepository.findAll();
-//            ArrayList<District> dDistrict = new ArrayList<>();
-//            for(int i =0 ; i< result.size(); i++)
-//            {
-//                result.get(i).setDistrictingID(de);
-//                dDistrict.add(result.get(i));
-//
-//            }
-//
-//            de.setDistricts(dDistrict);
-//
-//            districtRepository.saveAll(dDistrict);
-//
-//            districtingRepository.save(de);
-//
-//
-//
-//            Object obj5 = new JSONParser().parse(new FileReader("src/main/java/com/example/demo/orgJson/pa_state_bound.json"));
-//
-//            JSONObject jo5 = (JSONObject) obj5;
-//
-//            JSONArray pArray5 = (JSONArray) jo5.get("features");
-//
-//            ArrayList<JSONObject> precincts5 = new ArrayList<JSONObject>();
-//
-//            for (int i = 0; i < pArray5.size(); i++) {
-//                precincts5.add((JSONObject) pArray5.get(i));
-//            }
-//            ArrayList<JSONObject> precinctProperties5 = new ArrayList<JSONObject>();
-//
-//            for (int i = 0; i < precincts5.size(); i++) {
-//                precinctProperties5.add((JSONObject) precincts5.get(i).get("properties"));
-//            }
-//
-//
-//            ArrayList<JSONObject> precinctGeos5 = new ArrayList<JSONObject>();
-//
-//            for (int i = 0; i < precincts5.size(); i++) {
-//                precinctGeos5.add((JSONObject) precincts5.get(i).get("geometry"));
 //            }
 //
 //
 //
-//            State newState = new State("PENNSYLVANIA");
-//
-//            Geometry newG = gReader.read(precinctGeos5.get(0).toString());
-//            newState.setStateBoundary(newG);
-//
-//            Districting a = districtingRepository.findById("PAX").get();
-//
-//            newState.setEnactedDistricting(a);
 //
 //
-//
-//            List<County> result3 = countyRepository.findAll();
-//            ArrayList<County> dcounty = new ArrayList<>();
-//            for(int i =0 ; i< result3.size(); i++)
-//            {
-//
-//                dcounty.add(result3.get(i));
-//
-//            }
-//
-//            newState.setCounties(dcounty);
-//
-//            List<Precinct> result1 = precinctRepository.findAll();
-//            ArrayList<Precinct> dcounty1 = new ArrayList<>();
-//            for(int i =0 ; i< result1.size(); i++)
-//            {
-//
-//                dcounty1.add(result1.get(i));
-//
-//            }
-//
-//            newState.setPrecincts(result1);
-//
-//
-//            stateRepository.save(newState);
-//
-//
-//
-//        };
-//    }
-//}
+////
+////
+////
+////            }
+////
+////
+////            //System.out.println(alldistrict);
+////            precinctRepository.saveAll(modifiedPrecincts);
+////            //countyRepository.saveAll(allcounty.values());
+////            //districtRepository.saveAll(alldistrict.values());
+////
+////
+////            Districting de = new Districting("PAX");
+////
+////            List<District> result = districtRepository.findAll();
+////            ArrayList<District> dDistrict = new ArrayList<>();
+////            for(int i =0 ; i< result.size(); i++)
+////            {
+////                result.get(i).setDistrictingID(de);
+////                dDistrict.add(result.get(i));
+////
+////            }
+////
+////            de.setDistricts(dDistrict);
+////
+////            districtRepository.saveAll(dDistrict);
+////
+////            districtingRepository.save(de);
+////
+////
+////
+////            Object obj5 = new JSONParser().parse(new FileReader("src/main/java/com/example/demo/orgJson/pa_state_bound.json"));
+////
+////            JSONObject jo5 = (JSONObject) obj5;
+////
+////            JSONArray pArray5 = (JSONArray) jo5.get("features");
+////
+////            ArrayList<JSONObject> precincts5 = new ArrayList<JSONObject>();
+////
+////            for (int i = 0; i < pArray5.size(); i++) {
+////                precincts5.add((JSONObject) pArray5.get(i));
+////            }
+////            ArrayList<JSONObject> precinctProperties5 = new ArrayList<JSONObject>();
+////
+////            for (int i = 0; i < precincts5.size(); i++) {
+////                precinctProperties5.add((JSONObject) precincts5.get(i).get("properties"));
+////            }
+////
+////
+////            ArrayList<JSONObject> precinctGeos5 = new ArrayList<JSONObject>();
+////
+////            for (int i = 0; i < precincts5.size(); i++) {
+////                precinctGeos5.add((JSONObject) precincts5.get(i).get("geometry"));
+////            }
+////
+////
+////
+////            State newState = new State("PENNSYLVANIA");
+////
+////            Geometry newG = gReader.read(precinctGeos5.get(0).toString());
+////            newState.setStateBoundary(newG);
+////
+////            Districting a = districtingRepository.findById("PAX").get();
+////
+////            newState.setEnactedDistricting(a);
+////
+////
+////
+////            List<County> result3 = countyRepository.findAll();
+////            ArrayList<County> dcounty = new ArrayList<>();
+////            for(int i =0 ; i< result3.size(); i++)
+////            {
+////
+////                dcounty.add(result3.get(i));
+////
+////            }
+////
+////            newState.setCounties(dcounty);
+////
+////            List<Precinct> result1 = precinctRepository.findAll();
+////            ArrayList<Precinct> dcounty1 = new ArrayList<>();
+////            for(int i =0 ; i< result1.size(); i++)
+////            {
+////
+////                dcounty1.add(result1.get(i));
+////
+////            }
+////
+////            newState.setPrecincts(result1);
+////
+////
+////            stateRepository.save(newState);
+////
+////
+////
+////        };
+////    }
+////}

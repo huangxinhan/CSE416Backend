@@ -45,7 +45,8 @@ public class StateHandler {
 
 
 
-        System.out.println(PA.getEnactedDistricting().getDistricts().get(0).getPrecincts());
+        //System.out.println(PA.getEnactedDistricting().getDistricts().get(0).getPrecincts());
+        System.out.println(PA.getCounties());
 
         return null;
     }

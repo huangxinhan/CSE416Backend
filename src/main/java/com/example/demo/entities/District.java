@@ -280,7 +280,7 @@ public class District implements Serializable{
         //first we need to convert the coordinates into a geometry object
         Geometry[] precinctGeometries = new Geometry[this.getEdgeNodes().size()];
         for (int i = 0; i < this.getEdgeNodes().size(); i++){
-            precinctGeometries[i] = this.getPrecincts().get(i).getCoordinates();
+            precinctGeometries[i] = this.getEdgeNodes().get(i).getCoordinates();
         }
         GeometryCollection geometryCollection = new GeometryCollection(precinctGeometries, new GeometryFactory());
         Geometry union = geometryCollection.union();
