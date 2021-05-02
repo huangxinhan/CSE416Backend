@@ -108,7 +108,7 @@ public class Precinct implements Serializable{
     }
 
     @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-
+    @Fetch(value = FetchMode.SUBSELECT)
     public List<District> getDistrictCollection() {
         return DistrictCollection;
     }

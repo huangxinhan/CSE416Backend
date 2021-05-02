@@ -122,7 +122,7 @@ public class State implements Serializable{
     }
 
     @OneToMany()
-    @Fetch(value = FetchMode.SUBSELECT)
+    //@Fetch(value = FetchMode.SUBSELECT)
     public List<County> getCounties() {
         return counties;
     }
