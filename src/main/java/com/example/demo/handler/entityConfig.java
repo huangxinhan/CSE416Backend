@@ -61,25 +61,25 @@ public class entityConfig {
 
         ArrayList<ArrayList<ArrayList<Double>>> coordinatesColletion = new ArrayList<ArrayList<ArrayList<Double>>>();
 
-
-        for (int k = 0; k < coordinatesJSON.size(); k++) {
-            JSONArray realList = (JSONArray) coordinatesJSON.get(k).get(0);
-            ArrayList<ArrayList<Double>> coordinates = new ArrayList<ArrayList<Double>>();
-            for (int i = 0; i < realList.size(); i++) {
-                JSONArray realPair = (JSONArray) realList.get(i);
-
-                ArrayList<Double> inner = new ArrayList<Double>();
-
-                for (int j = 0; j < realPair.size(); j++) {
-                    inner.add((Double) realPair.get(j));
-                }
-
-                coordinates.add(inner);
-            }
-
-            coordinatesColletion.add(coordinates);
-
-        }
+//
+//        for (int k = 0; k < coordinatesJSON.size(); k++) {
+//            JSONArray realList = (JSONArray) coordinatesJSON.get(k).get(0);
+//            ArrayList<ArrayList<Double>> coordinates = new ArrayList<ArrayList<Double>>();
+//            for (int i = 0; i < realList.size(); i++) {
+//                JSONArray realPair = (JSONArray) realList.get(i);
+//
+//                ArrayList<Double> inner = new ArrayList<Double>();
+//
+//                for (int j = 0; j < realPair.size(); j++) {
+//                    inner.add((Double) realPair.get(j));
+//                }
+//
+//                coordinates.add(inner);
+//            }
+//
+//            coordinatesColletion.add(coordinates);
+//
+//        }
 
 ///////////////district////////////////
         Object obj2 = new JSONParser().parse(new FileReader("src/main/java/com/example/demo/orgJson/PA_cd.json"));
@@ -116,25 +116,25 @@ public class entityConfig {
 
         ArrayList<ArrayList<ArrayList<Double>>> coordinatesColletion2 = new ArrayList<ArrayList<ArrayList<Double>>>();
 
-
-        for (int k = 0; k < coordinatesJSON2.size(); k++) {
-            JSONArray realList = (JSONArray) coordinatesJSON2.get(k).get(0);
-            ArrayList<ArrayList<Double>> coordinates = new ArrayList<ArrayList<Double>>();
-            for (int i = 0; i < realList.size(); i++) {
-                JSONArray realPair = (JSONArray) realList.get(i);
-
-                ArrayList<Double> inner = new ArrayList<Double>();
-
-                for (int j = 0; j < realPair.size(); j++) {
-                    inner.add((Double) realPair.get(j));
-                }
-
-                coordinates.add(inner);
-            }
-
-            coordinatesColletion2.add(coordinates);
-
-        }
+//
+//        for (int k = 0; k < coordinatesJSON2.size(); k++) {
+//            JSONArray realList = (JSONArray) coordinatesJSON2.get(k).get(0);
+//            ArrayList<ArrayList<Double>> coordinates = new ArrayList<ArrayList<Double>>();
+//            for (int i = 0; i < realList.size(); i++) {
+//                JSONArray realPair = (JSONArray) realList.get(i);
+//
+//                ArrayList<Double> inner = new ArrayList<Double>();
+//
+//                for (int j = 0; j < realPair.size(); j++) {
+//                    inner.add((Double) realPair.get(j));
+//                }
+//
+//                coordinates.add(inner);
+//            }
+//
+//            coordinatesColletion2.add(coordinates);
+//
+//        }
 ///////////////district////////////////
 
 ///////////////county////////////////
@@ -173,24 +173,24 @@ public class entityConfig {
         ArrayList<ArrayList<ArrayList<Double>>> coordinatesColletion3 = new ArrayList<ArrayList<ArrayList<Double>>>();
 
 
-        for (int k = 0; k < coordinatesJSON3.size(); k++) {
-            JSONArray realList = (JSONArray) coordinatesJSON3.get(k).get(0);
-            ArrayList<ArrayList<Double>> coordinates = new ArrayList<ArrayList<Double>>();
-            for (int i = 0; i < realList.size(); i++) {
-                JSONArray realPair = (JSONArray) realList.get(i);
-
-                ArrayList<Double> inner = new ArrayList<Double>();
-
-                for (int j = 0; j < realPair.size(); j++) {
-                    inner.add((Double) realPair.get(j));
-                }
-
-                coordinates.add(inner);
-            }
-
-            coordinatesColletion3.add(coordinates);
-
-        }
+//        for (int k = 0; k < coordinatesJSON3.size(); k++) {
+//            JSONArray realList = (JSONArray) coordinatesJSON3.get(k).get(0);
+//            ArrayList<ArrayList<Double>> coordinates = new ArrayList<ArrayList<Double>>();
+//            for (int i = 0; i < realList.size(); i++) {
+//                JSONArray realPair = (JSONArray) realList.get(i);
+//
+//                ArrayList<Double> inner = new ArrayList<Double>();
+//
+//                for (int j = 0; j < realPair.size(); j++) {
+//                    inner.add((Double) realPair.get(j));
+//                }
+//
+//                coordinates.add(inner);
+//            }
+//
+//            coordinatesColletion3.add(coordinates);
+//
+//        }
 
 ///////////////county////////////////
 
