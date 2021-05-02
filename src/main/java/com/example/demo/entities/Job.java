@@ -29,6 +29,10 @@ public class Job implements Serializable{
     private HashMap<String, String> mgggParams;
     private String stateName;
     private Enum<RaceType> raceType;
+    private int filteredByMMDCount;
+    private int filteredByPopConstraintCount;
+    private int filteredByCompactnessCount;
+    private int filteredByIncumbentCount;
 
     public Job(){
 
@@ -180,6 +184,41 @@ public class Job implements Serializable{
         this.raceType = raceType;
     }
 
+    @Transient
+    public int getFilteredByMMDCount() {
+        return filteredByMMDCount;
+    }
+
+    public void setFilteredByMMDCount(int filteredByMMDCount) {
+        this.filteredByMMDCount = filteredByMMDCount;
+    }
+    @Transient
+    public int getFilteredByPopConstraintCount() {
+        return filteredByPopConstraintCount;
+    }
+
+    public void setFilteredByPopConstraintCount(int filteredByPopConstraintCount) {
+        this.filteredByPopConstraintCount = filteredByPopConstraintCount;
+    }
+
+    @Transient
+    public int getFilteredByCompactnessCount() {
+        return filteredByCompactnessCount;
+    }
+
+    public void setFilteredByCompactnessCount(int filteredByCompactnessCount) {
+        this.filteredByCompactnessCount = filteredByCompactnessCount;
+    }
+
+    @Transient
+    public int getFilteredByIncumbentCount() {
+        return filteredByIncumbentCount;
+    }
+
+    public void setFilteredByIncumbentCount(int filteredByIncumbentCount) {
+        this.filteredByIncumbentCount = filteredByIncumbentCount;
+    }
+
     public void calculateTopDistrictingsByOF(HashMap<Measures, Double> measures, Enum<RaceType> raceType) {
 
     }
@@ -216,6 +255,7 @@ public class Job implements Serializable{
     }
 
     public void filterMajorityMinorityDistrictings(){
+        int counter = 0;
         RaceType race = constraints.getMinorityType();
         double majorMinorThres = constraints.getMajorMinorThres();
         int numberOfMMDistricts = constraints.getNumberOfMajorityMinorityDistricts();
@@ -224,10 +264,15 @@ public class Job implements Serializable{
             if (number >= numberOfMMDistricts){
                 this.getConstrainedDistrictings().getDistrictings().add(this.getDistrictings().get(i));
             }
+            else{
+                counter++;
+            }
         }
+        this.setFilteredByMMDCount(counter);
     }
 
     public void filterPopulationEqualityDistrictings(){
+        int counter = 0;
         PopulationType populationType = constraints.getPopulationType();
         double populationEqualityThres = constraints.getPopulationEqualityThres();
         ArrayList<Districting> tempDistrictings = new ArrayList<>();
@@ -235,7 +280,27 @@ public class Job implements Serializable{
             if (this.getConstrainedDistrictings().getDistrictings().get(i).calculatePopulationConstraint(populationType, populationEqualityThres) == true){
                 tempDistrictings.add(this.getConstrainedDistrictings().getDistrictings().get(i));
             }
+            else{
+                counter++;
+            }
         }
+        this.setFilteredByPopConstraintCount(counter);
+        this.getConstrainedDistrictings().setDistrictings(tempDistrictings);
+    }
+
+    public void filterIncumbentProtectionDistrictings(){
+        int counter = 0;
+        ArrayList<String> protectedIncumbents = this.getConstraints().getProtectedIncumbents();
+        ArrayList<Districting> tempDistrictings = new ArrayList<>();
+        for (int i = 0; i < this.getConstrainedDistrictings().getDistrictings().size(); i++){
+            if (this.getConstrainedDistrictings().getDistrictings().get(i).calculateIncumbentDistricts(protectedIncumbents) == false){
+                tempDistrictings.add(this.getConstrainedDistrictings().getDistrictings().get(i));
+            }
+            else{
+                counter++;
+            }
+        }
+        this.setFilteredByIncumbentCount(counter);
         this.getConstrainedDistrictings().setDistrictings(tempDistrictings);
     }
 

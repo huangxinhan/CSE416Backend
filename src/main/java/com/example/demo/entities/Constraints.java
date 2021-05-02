@@ -16,6 +16,7 @@ public class Constraints {
     private double populationEqualityThres;
     private Long populationValue;
     private ArrayList<Boolean> incumbentValue;
+    private ArrayList<String> protectedIncumbents;
 
     public Constraints(){
 
@@ -101,5 +102,13 @@ public class Constraints {
 
     public void setNumberOfMajorityMinorityDistricts(int numberOfMajorityMinorityDistricts) {
         this.numberOfMajorityMinorityDistricts = numberOfMajorityMinorityDistricts;
+    }
+
+    public ArrayList<String> getProtectedIncumbents() {
+        return protectedIncumbents;
+    }
+
+    public void setProtectedIncumbents(ArrayList<String> protectedIncumbents) {
+        this.protectedIncumbents = protectedIncumbents;
     }
 }

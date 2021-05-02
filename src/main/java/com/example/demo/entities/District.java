@@ -230,6 +230,19 @@ public class District implements Serializable{
         this.setInvolvedCounties(counties);
     }
 
+    public boolean hasMultipleIncumbents(ArrayList<String> protectedIncumbents){
+        int counter = 0;
+        for (int i = 0; i < this.getPrecincts().size(); i++){
+            if (protectedIncumbents.contains(this.getPrecincts().get(i).getIncumbentName())){
+                counter++;
+            }
+            if (counter == 2){
+                return true;
+            }
+        }
+        return false;
+    }
+
     //call this first
     public void calculateAllPopulation(){
         Long tempTotalPop = 0l;

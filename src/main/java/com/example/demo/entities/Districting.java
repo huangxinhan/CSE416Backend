@@ -268,4 +268,14 @@ public class Districting implements Serializable{
         }
         return false;
     }
+
+    public boolean calculateIncumbentDistricts(ArrayList<String> protectedIncumbents){
+        //Iterate through all the district's precincts to see if there are two protected incumbents in the same district
+        for (int i = 0; i < this.getDistricts().size(); i++){
+            if (this.getDistricts().get(i).hasMultipleIncumbents(protectedIncumbents) == true){
+                return true;
+            }
+        }
+        return false;
+    }
 }
