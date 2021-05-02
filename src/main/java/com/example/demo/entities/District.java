@@ -209,7 +209,7 @@ public class District implements Serializable{
         this.setPrecincts((temp));
     }
 
-    public void calculateEdgeNodes(){
+    public ArrayList<Precinct> calculateEdgeNodes(){
         ArrayList<Precinct> edgeNodes = new ArrayList<Precinct>();
         for (int i = 0; i < this.getPrecincts().size(); i++){
             if(this.getPrecincts().get(i).getOnEdge() == true){
@@ -217,6 +217,7 @@ public class District implements Serializable{
             }
         }
         this.setEdgeNodes(edgeNodes);
+        return edgeNodes;
     }
 
     public void calculateInvolvedCounties(){

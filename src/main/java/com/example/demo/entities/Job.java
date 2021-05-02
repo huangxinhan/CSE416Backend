@@ -256,9 +256,9 @@ public class Job implements Serializable{
 
     public void filterMajorityMinorityDistrictings(){
         int counter = 0;
-        RaceType race = constraints.getMinorityType();
-        double majorMinorThres = constraints.getMajorMinorThres();
-        int numberOfMMDistricts = constraints.getNumberOfMajorityMinorityDistricts();
+        RaceType race = this.getConstraints().getMinorityType();
+        double majorMinorThres = this.getConstraints().getMajorMinorThres();
+        int numberOfMMDistricts = this.getConstraints().getNumberOfMajorityMinorityDistricts();
         for (int i = 0; i < this.getDistrictings().size(); i++){
             int number = this.getDistrictings().get(i).calculateNumberOfMajorityMinorityDistricts(race, majorMinorThres);
             if (number >= numberOfMMDistricts){
@@ -273,8 +273,8 @@ public class Job implements Serializable{
 
     public void filterPopulationEqualityDistrictings(){
         int counter = 0;
-        PopulationType populationType = constraints.getPopulationType();
-        double populationEqualityThres = constraints.getPopulationEqualityThres();
+        PopulationType populationType = this.getConstraints().getPopulationType();
+        double populationEqualityThres = this.getConstraints().getPopulationEqualityThres();
         ArrayList<Districting> tempDistrictings = new ArrayList<>();
         for (int i = 0; i < this.getConstrainedDistrictings().getDistrictings().size(); i++){
             if (this.getConstrainedDistrictings().getDistrictings().get(i).calculatePopulationConstraint(populationType, populationEqualityThres) == true){
@@ -301,6 +301,24 @@ public class Job implements Serializable{
             }
         }
         this.setFilteredByIncumbentCount(counter);
+        this.getConstrainedDistrictings().setDistrictings(tempDistrictings);
+    }
+
+    public void filterGraphCompactness(){
+        int counter = 0;
+        double compactnessValue = this.getConstraints().getCompactnessValue();
+        ArrayList<Districting> tempDistrictings = new ArrayList<>();
+        //we calculate graph compactness, which is the ratio of edge nodes in a graph over total nodes in a graph
+        for (int i = 0; i < this.getConstrainedDistrictings().getDistrictings().size(); i++){
+            double compactness = this.getConstrainedDistrictings().getDistrictings().get(i).calculateGraphCompactness();
+            if (compactness >= compactnessValue){
+                tempDistrictings.add(this.getConstrainedDistrictings().getDistrictings().get(i));
+            }
+            else{
+                counter++;
+            }
+        }
+        this.setFilteredByCompactnessCount(counter);
         this.getConstrainedDistrictings().setDistrictings(tempDistrictings);
     }
 

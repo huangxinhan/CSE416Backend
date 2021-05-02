@@ -278,4 +278,19 @@ public class Districting implements Serializable{
         }
         return false;
     }
+
+    public double calculateGraphCompactness(){
+        ArrayList<Double> compactnessArray = new ArrayList<>();
+        for (int i = 0; i < this.getDistricts().size(); i++){
+            ArrayList<Precinct> edgeNodes = this.getDistricts().get(i).calculateEdgeNodes();
+            double compactness = edgeNodes.size()/this.getDistricts().get(i).getPrecincts().size();
+            compactnessArray.add(compactness);
+        }
+        //now that we have the compactness, we add all of them together then divide by the array size
+        double totalCompactness = 0;
+        for (int i = 0; i < compactnessArray.size(); i++){
+            totalCompactness += compactnessArray.get(i);
+        }
+        return totalCompactness/compactnessArray.size();
+    }
 }
