@@ -1,5 +1,6 @@
 package com.example.demo.entities;
 
+import com.example.demo.entities.enums.PopulationType;
 import com.example.demo.entities.enums.RaceType;
 
 import javax.persistence.*;
@@ -236,5 +237,35 @@ public class Districting implements Serializable{
                 }
             }
         return numberOfMajorMinorDistricts;
+    }
+
+    public boolean calculatePopulationConstraint(PopulationType popType, double threshold){
+        //iterate through all the districts to find the most populous and least populous districts
+        Long mostPopulousPopulation = 0l;
+        Long leastPopulousPopulation = 0l;
+        for (int i = 0; i < this.getDistricts().size(); i++){
+            if (popType == PopulationType.TOTAL){
+                if (this.getDistricts().get(i).getTotalPopulation() > mostPopulousPopulation){
+                    mostPopulousPopulation = this.getDistricts().get(i).getTotalPopulation();
+                }
+                if (this.getDistricts().get(i).getTotalPopulation() < leastPopulousPopulation){
+                    leastPopulousPopulation = this.getDistricts().get(i).getTotalPopulation();
+                }
+            }
+            else if (popType == PopulationType.VAP){
+                if (this.getDistricts().get(i).getVotingAgePopulation() > mostPopulousPopulation){
+                    mostPopulousPopulation = this.getDistricts().get(i).getVotingAgePopulation();
+                }
+                if (this.getDistricts().get(i).getVotingAgePopulation() < leastPopulousPopulation){
+                    leastPopulousPopulation = this.getDistricts().get(i).getVotingAgePopulation();
+                }
+            }
+        }
+        //the percent difference in this case is 100 x abs(A-B)/((A+B)/2))
+        double percentDifference = 100 * Math.abs((mostPopulousPopulation - leastPopulousPopulation)/((mostPopulousPopulation + leastPopulousPopulation)/2));
+        if (percentDifference < threshold){
+            return true;
+        }
+        return false;
     }
 }

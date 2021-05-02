@@ -20,6 +20,7 @@ public class District implements Serializable{
     private boolean isHigherThanPopThreshold;
     private ArrayList< ArrayList<Double> > borderGeometry;
     private Long totalPopulation;
+    private Long votingAgePopulation;
     private Long AfricanAmericanPopulation;
     private Long AsianPopulation;
     private Long HispanicPopulation;
@@ -126,6 +127,12 @@ public class District implements Serializable{
     public void setTotalPopulation(Long totalPopulation) {
         this.totalPopulation = totalPopulation;
     }
+
+    @Transient
+    public Long getVotingAgePopulation(){return votingAgePopulation;}
+
+    public void setVotingAgePopulation(Long votingAgePopulation){this.votingAgePopulation = votingAgePopulation;}
+
     @Transient
     public Long getAfricanAmericanPopulation() {
         return AfricanAmericanPopulation;
@@ -226,18 +233,21 @@ public class District implements Serializable{
     //call this first
     public void calculateAllPopulation(){
         Long tempTotalPop = 0l;
+        Long tempVotingAgePopulation = 0l;
         Long tempAfricanAmericanPop = 0l;
         Long tempAsianPop = 0l;
         Long tempHispanicPop = 0l;
 
         for (int i = 0; i < this.getPrecincts().size(); i++){
             tempTotalPop += this.precincts.get(i).getTotalPopulation();
+            tempVotingAgePopulation += this.precincts.get(i).getVotingAgePopulation();
             tempAfricanAmericanPop += this.precincts.get(i).getAfricanAmericanPopulation();
             tempAsianPop  += this.precincts.get(i).getAsianPopulation();
             tempHispanicPop += this.precincts.get(i).getHispanicPopulation();
         }
 
         this.setTotalPopulation(tempTotalPop);
+        this.setVotingAgePopulation(tempVotingAgePopulation);
         this.setAfricanAmericanPopulation(tempAfricanAmericanPop);
         this.setAsianPopulation(tempAsianPop);
         this.setHispanicPopulation(tempHispanicPop);

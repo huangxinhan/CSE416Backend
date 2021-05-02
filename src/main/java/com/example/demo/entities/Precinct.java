@@ -14,6 +14,7 @@ public class Precinct implements Serializable{
     private List<District> DistrictCollection = new ArrayList<District>();
     private String precinctID;
     private Long totalPopulation;
+    private Long votingAgePopulation;
     private Long AfricanAmericanPopulation;
     private Long AsianPopulation;
     private Long HispanicPopulation;
@@ -58,9 +59,10 @@ public class Precinct implements Serializable{
 //        this.coordinates = coordinates;
 //    }
 //
-//    public Precinct(String precinctID, Long totalPopulation, Long AfricanAmericanPopulation, Long AsianPopulation, Long HispanicPopulation, County countyID, ArrayList<String> neighbours, ArrayList<ArrayList<Double>> coordinates) {
+//    public Precinct(String precinctID, Long totalPopulation, Long votingAgePopulation, Long AfricanAmericanPopulation, Long AsianPopulation, Long HispanicPopulation, County countyID, ArrayList<String> neighbours, ArrayList<ArrayList<Double>> coordinates) {
 //        this.precinctID = precinctID;
 //        this.totalPopulation = totalPopulation;
+    //    this.votingAgePopulation = votingAgePopulation;
 //        this.AfricanAmericanPopulation = AfricanAmericanPopulation;
 //        this.AsianPopulation = AsianPopulation;
 //        this.HispanicPopulation = HispanicPopulation;
@@ -134,6 +136,10 @@ public class Precinct implements Serializable{
     public void setTotalPopulation(Long totalPopulation) {
         this.totalPopulation = totalPopulation;
     }
+
+    public Long getVotingAgePopulation(){ return votingAgePopulation;};
+
+    public void setVotingAgePopulation(Long votingAgePopulation){this.votingAgePopulation = votingAgePopulation;}
 
     public Long getAfricanAmericanPopulation() {
         return this.AfricanAmericanPopulation;

@@ -1,5 +1,6 @@
 package com.example.demo.entities;
 import com.example.demo.entities.enums.Measures;
+import com.example.demo.entities.enums.PopulationType;
 import com.example.demo.entities.enums.RaceType;
 
 import javax.persistence.*;
@@ -226,7 +227,19 @@ public class Job implements Serializable{
         }
     }
 
-    
+    public void filterPopulationEqualityDistrictings(){
+        PopulationType populationType = constraints.getPopulationType();
+        double populationEqualityThres = constraints.getPopulationEqualityThres();
+        ArrayList<Districting> tempDistrictings = new ArrayList<>();
+        for (int i = 0; i < this.getConstrainedDistrictings().getDistrictings().size(); i++){
+            if (this.getConstrainedDistrictings().getDistrictings().get(i).calculatePopulationConstraint(populationType, populationEqualityThres) == true){
+                tempDistrictings.add(this.getConstrainedDistrictings().getDistrictings().get(i));
+            }
+        }
+        this.getConstrainedDistrictings().setDistrictings(tempDistrictings);
+    }
+
+
 
 
 
