@@ -61,8 +61,8 @@ public class State implements Serializable{
         this.precincts = precincts;
     }
 
-    @OneToMany(fetch = FetchType.EAGER)
-    @Fetch(value = FetchMode.SUBSELECT)
+    @OneToMany()
+
     public List<Job> getJobs() {
         return jobs;
     }
@@ -80,7 +80,7 @@ public class State implements Serializable{
     }
 
     @OneToOne(fetch = FetchType.EAGER)
-    //@Fetch(value = FetchMode.SUBSELECT)
+
     public Districting getEnactedDistricting() {
         return enactedDistricting;
     }

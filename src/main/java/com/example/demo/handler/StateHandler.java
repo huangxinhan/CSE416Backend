@@ -44,8 +44,9 @@ public class StateHandler {
     {
 
 
-        Hibernate.initialize(PA.getPrecincts().get(0).getNeighbours());
-        System.out.println(PA.getPrecincts().get(0).getNeighbours());
+
+        System.out.println(PA.getEnactedDistricting().getDistricts().get(0).getPrecincts());
+
         return null;
     }
     public State getState()
