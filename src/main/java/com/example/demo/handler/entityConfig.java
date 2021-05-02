@@ -320,6 +320,62 @@ public class entityConfig {
             //districtRepository.saveAll(alldistrict.values());
 
 
+            Districting de = new Districting("PAX");
+
+            List<District> result = districtRepository.findAll();
+            ArrayList<District> dDistrict = new ArrayList<>();
+            for(int i =0 ; i< result.size(); i++)
+            {
+                result.get(i).setDistrictingID(de);
+                dDistrict.add(result.get(i));
+
+            }
+
+            de.setDistricts(dDistrict);
+
+            districtRepository.saveAll(dDistrict);
+
+            districtingRepository.save(de);
+
+
+
+            State newState = new State("PENNSYLVANIA");
+
+            newState.setStateBoundary(coordinatesColletion.get(0));
+
+            Districting a = districtingRepository.findById("PAX").get();
+
+            newState.setEnactedDistricting(a);
+
+
+
+            List<County> result3 = countyRepository.findAll();
+            ArrayList<County> dcounty = new ArrayList<>();
+            for(int i =0 ; i< result3.size(); i++)
+            {
+
+                dcounty.add(result3.get(i));
+
+            }
+
+            newState.setCounties(dcounty);
+
+            List<Precinct> result1 = precinctRepository.findAll();
+            ArrayList<Precinct> dcounty1 = new ArrayList<>();
+            for(int i =0 ; i< result1.size(); i++)
+            {
+
+                dcounty1.add(result1.get(i));
+
+            }
+
+            newState.setPrecincts(result1);
+
+
+            stateRepository.save(newState);
+
+
+
         };
     }
 }
