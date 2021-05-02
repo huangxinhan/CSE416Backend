@@ -26,6 +26,7 @@ public class Job implements Serializable{
     private ArrayList<Districting> topDistrictingsByCompactness;
     private ArrayList<Districting> topDistrictingsByAreaPairDeviation;
     private ArrayList<Districting> topDistrictingsBySimilarity;
+    @ElementCollection
     private List<String> mgggParams;
     private String stateName;
     private Enum<RaceType> raceType;
