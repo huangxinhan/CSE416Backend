@@ -322,6 +322,12 @@ public class Job implements Serializable{
         this.getConstrainedDistrictings().setDistrictings(tempDistrictings);
     }
 
+    public void calculateDistrictingGeometry(Districting districting){
+        for (int i = 0; i < districting.getDistricts().size(); i++){
+            districting.getDistricts().get(i).calculateDistrictGeometry();
+        }
+    }
+
 
 
 

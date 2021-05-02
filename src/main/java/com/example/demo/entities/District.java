@@ -266,6 +266,10 @@ public class District implements Serializable{
         this.setAsianPopulation(tempAsianPop);
         this.setHispanicPopulation(tempHispanicPop);
     }
+
+    public void calculateDistrictGeometry(){
+
+    }
 }
 
 
