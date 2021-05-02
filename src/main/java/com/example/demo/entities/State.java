@@ -121,7 +121,7 @@ public class State implements Serializable{
         this.currentDistricting = currentDistricting;
     }
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany()
     @Fetch(value = FetchMode.SUBSELECT)
     public List<County> getCounties() {
         return counties;
