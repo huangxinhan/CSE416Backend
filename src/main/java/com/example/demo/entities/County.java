@@ -26,7 +26,7 @@ public class County implements Serializable {
         this.countyID = countyID;
     }
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
 
     public List<Precinct> getPrecincts() {
         return precincts;

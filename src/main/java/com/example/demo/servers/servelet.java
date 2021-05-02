@@ -1,6 +1,9 @@
 package com.example.demo.servers;
 import java.util.*;
+
+import com.example.demo.entities.County;
 import com.example.demo.entities.Precinct;
+import com.example.demo.entities.State;
 import com.example.demo.handler.StateHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -25,9 +28,9 @@ public class servelet {
     }
 
     @RequestMapping("/index")
-    String index(){
-        //mapped to hostname:port/home/index/
-        return "Hello from index";
+    public List<County> getState()
+    {
+       return (stateHandler.getState().getCounties());
     }
     @PostMapping()
     public void addMember(@RequestBody String state) {

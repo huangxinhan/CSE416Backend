@@ -73,7 +73,7 @@ public class State implements Serializable{
         this.currentJob = currentJob;
     }
 
-    @OneToOne
+    @OneToOne()
     public Districting getEnactedDistricting() {
         return enactedDistricting;
     }
@@ -114,7 +114,7 @@ public class State implements Serializable{
         this.currentDistricting = currentDistricting;
     }
 
-    @OneToMany()
+    @OneToMany(fetch = FetchType.EAGER)
     public List<County> getCounties() {
         return counties;
     }

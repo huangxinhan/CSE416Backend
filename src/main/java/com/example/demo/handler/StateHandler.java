@@ -1,6 +1,7 @@
 package com.example.demo.handler;
 
 import com.example.demo.entities.Precinct;
+import com.example.demo.entities.State;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +16,7 @@ public class StateHandler {
     private final countyRepository countyRepository;
     private final JobRepository jobRepository;
     private final StateRepository stateRepository;
+    private State PA ;
 
 
 
@@ -26,6 +28,7 @@ public class StateHandler {
         this.countyRepository = countyRepository;
         this.jobRepository = jobRepository;
         this.stateRepository = stateRepository;
+        this.PA= this.stateRepository.findById("PENNSYLVANIA").get();
     }
 
 
@@ -35,4 +38,10 @@ public class StateHandler {
 
         return precintRepository.findAll();
     }
+    public State getState()
+    {
+
+        return PA;
+    }
+
 }
