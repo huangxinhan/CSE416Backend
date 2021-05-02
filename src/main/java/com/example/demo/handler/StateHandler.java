@@ -2,11 +2,15 @@ package com.example.demo.handler;
 
 import com.example.demo.entities.Precinct;
 import com.example.demo.entities.State;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import static org.junit.Assert.assertEquals;
 
 @Component
 @Transactional
@@ -31,14 +35,17 @@ public class StateHandler {
         this.countyRepository = countyRepository;
         this.jobRepository = jobRepository;
         this.stateRepository = stateRepository;
-        //this.PA= this.stateRepository.findById("PENNSYLVANIA").get();
+        this.PA= this.stateRepository.findById("PENNSYLVANIA").get();
+
     }
 
     @Transactional
     public List<Precinct> getPrecint()
     {
 
-        System.out.println(PA.getCounties());
+
+        Hibernate.initialize(PA.getPrecincts().get(0).getNeighbours());
+        System.out.println(PA.getPrecincts().get(0).getNeighbours());
         return null;
     }
     public State getState()

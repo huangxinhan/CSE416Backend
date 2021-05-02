@@ -4,6 +4,7 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.locationtech.jts.geom.Geometry;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -96,8 +97,8 @@ public class Precinct implements Serializable{
         this.precinctID = precinctID;
     }
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    //@Fetch(value = FetchMode.SUBSELECT)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+
     public District getDefaultDistrictID() {
         return defaultDistrictID;
     }
@@ -106,7 +107,7 @@ public class Precinct implements Serializable{
         this.defaultDistrictID = defaultDistrictID;
     }
 
-    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @Fetch(value = FetchMode.SUBSELECT)
     public List<District> getDistrictCollection() {
         return DistrictCollection;
@@ -116,8 +117,8 @@ public class Precinct implements Serializable{
         DistrictCollection = districtID;
     }
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-   // @Fetch(value = FetchMode.SUBSELECT)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+
     public County getCountyID() {
         return countyID;
     }
@@ -181,6 +182,7 @@ public class Precinct implements Serializable{
 
     @ManyToMany()
     @Fetch(value = FetchMode.SUBSELECT)
+    @Transactional
     public List<Precinct> getNeighbours() {
         return neighbours;
     }

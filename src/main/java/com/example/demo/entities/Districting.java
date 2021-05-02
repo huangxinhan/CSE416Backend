@@ -54,7 +54,7 @@ public class Districting implements Serializable{
         this.districtingID = districtingID;
     }
 
-    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @Fetch(value = FetchMode.SUBSELECT)
     public List<District> getDistricts() {
         return districts;
