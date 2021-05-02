@@ -27,7 +27,7 @@ public class Job implements Serializable{
     private ArrayList<Districting> topDistrictingsByAreaPairDeviation;
     private ArrayList<Districting> topDistrictingsBySimilarity;
     @ElementCollection
-    private List<String> mgggParams;
+    private ArrayList<String> mgggParams;
     private String stateName;
     private Enum<RaceType> raceType;
     private int filteredByMMDCount;
@@ -39,7 +39,7 @@ public class Job implements Serializable{
 
     }
 
-    public Job(String JobID, List<Districting> districtings, List<String> mgggParams, String stateName){
+    public Job(String JobID, List<Districting> districtings, ArrayList<String> mgggParams, String stateName){
         this.jobID = jobID;
         this.districtings = districtings;
         this.mgggParams = mgggParams;
@@ -160,11 +160,11 @@ public class Job implements Serializable{
         this.topDistrictingsBySimilarity = topDistrictingsBySimilarity;
     }
 
-    public List< String> getMgggParams() {
+    public ArrayList< String> getMgggParams() {
         return mgggParams;
     }
 
-    public void setMgggParams(List<String> mgggParams) {
+    public void setMgggParams(ArrayList<String> mgggParams) {
         this.mgggParams = mgggParams;
     }
 

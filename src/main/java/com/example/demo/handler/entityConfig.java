@@ -276,9 +276,9 @@ public class entityConfig {
 
             }
 
-            //countyRepository.saveAll(allcounty.values());
+            countyRepository.saveAll(allcounty.values());
             districtRepository.saveAll(alldistrict.values());
-            precinctRepository.saveAll(allprecinct.values());
+           // precinctRepository.saveAll(allprecinct.values());
 
             /////////////////////////////////////
 
