@@ -4,10 +4,12 @@ import com.example.demo.entities.Precinct;
 import com.example.demo.entities.State;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Component
+@Transactional
 public class StateHandler {
 
     private final precintRepository precintRepository;
@@ -21,6 +23,7 @@ public class StateHandler {
 
 
     @Autowired
+
     public StateHandler(com.example.demo.handler.precintRepository precintRepository, DistrictingRepository districtingRepository, DistrictRepository districtRepository, com.example.demo.handler.countyRepository countyRepository, JobRepository jobRepository, StateRepository stateRepository) {
         this.precintRepository = precintRepository;
         this.districtingRepository = districtingRepository;
@@ -31,12 +34,11 @@ public class StateHandler {
         this.PA= this.stateRepository.findById("PENNSYLVANIA").get();
     }
 
-
+    @Transactional
     public List<Precinct> getPrecint()
     {
 
-        System.out.println(PA.getCounties().get(0).getPrecincts());
-        System.out.println(PA.getPrecincts());
+        System.out.println(PA.getCounties());
         return null;
     }
     public State getState()
