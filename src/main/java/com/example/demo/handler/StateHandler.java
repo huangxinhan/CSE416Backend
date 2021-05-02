@@ -31,7 +31,7 @@ public class StateHandler {
         this.countyRepository = countyRepository;
         this.jobRepository = jobRepository;
         this.stateRepository = stateRepository;
-        this.PA= this.stateRepository.findById("PENNSYLVANIA").get();
+        //this.PA= this.stateRepository.findById("PENNSYLVANIA").get();
     }
 
     @Transactional

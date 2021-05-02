@@ -179,7 +179,7 @@ public class Precinct implements Serializable{
 //        this.districtID = districtID;
 //    }
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany()
     @Fetch(value = FetchMode.SUBSELECT)
     public List<Precinct> getNeighbours() {
         return neighbours;

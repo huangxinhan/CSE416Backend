@@ -38,6 +38,6 @@ public class servelet {
 //
 //        for (String a : arrOfStr)
 //            System.out.println(a+"iiii");
-        System.out.println(state);
+        //System.out.println(state);
     }
 }

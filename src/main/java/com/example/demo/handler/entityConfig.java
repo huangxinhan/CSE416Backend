@@ -260,6 +260,8 @@ public class entityConfig {
 
                 newPrecinct.setHispanicPopulation((Long) precinctINFO.get("HISP"));
 
+                newPrecinct.setVotingAgePopulation((Long) precinctINFO.get("VAP"));
+
                 allprecinct.put(precintId, newPrecinct);
 
                 ////////////////////////////
@@ -351,7 +353,7 @@ public class entityConfig {
 
 
 
-            Object obj5 = new JSONParser().parse(new FileReader("src/main/java/com/example/demo/orgJson/PA_precincts_with_incumbents.json"));
+            Object obj5 = new JSONParser().parse(new FileReader("src/main/java/com/example/demo/orgJson/pa_state_bound.json"));
 
             JSONObject jo5 = (JSONObject) obj5;
 
