@@ -16,7 +16,7 @@ public class StateHandler {
     private final countyRepository countyRepository;
     private final JobRepository jobRepository;
     private final StateRepository stateRepository;
-    private State PA ;
+    private State PA;
 
 
 

@@ -3,6 +3,7 @@ package com.example.demo.entities;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.locationtech.jts.geom.Geometry;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -24,7 +25,7 @@ public class Precinct implements Serializable{
     private List<Precinct> neighbours;
     private double compactness;
     @ElementCollection
-    private ArrayList< ArrayList<Double> > coordinates;
+    private Geometry coordinates;
     private String incumbentName;
 
     private Boolean onEdge; //map by index to the list of districts DistrictID
@@ -198,11 +199,11 @@ public class Precinct implements Serializable{
     }
 
 
-    public ArrayList<ArrayList<Double>> getCoordinates() {
+    public Geometry getCoordinates() {
         return coordinates;
     }
 
-    public void setCoordinates(ArrayList<ArrayList<Double>> coordinates) {
+    public void setCoordinates(Geometry coordinates) {
         this.coordinates = coordinates;
     }
 

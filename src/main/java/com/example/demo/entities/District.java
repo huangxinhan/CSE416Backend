@@ -25,7 +25,7 @@ public class District implements Serializable{
     private double politicalFairness;
     private int numberOfEdgeNodes;
     private boolean isHigherThanPopThreshold;
-    private ArrayList< ArrayList<Double> > borderGeometry;
+    private Geometry borderGeometry;
     private Long totalPopulation;
     private Long votingAgePopulation;
     private Long AfricanAmericanPopulation;
@@ -120,11 +120,11 @@ public class District implements Serializable{
         isHigherThanPopThreshold = higherThanPopThreshold;
     }
     @Transient
-    public ArrayList<ArrayList<Double>> getBorderGeometry() {
+    public Geometry getBorderGeometry() {
         return borderGeometry;
     }
 
-    public void setBorderGeometry(ArrayList<ArrayList<Double>> borderGeometry) {
+    public void setBorderGeometry(Geometry borderGeometry) {
         this.borderGeometry = borderGeometry;
     }
     @Transient
@@ -280,11 +280,12 @@ public class District implements Serializable{
         //first we need to convert the coordinates into a geometry object
         Geometry[] precinctGeometries = new Geometry[this.getEdgeNodes().size()];
         for (int i = 0; i < this.getEdgeNodes().size(); i++){
-            //precinctGeometries[i] = this.getPrecincts().get(i).getCoordinates();
+            precinctGeometries[i] = this.getPrecincts().get(i).getCoordinates();
         }
         GeometryCollection geometryCollection = new GeometryCollection(precinctGeometries, new GeometryFactory());
         Geometry union = geometryCollection.union();
         //then set the geometry of the district as the union
+        this.setBorderGeometry(union);
     }
 }
 

@@ -1,6 +1,7 @@
 package com.example.demo.entities;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.locationtech.jts.geom.Geometry;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -23,7 +24,7 @@ public class State implements Serializable{
     private Districting currentDistricting;
     private List<County> counties;
     @ElementCollection
-    private ArrayList< ArrayList<Double> > stateBoundary;
+    private Geometry stateBoundary;
 
     public State(){
 
@@ -33,7 +34,7 @@ public class State implements Serializable{
         this.stateID = stateID;
     }
 
-    public State(String stateID, List<Precinct> precincts, List<Job> jobs, Districting enactedDistricting, List<County> counties, ArrayList< ArrayList<Double> > stateBoundary){
+    public State(String stateID, List<Precinct> precincts, List<Job> jobs, Districting enactedDistricting, List<County> counties, Geometry stateBoundary){
         this.stateID = stateID;
         this.precincts = precincts;
         this.jobs = jobs;
@@ -130,11 +131,11 @@ public class State implements Serializable{
         this.counties = counties;
     }
 
-    public ArrayList<ArrayList<Double>> getStateBoundary() {
+    public Geometry getStateBoundary() {
         return stateBoundary;
     }
 
-    public void setStateBoundary(ArrayList<ArrayList<Double>> stateBoundary) {
+    public void setStateBoundary(Geometry stateBoundary) {
         this.stateBoundary = stateBoundary;
     }
 }
