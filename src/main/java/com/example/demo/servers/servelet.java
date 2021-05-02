@@ -28,9 +28,9 @@ public class servelet {
     }
 
     @RequestMapping("/index")
-    public List<County> getState()
+    public List<Precinct> getState()
     {
-       return (stateHandler.getState().getCounties());
+       return (stateHandler.getState().getPrecincts());
     }
     @PostMapping()
     public void addMember(@RequestBody String state) {

@@ -1,4 +1,7 @@
 package com.example.demo.entities;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -47,7 +50,8 @@ public class State implements Serializable{
         this.stateID = stateID;
     }
 
-    @OneToMany()
+    @OneToMany(fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
     public List<Precinct> getPrecincts() {
         return precincts;
     }
@@ -56,7 +60,8 @@ public class State implements Serializable{
         this.precincts = precincts;
     }
 
-    @OneToMany()
+    @OneToMany(fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
     public List<Job> getJobs() {
         return jobs;
     }
@@ -73,7 +78,8 @@ public class State implements Serializable{
         this.currentJob = currentJob;
     }
 
-    @OneToOne()
+    @OneToOne(fetch = FetchType.EAGER)
+    //@Fetch(value = FetchMode.SUBSELECT)
     public Districting getEnactedDistricting() {
         return enactedDistricting;
     }
@@ -115,6 +121,7 @@ public class State implements Serializable{
     }
 
     @OneToMany(fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
     public List<County> getCounties() {
         return counties;
     }

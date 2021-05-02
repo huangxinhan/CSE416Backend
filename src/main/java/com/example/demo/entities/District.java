@@ -1,5 +1,8 @@
 package com.example.demo.entities;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.lang.reflect.Array;
@@ -64,6 +67,7 @@ public class District implements Serializable{
     }
 
     @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
     public List<Precinct> getPrecincts() {
         return precincts;
     }
@@ -158,7 +162,8 @@ public class District implements Serializable{
         HispanicPopulation = hispanicPopulation;
     }
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    //@Fetch(value = FetchMode.SUBSELECT)
     public Districting getDistrictingID() {
         return districtingID;
     }

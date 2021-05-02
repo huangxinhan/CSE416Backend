@@ -1,6 +1,8 @@
 package com.example.demo.entities;
 
 import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -93,7 +95,8 @@ public class Precinct implements Serializable{
         this.precinctID = precinctID;
     }
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    //@Fetch(value = FetchMode.SUBSELECT)
     public District getDefaultDistrictID() {
         return defaultDistrictID;
     }
@@ -102,7 +105,8 @@ public class Precinct implements Serializable{
         this.defaultDistrictID = defaultDistrictID;
     }
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
     public List<District> getDistrictCollection() {
         return DistrictCollection;
     }
@@ -111,7 +115,8 @@ public class Precinct implements Serializable{
         DistrictCollection = districtID;
     }
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+   // @Fetch(value = FetchMode.SUBSELECT)
     public County getCountyID() {
         return countyID;
     }
@@ -173,7 +178,8 @@ public class Precinct implements Serializable{
 //        this.districtID = districtID;
 //    }
 
-    @ManyToMany()
+    @ManyToMany(fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
     public List<Precinct> getNeighbours() {
         return neighbours;
     }

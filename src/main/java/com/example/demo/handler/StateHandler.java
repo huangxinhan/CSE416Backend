@@ -35,8 +35,9 @@ public class StateHandler {
     public List<Precinct> getPrecint()
     {
 
-
-        return precintRepository.findAll();
+        System.out.println(PA.getCounties().get(0).getPrecincts());
+        //System.out.println(PA.getPrecincts());
+        return null;
     }
     public State getState()
     {

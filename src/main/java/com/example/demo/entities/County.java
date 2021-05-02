@@ -1,5 +1,8 @@
 package com.example.demo.entities;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -26,8 +29,8 @@ public class County implements Serializable {
         this.countyID = countyID;
     }
 
-    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
     public List<Precinct> getPrecincts() {
         return precincts;
     }

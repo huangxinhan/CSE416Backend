@@ -2,6 +2,8 @@ package com.example.demo.entities;
 
 import com.example.demo.entities.enums.PopulationType;
 import com.example.demo.entities.enums.RaceType;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -52,7 +54,8 @@ public class Districting implements Serializable{
         this.districtingID = districtingID;
     }
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
     public List<District> getDistricts() {
         return districts;
     }
