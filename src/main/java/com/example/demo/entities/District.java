@@ -3,6 +3,10 @@ package com.example.demo.entities;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryCollection;
+import org.locationtech.jts.geom.GeometryFactory;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.lang.reflect.Array;
@@ -273,7 +277,14 @@ public class District implements Serializable{
     }
 
     public void calculateDistrictGeometry(){
-
+        //first we need to convert the coordinates into a geometry object
+        Geometry[] precinctGeometries = new Geometry[this.getEdgeNodes().size()];
+        for (int i = 0; i < this.getEdgeNodes().size(); i++){
+            //precinctGeometries[i] = this.getPrecincts().get(i).getCoordinates();
+        }
+        GeometryCollection geometryCollection = new GeometryCollection(precinctGeometries, new GeometryFactory());
+        Geometry union = geometryCollection.union();
+        //then set the geometry of the district as the union
     }
 }
 

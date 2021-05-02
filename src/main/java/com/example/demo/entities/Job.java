@@ -252,7 +252,7 @@ public class Job implements Serializable{
 
     //will calculate average districting AND generate the graph object
     public void calculateAverageDistricting(RaceType raceType){
-        this.constrainedDistrictings.calculateAverageDistricting(raceType);
+        this.getConstrainedDistrictings().calculateAverageDistricting(raceType);
     }
 
     public void filterMajorityMinorityDistrictings(){
@@ -328,9 +328,6 @@ public class Job implements Serializable{
             districting.getDistricts().get(i).calculateDistrictGeometry();
         }
     }
-
-
-
 
 
 
