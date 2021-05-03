@@ -73,6 +73,7 @@ public class entityConfig {
                             //System.out.println(toAdd.getPrecinctID());
 
                             toAddDistrict.getPrecincts().add(toAdd);
+                            toAdd.getDistrictCollection().add(toAddDistrict);
 
                         }
 
@@ -87,6 +88,8 @@ public class entityConfig {
 
                 }
             }
+
+            precinctRepository.saveAll(newAllPrecint.values());
         };
     }
 
