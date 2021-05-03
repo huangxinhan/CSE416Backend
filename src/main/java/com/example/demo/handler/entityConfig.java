@@ -31,7 +31,12 @@ public class entityConfig {
         return args -> {
             File folder = new File("src/main/java/com/example/demo/orgJson/randomDistricting");
             File[] listOfFiles = folder.listFiles();
-
+            ArrayList<Precinct> allPrecinct = (ArrayList<Precinct>) precinctRepository.findAll();
+            HashMap<String,Precinct> newAllPrecint = new HashMap<>();
+            for(int i =0; i < allPrecinct.size(); i++)
+            {
+                newAllPrecint.put(allPrecinct.get(i).getPrecinctID(),allPrecinct.get(i));
+            }
             for (File file : listOfFiles) {
                 if (file.isFile() && file.getName().startsWith("PA")) {
 
@@ -40,6 +45,8 @@ public class entityConfig {
                     String districtingName = file.getName().substring(0,file.getName().indexOf(".json"));
 
                     Districting a = new Districting(districtingName);
+
+                    a.setDistricts(new ArrayList<District>());
 
                     JSONObject jo = (JSONObject) obj;
 
@@ -54,18 +61,22 @@ public class entityConfig {
 
                         JSONArray dArray = (JSONArray) mid.get(Integer.toString(i));
 
-
+                        //System.out.println(toAddDistrict.getPrecincts());
 
                         for(int j =0; j < ((JSONObject)dArray.get(0)).keySet().size(); j++)
                         {
 
                             String id = ((JSONObject)dArray.get(0)).keySet().toArray()[j].toString();
 
-                            Precinct toAdd = precinctRepository.findById(id).get();
+                            Precinct toAdd = newAllPrecint.get(id);
+
+                            //System.out.println(toAdd.getPrecinctID());
 
                             toAddDistrict.getPrecincts().add(toAdd);
 
                         }
+
+
 
                         a.getDistricts().add(toAddDistrict);
 
