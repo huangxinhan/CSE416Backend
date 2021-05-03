@@ -1,10 +1,16 @@
 package com.example.demo.entities;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.io.geojson.GeoJsonWriter;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +31,7 @@ public class State implements Serializable{
     private List<County> counties;
     @ElementCollection
     private Geometry stateBoundary;
+    private JSONObject stateBoundaryJson;
 
     public State(){
 
@@ -135,7 +142,35 @@ public class State implements Serializable{
         return stateBoundary;
     }
 
+    @Transient
+    public JSONObject getStateBoundaryJson() throws ParseException {
+        JSONParser parser = new JSONParser();
+        GeoJsonWriter writer = new GeoJsonWriter();
+        Geometry stateBoundary = this.getStateBoundary();
+        JSONObject geometry = (JSONObject) parser.parse(writer.write(stateBoundary));
+        JSONArray coordinates = (JSONArray) geometry.get("coordinates");
+        String type = (String) geometry.get("type");
+        JSONObject output = new JSONObject();
+        output.put("coordinates", coordinates);
+        output.put("type", type);
+        JSONObject outputWrapper = new JSONObject();
+        outputWrapper.put("type", "Feature");
+        outputWrapper.put("geometry", output);
+        ArrayList<JSONObject> features = new ArrayList<>();
+        features.add(outputWrapper);
+        JSONObject outerProperties = new JSONObject();
+        outerProperties.put("type", "FeatureCollection");
+        outerProperties.put("features", features);
+        return outerProperties;
+    }
+
+    public void setStateBoundaryJson(JSONObject stateBoundaryJson) {
+        this.stateBoundaryJson = stateBoundaryJson;
+    }
+
     public void setStateBoundary(Geometry stateBoundary) {
         this.stateBoundary = stateBoundary;
     }
+
+
 }

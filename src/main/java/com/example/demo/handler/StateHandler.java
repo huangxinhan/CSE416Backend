@@ -1,8 +1,11 @@
 package com.example.demo.handler;
 
+import com.example.demo.entities.Job;
 import com.example.demo.entities.Precinct;
 import com.example.demo.entities.State;
 import org.hibernate.Hibernate;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +26,7 @@ public class StateHandler {
     private final JobRepository jobRepository;
     private final StateRepository stateRepository;
     private State PA;
+    private ArrayList<State> collection;
 
 
 
@@ -35,24 +39,37 @@ public class StateHandler {
         this.countyRepository = countyRepository;
         this.jobRepository = jobRepository;
         this.stateRepository = stateRepository;
-        this.PA= this.stateRepository.findById("PENNSYLVANIA").get();
+        collection = (ArrayList<State>) this.stateRepository.findAll();
+        this.PA= this.collection.get(0);
 
     }
 
     @Transactional
-    public List<Precinct> getPrecint()
-    {
+    public List<Precinct> getPrecint() throws ParseException {
 
 
 
         //System.out.println(PA.getEnactedDistricting().getDistricts().get(0).getPrecincts());
-        System.out.println(PA.getCounties());
+        //System.out.println(PA.getCounties());
+        Job job = new Job();
+        job.calculateDistrictingGeometry(PA.getEnactedDistricting());
+        PA.getStateBoundary();
 
         return null;
     }
+
+    public JSONObject calculateDefaultDistrictBoundary() throws ParseException {
+        Job job = new Job();
+        job.calculateDistrictingGeometry(PA.getEnactedDistricting());
+        PA.getEnactedDistricting().setDistrictBoundaryJSON();
+        JSONObject districtingBoundaries = new JSONObject();
+        districtingBoundaries.put("type", "FeatureCollection");
+        districtingBoundaries.put("features", PA.getEnactedDistricting().getDistrictBoundaries());
+        return districtingBoundaries;
+    }
+
     public State getState()
     {
-
         return PA;
     }
 

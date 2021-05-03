@@ -4,6 +4,7 @@ import com.example.demo.entities.enums.PopulationType;
 import com.example.demo.entities.enums.RaceType;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.json.simple.JSONObject;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -31,6 +32,7 @@ public class Districting implements Serializable{
     private double splitCountyScore;
     private Long tempPopulationByType;
     private HashMap<County, Integer> splitCountyDetails;
+    private ArrayList<JSONObject> districtBoundaries;
 
 
     public Districting(){
@@ -54,7 +56,7 @@ public class Districting implements Serializable{
         this.districtingID = districtingID;
     }
 
-    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER)
 
     public List<District> getDistricts() {
         return districts;
@@ -295,5 +297,22 @@ public class Districting implements Serializable{
             totalCompactness += compactnessArray.get(i);
         }
         return totalCompactness/compactnessArray.size();
+    }
+
+    @Transient
+    public ArrayList<JSONObject> getDistrictBoundaries() {
+        return districtBoundaries;
+    }
+
+    public void setDistrictBoundaries(ArrayList<JSONObject> districtBoundaries) {
+        this.districtBoundaries = districtBoundaries;
+    }
+
+    public void setDistrictBoundaryJSON(){
+        ArrayList<JSONObject> jsonObjects = new ArrayList<>();
+        for (int i = 0; i < this.getDistricts().size(); i++){
+            jsonObjects.add(this.getDistricts().get(i).getBorderGeometryJson());
+        }
+        this.setDistrictBoundaries(jsonObjects);
     }
 }

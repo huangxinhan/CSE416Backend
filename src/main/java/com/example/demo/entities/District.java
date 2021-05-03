@@ -3,9 +3,14 @@ package com.example.demo.entities;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;
 import org.locationtech.jts.geom.GeometryFactory;
+import org.json.simple.parser.*;
+import org.locationtech.jts.io.geojson.GeoJsonWriter;
+import org.wololo.geojson.GeoJSON;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -41,6 +46,8 @@ public class District implements Serializable{
 
     private double OFScore;
 
+    private JSONObject borderGeometryJson;
+
     public District(){
 
     }
@@ -70,7 +77,7 @@ public class District implements Serializable{
         this.districtNumber = districtNumber;
     }
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     @Fetch(value = FetchMode.SUBSELECT)
     public List<Precinct> getPrecincts() {
         return precincts;
@@ -212,6 +219,15 @@ public class District implements Serializable{
         this.OFScore = OFScore;
     }
 
+    @Transient
+    public JSONObject getBorderGeometryJson() {
+        return borderGeometryJson;
+    }
+
+    public void setBorderGeometryJson(JSONObject borderGeometryJson) {
+        this.borderGeometryJson = borderGeometryJson;
+    }
+
     public void appendPrecinct(Precinct precinct){
         List<Precinct> temp = this.getPrecincts();
         temp.add(precinct);
@@ -276,17 +292,30 @@ public class District implements Serializable{
         this.setHispanicPopulation(tempHispanicPop);
     }
 
-    public void calculateDistrictGeometry(){
+    public void calculateDistrictGeometry() throws ParseException {
         //first we need to convert the coordinates into a geometry object
-        Geometry[] precinctGeometries = new Geometry[this.getEdgeNodes().size()];
-        for (int i = 0; i < this.getEdgeNodes().size(); i++){
-            precinctGeometries[i] = this.getEdgeNodes().get(i).getCoordinates();
+        Geometry[] precinctGeometries = new Geometry[this.getPrecincts().size()];
+        for (int i = 0; i < this.getPrecincts().size(); i++){
+            precinctGeometries[i] = this.getPrecincts().get(i).getCoordinates();
         }
         GeometryCollection geometryCollection = new GeometryCollection(precinctGeometries, new GeometryFactory());
         Geometry union = geometryCollection.union();
         //then set the geometry of the district as the union
         this.setBorderGeometry(union);
+        JSONParser parser = new JSONParser();
+        GeoJsonWriter writer = new GeoJsonWriter();
+        JSONObject geoms = (JSONObject) parser.parse(writer.write(union));
+        JSONArray coordinates = (JSONArray) geoms.get("coordinates");
+        String type = (String) geoms.get("type");
+        JSONObject outGeometry = new JSONObject();
+        outGeometry.put("type", type);
+        outGeometry.put("coordinates", coordinates);
+        JSONObject outGeometryWrapper = new JSONObject();
+        outGeometryWrapper.put("type", "Feature");
+        outGeometryWrapper.put("geometry", outGeometry);
+        this.setBorderGeometryJson(outGeometryWrapper);
     }
 }
+
 
 
