@@ -2,6 +2,7 @@ package com.example.demo.entities;
 import com.example.demo.entities.enums.Measures;
 import com.example.demo.entities.enums.PopulationType;
 import com.example.demo.entities.enums.RaceType;
+import org.json.simple.parser.ParseException;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -324,7 +325,7 @@ public class Job implements Serializable{
         this.getConstrainedDistrictings().setDistrictings(tempDistrictings);
     }
 
-    public void calculateDistrictingGeometry(Districting districting){
+    public void calculateDistrictingGeometry(Districting districting) throws ParseException {
         for (int i = 0; i < districting.getDistricts().size(); i++){
             districting.getDistricts().get(i).calculateDistrictGeometry();
         }
