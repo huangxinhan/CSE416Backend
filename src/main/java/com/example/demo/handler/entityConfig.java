@@ -477,7 +477,7 @@ public class entityConfig {
 
 
 
-                        a.getDistricts().add(toAddDistrict);
+                        newDistricting.getDistricts().add(toAddDistrict);
                         newDistrictCollection.add(toAddDistrict);
 
                     }
@@ -487,6 +487,7 @@ public class entityConfig {
 
                 }
             }
+            precinctRepository.saveAll(newAllPrecinct.values());
             System.out.println("finish");
 
 
