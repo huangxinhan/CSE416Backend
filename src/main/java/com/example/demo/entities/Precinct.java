@@ -103,7 +103,7 @@ public class Precinct implements Serializable{
         this.precinctID = precinctID;
     }
 
-    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
 
     public District getDefaultDistrictID() {
         return defaultDistrictID;
@@ -113,7 +113,7 @@ public class Precinct implements Serializable{
         this.defaultDistrictID = defaultDistrictID;
     }
 
-    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @Fetch(value = FetchMode.SUBSELECT)
     public List<District> getDistrictCollection() {
         return DistrictCollection;
@@ -123,7 +123,7 @@ public class Precinct implements Serializable{
         DistrictCollection = districtID;
     }
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
 
     public County getCountyID() {
         return countyID;

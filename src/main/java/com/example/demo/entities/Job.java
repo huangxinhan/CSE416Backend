@@ -52,6 +52,8 @@ public class Job implements Serializable{
         this.jobID = pa_job1;
     }
 
+
+
     @Id
     public String getJobID() {
         return jobID;
