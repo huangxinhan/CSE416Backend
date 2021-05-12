@@ -277,6 +277,9 @@ public class Job implements Serializable{
                 counter++;
             }
         }
+        System.out.println("filtered out by majority minority: ");
+        System.out.println(counter);
+
         this.setFilteredByMMDCount(counter);
     }
 
@@ -293,6 +296,8 @@ public class Job implements Serializable{
                 counter++;
             }
         }
+        System.out.println("filtered out by population Equality: ");
+        System.out.println(counter);
         this.setFilteredByPopConstraintCount(counter);
         this.getConstrainedDistrictings().setDistrictings(tempDistrictings);
     }
@@ -309,6 +314,8 @@ public class Job implements Serializable{
                 counter++;
             }
         }
+        System.out.println("filtered out by IncumbentProtection: ");
+        System.out.println(counter);
         this.setFilteredByIncumbentCount(counter);
         this.getConstrainedDistrictings().setDistrictings(tempDistrictings);
     }
@@ -327,6 +334,8 @@ public class Job implements Serializable{
                 counter++;
             }
         }
+        System.out.println("filtered out by graph Compactness: ");
+        System.out.println(counter);
         this.setFilteredByCompactnessCount(counter);
         this.getConstrainedDistrictings().setDistrictings(tempDistrictings);
     }

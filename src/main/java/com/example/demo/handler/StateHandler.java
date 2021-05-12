@@ -82,6 +82,17 @@ public class StateHandler {
         return PA.getEnactedDistricting().getPrecinctBoundaries();
     }
 
+    public void filterDistrictings(){
+        //this will filter the 100k districtings down to about 1k districtings
+        Job currentJob = PA.getJobs().get(0); //will change when we have several jobs
+        currentJob.filterMajorityMinorityDistrictings();
+        currentJob.filterPopulationEqualityDistrictings();
+        currentJob.filterIncumbentProtectionDistrictings();
+        currentJob.filterGraphCompactness();
+        System.out.println("Remaining Districtings Left: ");
+        System.out.println(currentJob.getConstrainedDistrictings().getDistrictings().size());
+    }
+
 
     public State getState()
     {
