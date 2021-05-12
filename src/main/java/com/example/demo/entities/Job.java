@@ -48,6 +48,10 @@ public class Job implements Serializable{
         this.stateName = stateName;
     }
 
+    public Job(String pa_job1) {
+        this.jobID = pa_job1;
+    }
+
     @Id
     public String getJobID() {
         return jobID;
@@ -161,6 +165,8 @@ public class Job implements Serializable{
     public void setTopDistrictingsBySimilarity(ArrayList<Districting> topDistrictingsBySimilarity) {
         this.topDistrictingsBySimilarity = topDistrictingsBySimilarity;
     }
+
+    @ManyToOne(fetch = FetchType.EAGER)
 
     public JobSummary getJobSummary() {
         return jobSummary;

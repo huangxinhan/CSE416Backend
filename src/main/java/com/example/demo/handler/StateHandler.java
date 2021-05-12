@@ -25,6 +25,7 @@ public class StateHandler {
     private final countyRepository countyRepository;
     private final JobRepository jobRepository;
     private final StateRepository stateRepository;
+    private final JobSummaryRepository jobSummaryRepository;
     private State PA;
     private ArrayList<State> collection;
 
@@ -32,13 +33,14 @@ public class StateHandler {
 
     @Autowired
 
-    public StateHandler(com.example.demo.handler.precintRepository precintRepository, DistrictingRepository districtingRepository, DistrictRepository districtRepository, com.example.demo.handler.countyRepository countyRepository, JobRepository jobRepository, StateRepository stateRepository) {
+    public StateHandler(com.example.demo.handler.precintRepository precintRepository, DistrictingRepository districtingRepository, DistrictRepository districtRepository, com.example.demo.handler.countyRepository countyRepository, JobRepository jobRepository, StateRepository stateRepository, JobSummaryRepository jobSummaryRepository) {
         this.precintRepository = precintRepository;
         this.districtingRepository = districtingRepository;
         this.districtRepository = districtRepository;
         this.countyRepository = countyRepository;
         this.jobRepository = jobRepository;
         this.stateRepository = stateRepository;
+        this.jobSummaryRepository = jobSummaryRepository;
         collection = (ArrayList<State>) this.stateRepository.findAll();
         this.PA= this.collection.get(0);
 
@@ -59,14 +61,27 @@ public class StateHandler {
     }
 
     public JSONObject calculateDefaultDistrictBoundary() throws ParseException {
-        Job job = new Job();
-        job.calculateDistrictingGeometry(PA.getEnactedDistricting());
+        //Job job = new Job();
+        PA.getJobs().get(0).calculateDistrictingGeometry(PA.getEnactedDistricting());
+        //job.calculateDistrictingGeometry(PA.getEnactedDistricting());
         PA.getEnactedDistricting().setDistrictBoundaryJSON();
         JSONObject districtingBoundaries = new JSONObject();
         districtingBoundaries.put("type", "FeatureCollection");
         districtingBoundaries.put("features", PA.getEnactedDistricting().getDistrictBoundaries());
         return districtingBoundaries;
     }
+
+    public JSONObject getPrecinctBoundary() throws ParseException {
+        for (int i = 0; i < PA.getEnactedDistricting().getDistricts().size(); i++){
+            for (int j = 0; j < PA.getEnactedDistricting().getDistricts().get(i).getPrecincts().size(); j++){
+                PA.getEnactedDistricting().getDistricts().get(i).getPrecincts().get(j).setPrecinctCoordinateJson();
+            }
+            PA.getEnactedDistricting().getDistricts().get(i).setPrecinctBoundaryJsonArray();
+        }
+        PA.getEnactedDistricting().setPrecinctBoundaryJSON();
+        return PA.getEnactedDistricting().getPrecinctBoundaries();
+    }
+
 
     public State getState()
     {

@@ -68,8 +68,8 @@ public class State implements Serializable{
         this.precincts = precincts;
     }
 
-    @OneToMany()
-
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
     public List<Job> getJobs() {
         return jobs;
     }

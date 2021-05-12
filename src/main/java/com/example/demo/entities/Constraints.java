@@ -21,12 +21,13 @@ public class Constraints {
     public Constraints(){
 
     }
-    public Constraints(CompactnessType compactnessType, PopulationType populationType, double compactnessValue, RaceType minorityType, double majorMinorThres, double populationEqualityThres, Long populationValue, ArrayList<Boolean> incumbentValue) {
+    public Constraints(CompactnessType compactnessType, PopulationType populationType, double compactnessValue, RaceType minorityType, double majorMinorThres, int numberOfMajorityMinorityDistricts, double populationEqualityThres, Long populationValue, ArrayList<Boolean> incumbentValue) {
         this.compactnessType = compactnessType;
         this.populationType = populationType;
         this.compactnessValue = compactnessValue;
         this.minorityType = minorityType;
         this.majorMinorThres = majorMinorThres;
+        this.numberOfMajorityMinorityDistricts = numberOfMajorityMinorityDistricts;
         this.populationEqualityThres = populationEqualityThres;
         this.populationValue = populationValue;
         this.incumbentValue = incumbentValue;

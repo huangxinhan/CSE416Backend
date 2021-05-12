@@ -48,6 +48,8 @@ public class District implements Serializable{
 
     private JSONObject borderGeometryJson;
 
+    private ArrayList<JSONObject> precinctBoundariesJson;
+
     public District(){
 
     }
@@ -77,7 +79,7 @@ public class District implements Serializable{
         this.districtNumber = districtNumber;
     }
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @Fetch(value = FetchMode.SUBSELECT)
     public List<Precinct> getPrecincts() {
         return precincts;
@@ -228,6 +230,15 @@ public class District implements Serializable{
         this.borderGeometryJson = borderGeometryJson;
     }
 
+    @Transient
+    public ArrayList<JSONObject>  getPrecinctBoundariesJson() {
+        return precinctBoundariesJson;
+    }
+
+    public void setPrecinctBoundariesJson(ArrayList<JSONObject>  precinctBoundariesJson) {
+        this.precinctBoundariesJson = precinctBoundariesJson;
+    }
+
     public void appendPrecinct(Precinct precinct){
         List<Precinct> temp = this.getPrecincts();
         temp.add(precinct);
@@ -313,7 +324,32 @@ public class District implements Serializable{
         JSONObject outGeometryWrapper = new JSONObject();
         outGeometryWrapper.put("type", "Feature");
         outGeometryWrapper.put("geometry", outGeometry);
+        JSONObject properties = new JSONObject();
+        this.calculateAllPopulation();
+        properties.put("NAME", this.getDistrictID());
+        properties.put("TOTPOP", this.getTotalPopulation());
+        properties.put("VAP", this.getVotingAgePopulation());
+        outGeometryWrapper.put("properties", properties);
         this.setBorderGeometryJson(outGeometryWrapper);
+    }
+
+    public void setPrecinctBoundaryJsonArray(){
+        ArrayList<JSONObject> jsonObjects = new ArrayList<>();
+        for (int i = 0; i < this.getPrecincts().size(); i++){
+            JSONObject outputWrapper = new JSONObject();
+            outputWrapper.put("type", "Feature");
+            outputWrapper.put("geometry",this.getPrecincts().get(i).getCoordinatesJson());
+            JSONObject properties = new JSONObject();
+            properties.put("TOTPOP", this.getPrecincts().get(i).getTotalPopulation());
+            properties.put("VAP", this.getPrecincts().get(i).getVotingAgePopulation());
+            properties.put("AFAPOP", this.getPrecincts().get(i).getAfricanAmericanPopulation());
+            properties.put("APOP", this.getPrecincts().get(i).getAsianPopulation());
+            properties.put("HPOP", this.getPrecincts().get(i).getHispanicPopulation());
+            properties.put("NAMELSAD10", this.getPrecincts().get(i).getPrecinctID());
+            outputWrapper.put("properties", properties);
+            jsonObjects.add(outputWrapper);
+        }
+        this.setPrecinctBoundariesJson(jsonObjects);
     }
 }
 

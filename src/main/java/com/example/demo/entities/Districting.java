@@ -33,6 +33,7 @@ public class Districting implements Serializable{
     private Long tempPopulationByType;
     private HashMap<County, Integer> splitCountyDetails;
     private ArrayList<JSONObject> districtBoundaries;
+    private JSONObject precinctBoundaries;
 
 
     public Districting(){
@@ -56,7 +57,7 @@ public class Districting implements Serializable{
         this.districtingID = districtingID;
     }
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 
     public List<District> getDistricts() {
         return districts;
@@ -171,6 +172,14 @@ public class Districting implements Serializable{
         this.splitCountyDetails = splitCountyDetails;
     }
 
+    @Transient
+    public JSONObject getPrecinctBoundaries() {
+        return precinctBoundaries;
+    }
+
+    public void setPrecinctBoundaries(JSONObject precinctBoundaries) {
+        this.precinctBoundaries = precinctBoundaries;
+    }
 
     public ArrayList<Long> retrieveTotalPopulationArray(){
         ArrayList<Long> tempPopulationArray = new ArrayList<Long>();
@@ -314,5 +323,22 @@ public class Districting implements Serializable{
             jsonObjects.add(this.getDistricts().get(i).getBorderGeometryJson());
         }
         this.setDistrictBoundaries(jsonObjects);
+    }
+
+    public void setPrecinctBoundaryJSON(){
+        ArrayList<ArrayList<JSONObject>> jsonObjects = new ArrayList<>();
+        for (int i = 0; i < this.getDistricts().size(); i++){
+            jsonObjects.add(this.getDistricts().get(i).getPrecinctBoundariesJson());
+        }
+        ArrayList<JSONObject> innerFeatures = new ArrayList<>();
+        for (int i = 0; i < jsonObjects.size(); i++){
+            for (int j = 0; j < jsonObjects.get(i).size(); j++){
+                innerFeatures.add(jsonObjects.get(i).get(j));
+            }
+        }
+        JSONObject outerProperties = new JSONObject();
+        outerProperties.put("type", "FeatureCollection");
+        outerProperties.put("features", innerFeatures);
+        this.setPrecinctBoundaries(outerProperties);
     }
 }

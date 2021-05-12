@@ -18,7 +18,6 @@ public class JobSummary implements Serializable{
     private String numOfDistricts;
     private String coolingRounds;
     private String totalRounds;
-
     public JobSummary(){
 
     }

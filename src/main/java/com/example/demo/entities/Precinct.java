@@ -3,7 +3,12 @@ package com.example.demo.entities;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.io.geojson.GeoJsonWriter;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
@@ -27,6 +32,7 @@ public class Precinct implements Serializable{
     private double compactness;
     @ElementCollection
     private Geometry coordinates;
+    private JSONObject coordinatesJson;
     private String incumbentName;
 
     private Boolean onEdge; //map by index to the list of districts DistrictID
@@ -209,10 +215,18 @@ public class Precinct implements Serializable{
         this.coordinates = coordinates;
     }
 
-
     @Transient
     public String getCurrentDistrictingId() {
         return currentDistrictingId;
+    }
+
+    @Transient
+    public JSONObject getCoordinatesJson() {
+        return coordinatesJson;
+    }
+
+    public void setCoordinatesJson(JSONObject coordinatesJson) {
+        this.coordinatesJson = coordinatesJson;
     }
 
     public void appendDistrict(District district){
@@ -262,6 +276,20 @@ public class Precinct implements Serializable{
             }
         }
     }
+
+    public void setPrecinctCoordinateJson() throws ParseException {
+        JSONParser parser = new JSONParser();
+        GeoJsonWriter writer = new GeoJsonWriter();
+        Geometry precinctBoundary = this.getCoordinates();
+        JSONObject geometry = (JSONObject) parser.parse(writer.write(precinctBoundary));
+        JSONArray coordinates = (JSONArray) geometry.get("coordinates");
+        String type = (String) geometry.get("type");
+        JSONObject output = new JSONObject();
+        output.put("coordinates", coordinates);
+        output.put("type", type);
+        this.setCoordinatesJson(output);
+    }
+
 
 
 
