@@ -34,6 +34,8 @@ public class Districting implements Serializable{
     private HashMap<County, Integer> splitCountyDetails;
     private ArrayList<JSONObject> districtBoundaries;
     private JSONObject precinctBoundaries;
+    private double populationPercentDifference;
+    private double graphCompactness;
 
 
     public Districting(){
@@ -181,6 +183,24 @@ public class Districting implements Serializable{
         this.precinctBoundaries = precinctBoundaries;
     }
 
+    @Transient
+    public double getPopulationPercentDifference() {
+        return populationPercentDifference;
+    }
+
+    @Transient
+    public double getGraphCompactness() {
+        return graphCompactness;
+    }
+
+    public void setGraphCompactness(double graphCompactness) {
+        this.graphCompactness = graphCompactness;
+    }
+
+    public void setPopulationPercentDifference(double populationPercentDifference) {
+        this.populationPercentDifference = populationPercentDifference;
+    }
+
     public ArrayList<Long> retrieveTotalPopulationArray(){
         ArrayList<Long> tempPopulationArray = new ArrayList<Long>();
         for (int i = 0; i < this.getDistricts().size(); i++){
@@ -277,6 +297,8 @@ public class Districting implements Serializable{
         }
         //the percent difference in this case is 100 x abs(A-B)/((A+B)/2))
         double percentDifference = 100 * Math.abs((mostPopulousPopulation - leastPopulousPopulation)/((mostPopulousPopulation + leastPopulousPopulation)/2));
+        //Here we store the percent difference to use in the objective function later
+        this.setPopulationPercentDifference(percentDifference);
         if (percentDifference < threshold){
             return true;
         }
@@ -305,7 +327,10 @@ public class Districting implements Serializable{
         for (int i = 0; i < compactnessArray.size(); i++){
             totalCompactness += compactnessArray.get(i);
         }
-        return totalCompactness/compactnessArray.size();
+        double graphCompactness = totalCompactness/compactnessArray.size();
+        //store the graph compactness measure for easier calculation for the objective function
+        this.setGraphCompactness(graphCompactness);
+        return graphCompactness;
     }
 
     @Transient
