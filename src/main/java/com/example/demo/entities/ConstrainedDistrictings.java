@@ -189,6 +189,7 @@ public class ConstrainedDistrictings {
                     difference += Math.pow((means.get(j) - this.getDistrictings().get(i).getDistricts().get(j).getHispanicPopulation()),2);
                 }
             }
+            this.getDistrictings().get(i).setDeviationFromAverage(difference);
             differences.add(difference);
         }
 
