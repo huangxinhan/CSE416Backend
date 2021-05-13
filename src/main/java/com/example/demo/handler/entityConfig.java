@@ -259,18 +259,7 @@ public class entityConfig {
 
                                 Precinct toAdd = newAllPrecint.get(id);
 
-                                toAdd.setCurrentDistrictingId(districtingName);
-
-                                for( District d : toAdd.getDistrictCollection())
-                                {
-                                    String[] content = d.getDistrictID().split("_");
-
-                                    if(content[0] == districtingName)
-                                    {
-                                        toAdd.setCurrentDistrictId(d.getDistrictID());
-                                        break;
-                                    }
-                                }
+                                toAdd.setCurrentDistrictId(toAddDistrict.getDistrictID());
 
                                 //System.out.println(toAdd.getPrecinctID())
                                 toAddDistrict.getPrecincts().add(toAdd);
