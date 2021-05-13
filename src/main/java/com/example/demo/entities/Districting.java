@@ -1,5 +1,6 @@
 package com.example.demo.entities;
 
+import com.example.demo.entities.enums.Measures;
 import com.example.demo.entities.enums.PopulationType;
 import com.example.demo.entities.enums.RaceType;
 import org.hibernate.annotations.Fetch;
@@ -42,6 +43,8 @@ public class Districting implements Serializable{
 
     }
 
+
+
     public Districting(String districtingID) {
         this.districtingID = districtingID;
     }
@@ -50,6 +53,13 @@ public class Districting implements Serializable{
         this.districtingID = districtingID;
         this.districts = districts;
     }
+
+    public Districting(String districtingID, double compactness, double populationPercentDifference) {
+        this.districtingID = districtingID;
+        this.compactness = compactness;
+        this.populationPercentDifference = populationPercentDifference;
+    }
+
     @Id
     public String getDistrictingID() {
         return districtingID;
@@ -59,7 +69,7 @@ public class Districting implements Serializable{
         this.districtingID = districtingID;
     }
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL)
 
     public List<District> getDistricts() {
         return districts;
@@ -183,12 +193,12 @@ public class Districting implements Serializable{
         this.precinctBoundaries = precinctBoundaries;
     }
 
-    @Transient
+//    @Transient
     public double getPopulationPercentDifference() {
         return populationPercentDifference;
     }
 
-    @Transient
+//    @Transient
     public double getGraphCompactness() {
         return graphCompactness;
     }
@@ -365,5 +375,62 @@ public class Districting implements Serializable{
         outerProperties.put("type", "FeatureCollection");
         outerProperties.put("features", innerFeatures);
         this.setPrecinctBoundaries(outerProperties);
+    }
+
+    public void calculateObjectiveFunctionScore(HashMap<Measures, Double> weights, PopulationType populationType, RaceType minorityType, ArrayList<Double> means){
+        //now this method here will call various other methods to calculate the objective function score.
+        double objectiveFunctionScore = 0;
+        objectiveFunctionScore += this.calculateOFScoreByPopulationEquality(populationType, weights);
+        objectiveFunctionScore += this.calculateOFScoreByAverageDistricting(minorityType, weights, means);
+
+    }
+
+    //Need to change so that the population type can change.
+    public double calculateOFScoreByPopulationEquality(PopulationType populationType, HashMap<Measures, Double> weights){
+        int numberOfCDs = this.getDistricts().size();
+        double sum = 0;
+        long total_population = 0;
+        if (populationType == PopulationType.TOTAL) {
+            for (int i = 0; i < this.getDistricts().size(); i++) {
+                total_population += this.getDistricts().get(i).getTotalPopulation();
+            }
+            long idealPopulation = total_population / this.getDistricts().size();
+            for (int i = 0; i < this.getDistricts().size(); i++) {
+                sum += Math.pow(this.getDistricts().get(i).getTotalPopulation() / idealPopulation, 2);
+            }
+        }
+        else if (populationType == PopulationType.VAP) {
+            for (int i = 0; i < this.getDistricts().size(); i++) {
+                total_population += this.getDistricts().get(i).getVotingAgePopulation();
+            }
+            long idealPopulation = total_population / this.getDistricts().size();
+            for (int i = 0; i < this.getDistricts().size(); i++) {
+                sum += Math.pow(this.getDistricts().get(i).getVotingAgePopulation() / idealPopulation, 2);
+            }
+        }
+        double weight = weights.get(Measures.POPULATION_EQUALITY);
+        return weight * sum;
+    }
+
+    public double calculateOFScoreByAverageDistricting(RaceType minorityType, HashMap<Measures, Double> weights, ArrayList<Double> means){
+        double sum = 0;
+        //deviation from the means
+        if (minorityType == RaceType.AFRICAN_AMERICAN) {
+            for (int i = 0; i < this.getDistricts().size(); i++) {
+                sum += Math.pow((this.getDistricts().get(i).getAfricanAmericanPopulation() / this.getDistricts().get(i).getTotalPopulation() - means.get(i)), 2);
+            }
+            //then normalize it or something here...
+        }
+        else if (minorityType == RaceType.ASIAN) {
+            for (int i = 0; i < this.getDistricts().size(); i++) {
+                sum += Math.pow((this.getDistricts().get(i).getAsianPopulation() / this.getDistricts().get(i).getTotalPopulation() - means.get(i)), 2);
+            }
+        }
+        else if (minorityType == RaceType.HISPANIC) {
+            for (int i = 0; i < this.getDistricts().size(); i++) {
+                sum += Math.pow((this.getDistricts().get(i).getHispanicPopulation() / this.getDistricts().get(i).getTotalPopulation() - means.get(i)), 2);
+            }
+        }
+        return sum;
     }
 }

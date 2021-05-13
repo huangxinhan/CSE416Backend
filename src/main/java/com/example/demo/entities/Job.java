@@ -2,6 +2,8 @@ package com.example.demo.entities;
 import com.example.demo.entities.enums.Measures;
 import com.example.demo.entities.enums.PopulationType;
 import com.example.demo.entities.enums.RaceType;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.json.simple.parser.ParseException;
 
 import javax.persistence.*;
@@ -52,6 +54,8 @@ public class Job implements Serializable{
         this.jobID = pa_job1;
     }
 
+
+
     @Id
     public String getJobID() {
         return jobID;
@@ -69,7 +73,8 @@ public class Job implements Serializable{
     public void setConstraints(Constraints constraints) {
         this.constraints = constraints;
     }
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
     public List<Districting> getDistrictings() {
         return districtings;
     }
@@ -263,34 +268,113 @@ public class Job implements Serializable{
         this.getConstrainedDistrictings().calculateAverageDistricting(raceType);
     }
 
-    public void filterMajorityMinorityDistrictings(){
-        int counter = 0;
-        RaceType race = this.getConstraints().getMinorityType();
-        double majorMinorThres = this.getConstraints().getMajorMinorThres();
-        int numberOfMMDistricts = this.getConstraints().getNumberOfMajorityMinorityDistricts();
-        for (int i = 0; i < this.getDistrictings().size(); i++){
-            int number = this.getDistrictings().get(i).calculateNumberOfMajorityMinorityDistricts(race, majorMinorThres);
-            if (number >= numberOfMMDistricts){
-                this.getConstrainedDistrictings().getDistrictings().add(this.getDistrictings().get(i));
-            }
-            else{
-                counter++;
-            }
-        }
-        System.out.println("filtered out by majority minority: ");
-        System.out.println(counter);
+//    public void filterMajorityMinorityDistrictings(){
+//        int counter = 0;
+//        RaceType race = this.getConstraints().getMinorityType();
+//        double majorMinorThres = this.getConstraints().getMajorMinorThres();
+//        int numberOfMMDistricts = this.getConstraints().getNumberOfMajorityMinorityDistricts();
+//        for (int i = 0; i < this.getDistrictings().size(); i++){
+//            int number = this.getDistrictings().get(i).calculateNumberOfMajorityMinorityDistricts(race, majorMinorThres);
+//            if (number >= numberOfMMDistricts){
+//                this.getConstrainedDistrictings().getDistrictings().add(this.getDistrictings().get(i));
+//            }
+//            else{
+//                counter++;
+//            }
+//        }
+//        System.out.println("filtered out by majority minority: ");
+//        System.out.println(counter);
+//
+//        this.setFilteredByMMDCount(counter);
+//    }
+//
+//
+//    public void filterPopulationEqualityDistrictings(){
+//        int counter = 0;
+//        PopulationType populationType = this.getConstraints().getPopulationType();
+//        double populationEqualityThres = this.getConstraints().getPopulationEqualityThres();
+//        ArrayList<Districting> tempDistrictings = new ArrayList<>();
+//        for (int i = 0; i < this.getConstrainedDistrictings().getDistrictings().size(); i++){
+//            if (this.getConstrainedDistrictings().getDistrictings().get(i).calculatePopulationConstraint(populationType, populationEqualityThres) == true){
+//                tempDistrictings.add(this.getConstrainedDistrictings().getDistrictings().get(i));
+//            }
+//            else{
+//                counter++;
+//            }
+//        }
+//        System.out.println("filtered out by population Equality: ");
+//        System.out.println(counter);
+//        this.setFilteredByPopConstraintCount(counter);
+//        this.getConstrainedDistrictings().setDistrictings(tempDistrictings);
+//    }
+//
+//
+//
+//
+//
+//    public void filterIncumbentProtectionDistrictings(){
+//        int counter = 0;
+//        ArrayList<String> protectedIncumbents = this.getConstraints().getProtectedIncumbents();
+//        ArrayList<Districting> tempDistrictings = new ArrayList<>();
+//        for (int i = 0; i < this.getConstrainedDistrictings().getDistrictings().size(); i++){
+//            if (this.getConstrainedDistrictings().getDistrictings().get(i).calculateIncumbentDistricts(protectedIncumbents) == false){
+//                tempDistrictings.add(this.getConstrainedDistrictings().getDistrictings().get(i));
+//            }
+//            else{
+//                counter++;
+//            }
+//        }
+//        System.out.println("filtered out by IncumbentProtection: ");
+//        System.out.println(counter);
+//        this.setFilteredByIncumbentCount(counter);
+//        this.getConstrainedDistrictings().setDistrictings(tempDistrictings);
+//    }
+//
+//    public void filterGraphCompactness(){
+//        int counter = 0;
+//        double compactnessValue = this.getConstraints().getCompactnessValue();
+//        ArrayList<Districting> tempDistrictings = new ArrayList<>();
+//        //we calculate graph compactness, which is the ratio of edge nodes in a graph over total nodes in a graph
+//        for (int i = 0; i < this.getConstrainedDistrictings().getDistrictings().size(); i++){
+//            double compactness = this.getConstrainedDistrictings().getDistrictings().get(i).calculateGraphCompactness();
+//            if (compactness >= compactnessValue){
+//                tempDistrictings.add(this.getConstrainedDistrictings().getDistrictings().get(i));
+//            }
+//            else{
+//                counter++;
+//            }
+//        }
+//        System.out.println("filtered out by graph Compactness: ");
+//        System.out.println(counter);
+//        this.setFilteredByCompactnessCount(counter);
+//        this.getConstrainedDistrictings().setDistrictings(tempDistrictings);
+//    }
 
-        this.setFilteredByMMDCount(counter);
+
+    public void calculateDistrictingGeometry(Districting districting) throws ParseException {
+        for (int i = 0; i < districting.getDistricts().size(); i++){
+            districting.getDistricts().get(i).calculateDistrictGeometry();
+        }
     }
 
-    public void filterPopulationEqualityDistrictings(){
+    //sets the objective function score for each districtings
+    public void calculateDistrictingScoresByObjectiveFunction(){
+        for (int i = 0; i < this.getConstrainedDistrictings().getDistrictings().size(); i++){
+            this.getConstrainedDistrictings().getDistrictings().get(i).calculateObjectiveFunctionScore(this.getWeights(), this.getConstraints().getPopulationType(), this.getConstraints().getMinorityType(),this.getConstrainedDistrictings().getMeans());
+        }
+    }
+
+    //STEP 1 OF FITLER, ONLY NEEDS DISTRICTING INFORMATION
+    public void filterPopEqualityDistrictings(){
         int counter = 0;
         PopulationType populationType = this.getConstraints().getPopulationType();
         double populationEqualityThres = this.getConstraints().getPopulationEqualityThres();
         ArrayList<Districting> tempDistrictings = new ArrayList<>();
-        for (int i = 0; i < this.getConstrainedDistrictings().getDistrictings().size(); i++){
-            if (this.getConstrainedDistrictings().getDistrictings().get(i).calculatePopulationConstraint(populationType, populationEqualityThres) == true){
-                tempDistrictings.add(this.getConstrainedDistrictings().getDistrictings().get(i));
+        for (int i = 0; i < this.getDistrictings().size(); i++){
+            if(this.getDistrictings().get(i).getPopulationPercentDifference() < populationEqualityThres){
+                //If the population difference is less than the user's input threshold,
+                //Then we add it to the constrained Districtings
+                tempDistrictings.add(this.getDistrictings().get(i));
             }
             else{
                 counter++;
@@ -302,7 +386,52 @@ public class Job implements Serializable{
         this.getConstrainedDistrictings().setDistrictings(tempDistrictings);
     }
 
-    public void filterIncumbentProtectionDistrictings(){
+    //STEP 2  OF FILTER, ONLY NEEDS DISTRICTING INFORMATION
+    public void filterCompactnessGraph(){
+        int counter = 0;
+        double compactnessValue = this.getConstraints().getCompactnessValue();
+        ArrayList<Districting> tempDistrictings = new ArrayList<>();
+        for (int i = 0; i < this.getConstrainedDistrictings().getDistrictings().size(); i++){
+            double compactness = this.getConstrainedDistrictings().getDistrictings().get(i).getGraphCompactness();
+            //The lower the compactness value the better it should be
+            //Therefore we delete all the districtings with the compactness value that is greater the user threshold
+            if (compactness <= compactnessValue){
+                tempDistrictings.add(this.getConstrainedDistrictings().getDistrictings().get(i));
+            }
+            else{
+                counter++;
+            }
+        }
+        System.out.println("filtered out by graph Compactness: ");
+        System.out.println(counter);
+        this.setFilteredByCompactnessCount(counter);
+        this.getConstrainedDistrictings().setDistrictings(tempDistrictings);
+    }
+
+    //STEP 3 OF FILTER, NEED DISTRICT INFORMATION
+    public void filterMajorMinorDistrictings(){
+        int counter = 0;
+        RaceType race = this.getConstraints().getMinorityType();
+        double majorMinorThres = this.getConstraints().getMajorMinorThres();
+        int numberOfMMDistricts = this.getConstraints().getNumberOfMajorityMinorityDistricts();
+        ArrayList<Districting> tempDistrictings = new ArrayList<>();
+        for (int i = 0; i < this.getConstrainedDistrictings().getDistrictings().size(); i++){
+            int number = this.getDistrictings().get(i).calculateNumberOfMajorityMinorityDistricts(race, majorMinorThres);
+            if (number >= numberOfMMDistricts){
+                tempDistrictings.add(this.getConstrainedDistrictings().getDistrictings().get(i));
+            }
+            else{
+                counter++;
+            }
+        }
+        System.out.println("filtered out by majority minority: ");
+        System.out.println(counter);
+        this.setFilteredByMMDCount(counter);
+        this.getConstrainedDistrictings().setDistrictings(tempDistrictings);
+    }
+
+    //FINAL STEP OF FILTER, NEEDS PRECINCT INFORMATION
+    public void filterIncumbentProtectDistrictings(){
         int counter = 0;
         ArrayList<String> protectedIncumbents = this.getConstraints().getProtectedIncumbents();
         ArrayList<Districting> tempDistrictings = new ArrayList<>();
@@ -319,47 +448,6 @@ public class Job implements Serializable{
         this.setFilteredByIncumbentCount(counter);
         this.getConstrainedDistrictings().setDistrictings(tempDistrictings);
     }
-
-    public void filterGraphCompactness(){
-        int counter = 0;
-        double compactnessValue = this.getConstraints().getCompactnessValue();
-        ArrayList<Districting> tempDistrictings = new ArrayList<>();
-        //we calculate graph compactness, which is the ratio of edge nodes in a graph over total nodes in a graph
-        for (int i = 0; i < this.getConstrainedDistrictings().getDistrictings().size(); i++){
-            double compactness = this.getConstrainedDistrictings().getDistrictings().get(i).calculateGraphCompactness();
-            if (compactness >= compactnessValue){
-                tempDistrictings.add(this.getConstrainedDistrictings().getDistrictings().get(i));
-            }
-            else{
-                counter++;
-            }
-        }
-        System.out.println("filtered out by graph Compactness: ");
-        System.out.println(counter);
-        this.setFilteredByCompactnessCount(counter);
-        this.getConstrainedDistrictings().setDistrictings(tempDistrictings);
-    }
-
-    public void calculateDistrictingGeometry(Districting districting) throws ParseException {
-        for (int i = 0; i < districting.getDistricts().size(); i++){
-            districting.getDistricts().get(i).calculateDistrictGeometry();
-        }
-    }
-
-
-
-//    filterMajorityMinorityDistrictings(districtings: Districtings, constraints.minorityRace, constraints.MajorMinorThres, constraints.populationType): List<Districting>
-//    filterPopulationEqualityDistrictings(districtings: Districtings, constraints.minorityRace, constraints.populationEqualityThres, constraints.populationType): List<Districting>
-//    filterIncumbentProtectionDistrictings(constrainedDistrictings: ConstrainedDistricting, constraints.incumbentProtectionThres) : List <Districting>
-//    filterCompactnessDistrictings(constrainedDistrictings: ConstrainedDistricting, constraints.incumbentProtectionThres) : List<Districting>
-//    getBoxAndWhiskerData(constraints.populationType : PopulationType, .constraints.minorityType: minorityType, constrainedDistrictings: ConstrainedDistrictings): Plot
-//    calculateSplitCountyScore(constrainedDistrictings: constrainedDistrictings)
-//    calculateDeviationFromAverageDistricting(constrainedDistricting: ConstrainedDistricting, constraints.populationType, constraints.minorityType): void
-//    getSplitCountyGeometry(disticting: Districting): List<geometry>
-//    getEqualPopulationDistricts(districting: Districting): List<District>
-
-
-
 
 
 }
