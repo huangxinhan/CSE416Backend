@@ -36,6 +36,7 @@ public class Districting implements Serializable{
     private ArrayList<JSONObject> districtBoundaries;
     private JSONObject precinctBoundaries;
     private double populationPercentDifference;
+    private double populationPercentDifferenceVAP;
     private double graphCompactness;
 
 
@@ -203,6 +204,15 @@ public class Districting implements Serializable{
         return graphCompactness;
     }
 
+
+    public double getPopulationPercentDifferenceVAP() {
+        return populationPercentDifferenceVAP;
+    }
+
+    public void setPopulationPercentDifferenceVAP(double populationPercentDifferenceVAP) {
+        this.populationPercentDifferenceVAP = populationPercentDifferenceVAP;
+    }
+
     public void setGraphCompactness(double graphCompactness) {
         this.graphCompactness = graphCompactness;
     }
@@ -281,6 +291,37 @@ public class Districting implements Serializable{
                 }
             }
         return numberOfMajorMinorDistricts;
+    }
+
+    public void calculatePopulationConstraintAll(){
+        //iterate through all the districts to find the most populous and least populous districts
+        Long mostPopulousPopulationTotal = 0l;
+        Long leastPopulousPopulationTotal = 0l;
+        Long mostPopulousPopulationVAP = 0l;
+        Long leastPopulousPopulationVAP = 0l;
+        for (int i = 0; i < this.getDistricts().size(); i++){
+
+                if (this.getDistricts().get(i).getTotalPopulation() > mostPopulousPopulationTotal){
+                    mostPopulousPopulationTotal = this.getDistricts().get(i).getTotalPopulation();
+                }
+                else if (this.getDistricts().get(i).getTotalPopulation() < leastPopulousPopulationTotal){
+                    leastPopulousPopulationTotal = this.getDistricts().get(i).getTotalPopulation();
+                }
+
+                if (this.getDistricts().get(i).getVotingAgePopulation() > mostPopulousPopulationVAP){
+                    mostPopulousPopulationVAP = this.getDistricts().get(i).getVotingAgePopulation();
+                }
+                else if (this.getDistricts().get(i).getVotingAgePopulation() < leastPopulousPopulationVAP){
+                    leastPopulousPopulationVAP = this.getDistricts().get(i).getVotingAgePopulation();
+                }
+
+        }
+        //the percent difference in this case is 100 x abs(A-B)/((A+B)/2))
+        double percentDifferenceTotal = 100 * Math.abs((mostPopulousPopulationTotal - leastPopulousPopulationTotal)/((mostPopulousPopulationTotal + leastPopulousPopulationTotal)/2));
+        double percentDifferenceVAP = 100 * Math.abs((mostPopulousPopulationVAP - leastPopulousPopulationVAP)/((mostPopulousPopulationVAP + leastPopulousPopulationVAP)/2));
+        //Here we store the percent difference to use in the objective function later
+        this.setPopulationPercentDifference(percentDifferenceTotal);
+        this.setPopulationPercentDifferenceVAP(percentDifferenceVAP);
     }
 
     public boolean calculatePopulationConstraint(PopulationType popType, double threshold){
