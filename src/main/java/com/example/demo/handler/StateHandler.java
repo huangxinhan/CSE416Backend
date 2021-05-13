@@ -44,102 +44,102 @@ public class StateHandler {
         this.jobRepository = jobRepository;
         this.stateRepository = stateRepository;
         this.jobSummaryRepository = jobSummaryRepository;
-        collection = (ArrayList<State>) this.stateRepository.findAll();
-        this.PA = this.collection.get(0);
-
-        JobSummary PAJS1 = new JobSummary("PA_JOB1_SUM","PENNSYLVANIA","3","18","50","1");
-        JobSummary PAJS2 = new JobSummary("PA_JOB2_SUM","PENNSYLVANIA","3","18","60","2");
-        JobSummary PAJS3 = new JobSummary("PA_JOB3_SUM","PENNSYLVANIA","3","18","70","3");
-        ArrayList<JobSummary> PAJSColleciton = new ArrayList<JobSummary>();
-        PAJSColleciton.add(PAJS1);
-        PAJSColleciton.add(PAJS2);
-        PAJSColleciton.add(PAJS3);
-        // PA
-        for (int k = 1; k < 2; k++) {
-            String jobName = "PA_JOB" + String.valueOf(k);
-            Job jobAdd = new Job(jobName);
-            jobAdd.setJobSummary(PAJSColleciton.get(k-1));
-            jobAdd.setDistrictings(new ArrayList<Districting>());
-            List<Precinct> PA_Precinct_Collection =  this.PA.getPrecincts();
-            File folder = new File("src/main/java/com/example/demo/orgJson/randomDistricting" + String.valueOf(k));
-            File[] listOfFiles = folder.listFiles();
-            List<Precinct> allPrecinct =  PA_Precinct_Collection;
-            HashMap<String, Precinct> newAllPrecint = new HashMap<>();
-            for (int i = 0; i < allPrecinct.size(); i++) {
-                newAllPrecint.put(allPrecinct.get(i).getPrecinctID(), allPrecinct.get(i));
-
-            }
-
-
-            for (File file : listOfFiles) {
-                if (file.isFile() && file.getName().startsWith("PA")) {
-
-                    Object obj6 = new JSONParser().parse(new BufferedReader(new FileReader("src/main/java/com/example/demo/orgJson/randomDistricting1/PAmergedtest0.json")));
-
-                    JSONObject total = (JSONObject) obj6;
-
-                    for (int l = 0; l < 499; l++) {
-                    System.out.println(l);
-                        String Mid = "PA" + String.valueOf(l);
-                        JSONObject each = (JSONObject) total.get(Mid);
-
-
-                    String districtingName = file.getName().substring(0, file.getName().indexOf(".json"));
-
-                    Districting newDistricting = new Districting(districtingName);
-
-                    newDistricting.setDistricts(new ArrayList<District>());
-
-
-                        JSONObject mid = each;
-
-                        ArrayList<District> newDistrictCollection = new ArrayList<>();
-
-                        for (int i = 1; i < 19; i++) {
-
-                            String name = districtingName + "_" + Integer.toString(i);
-
-                            District toAddDistrict = new District(name);
-
-                            toAddDistrict.setDistrictingID(newDistricting);
-
-                            JSONArray dArray = (JSONArray) mid.get(Integer.toString(i));
-
-                            //System.out.println(toAddDistrict.getPrecincts());
-
-                            for (int j = 0; j < ((JSONObject) dArray.get(0)).keySet().size(); j++) {
-
-                                String id = ((JSONObject) dArray.get(0)).keySet().toArray()[j].toString();
-
-                                Precinct toAdd = newAllPrecint.get(id);
+//        collection = (ArrayList<State>) this.stateRepository.findAll();
+//        this.PA = this.collection.get(0);
 //
-//                                //System.out.println(toAdd.getPrecinctID());
-                                toAddDistrict.getPrecincts().add(toAdd);
-                                toAdd.getDistrictCollection().add(toAddDistrict);
-
-
-                            }
-
-
-                            newDistricting.getDistricts().add(toAddDistrict);
-                            newDistrictCollection.add(toAddDistrict);
-
-                        }
-//                    System.out.println("start save");
-//                    System.out.println(newDistrictCollection);
-                        //districtRepository.saveAll(newDistrictCollection);
-                        jobAdd.getDistrictings().add(newDistricting);
-
-                    }
-                }
-            }
-//            precintRepository.saveAll(newAllPrecint.values());
-
-
-        PA.getJobs().add(jobAdd);
-        }
-        System.out.println("finish");
-        System.out.println(PA.getJobs().get(0).getDistrictings().size());
+//        JobSummary PAJS1 = new JobSummary("PA_JOB1_SUM","PENNSYLVANIA","3","18","50","1");
+//        JobSummary PAJS2 = new JobSummary("PA_JOB2_SUM","PENNSYLVANIA","3","18","60","2");
+//        JobSummary PAJS3 = new JobSummary("PA_JOB3_SUM","PENNSYLVANIA","3","18","70","3");
+//        ArrayList<JobSummary> PAJSColleciton = new ArrayList<JobSummary>();
+//        PAJSColleciton.add(PAJS1);
+//        PAJSColleciton.add(PAJS2);
+//        PAJSColleciton.add(PAJS3);
+//        // PA
+//        for (int k = 1; k < 2; k++) {
+//            String jobName = "PA_JOB" + String.valueOf(k);
+//            Job jobAdd = new Job(jobName);
+//            jobAdd.setJobSummary(PAJSColleciton.get(k-1));
+//            jobAdd.setDistrictings(new ArrayList<Districting>());
+//            List<Precinct> PA_Precinct_Collection =  this.PA.getPrecincts();
+//            File folder = new File("src/main/java/com/example/demo/orgJson/randomDistricting" + String.valueOf(k));
+//            File[] listOfFiles = folder.listFiles();
+//            List<Precinct> allPrecinct =  PA_Precinct_Collection;
+//            HashMap<String, Precinct> newAllPrecint = new HashMap<>();
+//            for (int i = 0; i < allPrecinct.size(); i++) {
+//                newAllPrecint.put(allPrecinct.get(i).getPrecinctID(), allPrecinct.get(i));
+//
+//            }
+//
+//
+//            for (File file : listOfFiles) {
+//                if (file.isFile() && file.getName().startsWith("PA")) {
+//
+//                    Object obj6 = new JSONParser().parse(new BufferedReader(new FileReader("src/main/java/com/example/demo/orgJson/randomDistricting1/PAmergedtest0.json")));
+//
+//                    JSONObject total = (JSONObject) obj6;
+//
+//                    for (int l = 0; l < 499; l++) {
+//                    System.out.println(l);
+//                        String Mid = "PA" + String.valueOf(l);
+//                        JSONObject each = (JSONObject) total.get(Mid);
+//
+//
+//                    String districtingName = file.getName().substring(0, file.getName().indexOf(".json"));
+//
+//                    Districting newDistricting = new Districting(districtingName);
+//
+//                    newDistricting.setDistricts(new ArrayList<District>());
+//
+//
+//                        JSONObject mid = each;
+//
+//                        ArrayList<District> newDistrictCollection = new ArrayList<>();
+//
+//                        for (int i = 1; i < 19; i++) {
+//
+//                            String name = districtingName + "_" + Integer.toString(i);
+//
+//                            District toAddDistrict = new District(name);
+//
+//                            toAddDistrict.setDistrictingID(newDistricting);
+//
+//                            JSONArray dArray = (JSONArray) mid.get(Integer.toString(i));
+//
+//                            //System.out.println(toAddDistrict.getPrecincts());
+//
+//                            for (int j = 0; j < ((JSONObject) dArray.get(0)).keySet().size(); j++) {
+//
+//                                String id = ((JSONObject) dArray.get(0)).keySet().toArray()[j].toString();
+//
+//                                Precinct toAdd = newAllPrecint.get(id);
+////
+////                                //System.out.println(toAdd.getPrecinctID());
+//                                toAddDistrict.getPrecincts().add(toAdd);
+//                                toAdd.getDistrictCollection().add(toAddDistrict);
+//
+//
+//                            }
+//
+//
+//                            newDistricting.getDistricts().add(toAddDistrict);
+//                            newDistrictCollection.add(toAddDistrict);
+//
+//                        }
+////                    System.out.println("start save");
+////                    System.out.println(newDistrictCollection);
+//                        //districtRepository.saveAll(newDistrictCollection);
+//                        jobAdd.getDistrictings().add(newDistricting);
+//
+//                    }
+//                }
+//            }
+////            precintRepository.saveAll(newAllPrecint.values());
+//
+//
+//        PA.getJobs().add(jobAdd);
+//        }
+//        System.out.println("finish");
+//        System.out.println(PA.getJobs().get(0).getDistrictings().size());
     }
 
     @Transactional

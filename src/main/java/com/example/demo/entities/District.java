@@ -246,7 +246,7 @@ public class District implements Serializable{
     }
 
     public ArrayList<Precinct> calculateEdgeNodes(){
-        ArrayList<Precinct> edgeNodes = new ArrayList<Precinct>();
+        ArrayList<Precinct> edgeNodes = new ArrayList<>();
         for (int i = 0; i < this.getPrecincts().size(); i++){
             this.getPrecincts().get(i).onEdge();
             if(this.getPrecincts().get(i).getOnEdge() == true){
@@ -254,6 +254,7 @@ public class District implements Serializable{
             }
         }
         this.setEdgeNodes(edgeNodes);
+        System.out.println("number of edge nodes found:" + edgeNodes);
         return edgeNodes;
     }
 

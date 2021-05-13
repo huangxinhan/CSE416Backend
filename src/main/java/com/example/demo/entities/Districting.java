@@ -295,10 +295,10 @@ public class Districting implements Serializable{
 
     public void calculatePopulationConstraintAll(){
         //iterate through all the districts to find the most populous and least populous districts
-        Long mostPopulousPopulationTotal = 0l;
-        Long leastPopulousPopulationTotal = 0l;
-        Long mostPopulousPopulationVAP = 0l;
-        Long leastPopulousPopulationVAP = 0l;
+        long mostPopulousPopulationTotal = 0l;
+        long leastPopulousPopulationTotal = 9999999999l;
+        long mostPopulousPopulationVAP = 0l;
+        long leastPopulousPopulationVAP = 9999999999l;
         for (int i = 0; i < this.getDistricts().size(); i++){
 
                 if (this.getDistricts().get(i).getTotalPopulation() > mostPopulousPopulationTotal){
@@ -321,11 +321,11 @@ public class Districting implements Serializable{
         System.out.println(mostPopulousPopulationVAP);
         System.out.println(leastPopulousPopulationVAP);
         //the percent difference in this case is 100 x abs(A-B)/((A+B)/2))
-        double percentDifferenceTotal = 100 * Math.abs((mostPopulousPopulationTotal - leastPopulousPopulationTotal)/((mostPopulousPopulationTotal + leastPopulousPopulationTotal)/2));
-        double percentDifferenceVAP = 100 * Math.abs((mostPopulousPopulationVAP - leastPopulousPopulationVAP)/((mostPopulousPopulationVAP + leastPopulousPopulationVAP)/2));
+        double percentDifferenceTotal = 100 * Math.abs(((double)mostPopulousPopulationTotal - (double)leastPopulousPopulationTotal)/(((double)mostPopulousPopulationTotal + (double)leastPopulousPopulationTotal)/2));
+        double percentDifferenceVAP = 100 * Math.abs(((double)mostPopulousPopulationVAP - (double)leastPopulousPopulationVAP)/(((double)mostPopulousPopulationVAP + (double)leastPopulousPopulationVAP)/2));
         //Here we store the percent difference to use in the objective function later
-        System.out.println(percentDifferenceVAP);
         System.out.println(percentDifferenceTotal);
+        System.out.println(percentDifferenceVAP);
         this.setPopulationPercentDifference(percentDifferenceTotal);
         this.setPopulationPercentDifferenceVAP(percentDifferenceVAP);
     }
@@ -376,7 +376,7 @@ public class Districting implements Serializable{
         ArrayList<Double> compactnessArray = new ArrayList<>();
         for (int i = 0; i < this.getDistricts().size(); i++){
             ArrayList<Precinct> edgeNodes = this.getDistricts().get(i).calculateEdgeNodes();
-            double compactness = edgeNodes.size()/this.getDistricts().get(i).getPrecincts().size();
+            double compactness = (double)edgeNodes.size()/(double)this.getDistricts().get(i).getPrecincts().size();
             compactnessArray.add(compactness);
         }
         //now that we have the compactness, we add all of them together then divide by the array size
@@ -384,9 +384,10 @@ public class Districting implements Serializable{
         for (int i = 0; i < compactnessArray.size(); i++){
             totalCompactness += compactnessArray.get(i);
         }
-        double graphCompactness = totalCompactness/compactnessArray.size();
+        double graphCompactness = totalCompactness/(double)compactnessArray.size();
         //store the graph compactness measure for easier calculation for the objective function
         this.setGraphCompactness(graphCompactness);
+        System.out.println("GRAPH COMPACTNESS IS " + graphCompactness);
         return graphCompactness;
     }
 
