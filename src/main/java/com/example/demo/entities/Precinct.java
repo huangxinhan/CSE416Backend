@@ -186,7 +186,7 @@ public class Precinct implements Serializable{
 //        this.districtID = districtID;
 //    }
 
-    @ManyToMany()
+    @ManyToMany(fetch = FetchType.EAGER)
 
     @Transactional
     public List<Precinct> getNeighbours() {
