@@ -1,5 +1,6 @@
 package com.example.demo.entities;
 
+import com.example.demo.entities.enums.Measures;
 import com.example.demo.entities.enums.PopulationType;
 import com.example.demo.entities.enums.RaceType;
 import org.hibernate.annotations.Fetch;
@@ -365,5 +366,44 @@ public class Districting implements Serializable{
         outerProperties.put("type", "FeatureCollection");
         outerProperties.put("features", innerFeatures);
         this.setPrecinctBoundaries(outerProperties);
+    }
+
+    public void calculateObjectiveFunctionScore(HashMap<Measures, Double> weights, PopulationType populationType){
+        //now this method here will call various other methods to calculate the objective function score.
+        double objectiveFunctionScore = 0;
+        objectiveFunctionScore += this.calculateOFScoreByPopulationEquality(populationType, weights);
+
+
+    }
+
+    //Need to change so that the population type can change.
+    public double calculateOFScoreByPopulationEquality(PopulationType populationType, HashMap<Measures, Double> weights){
+        int numberOfCDs = this.getDistricts().size();
+        double sum = 0;
+        long total_population = 0;
+        if (populationType == PopulationType.TOTAL) {
+            for (int i = 0; i < this.getDistricts().size(); i++) {
+                total_population += this.getDistricts().get(i).getTotalPopulation();
+            }
+            long idealPopulation = total_population / this.getDistricts().size();
+            for (int i = 0; i < this.getDistricts().size(); i++) {
+                sum += Math.pow(this.getDistricts().get(i).getTotalPopulation() / idealPopulation, 2);
+            }
+        }
+        else if (populationType == PopulationType.VAP) {
+            for (int i = 0; i < this.getDistricts().size(); i++) {
+                total_population += this.getDistricts().get(i).getVotingAgePopulation();
+            }
+            long idealPopulation = total_population / this.getDistricts().size();
+            for (int i = 0; i < this.getDistricts().size(); i++) {
+                sum += Math.pow(this.getDistricts().get(i).getVotingAgePopulation() / idealPopulation, 2);
+            }
+        }
+        double weight = weights.get(Measures.POPULATION_EQUALITY);
+        return weight * sum;
+    }
+
+    public double calculateOFScoreByAverageDistricting(){
+        return 0;
     }
 }

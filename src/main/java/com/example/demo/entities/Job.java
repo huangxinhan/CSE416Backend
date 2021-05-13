@@ -348,6 +348,13 @@ public class Job implements Serializable{
         }
     }
 
+    //sets the objective function score for each districtings
+    public void calculateDistrictingScoresByObjectiveFunction(){
+        for (int i = 0; i < this.getConstrainedDistrictings().getDistrictings().size(); i++){
+            this.getConstrainedDistrictings().getDistrictings().get(i).calculateObjectiveFunctionScore(this.getWeights(), this.getConstraints().getPopulationType());
+        }
+    }
+
 
 
 //    filterMajorityMinorityDistrictings(districtings: Districtings, constraints.minorityRace, constraints.MajorMinorThres, constraints.populationType): List<Districting>
