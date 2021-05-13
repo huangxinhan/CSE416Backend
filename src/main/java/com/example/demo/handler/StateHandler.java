@@ -10,11 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.File;
+import java.io.*;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -58,7 +55,7 @@ public class StateHandler {
         PAJSColleciton.add(PAJS2);
         PAJSColleciton.add(PAJS3);
         // PA
-        for (int k = 1; k < 4; k++) {
+        for (int k = 1; k < 2; k++) {
             String jobName = "PA_JOB" + String.valueOf(k);
             Job jobAdd = new Job(jobName);
             jobAdd.setJobSummary(PAJSColleciton.get(k-1));
@@ -77,7 +74,16 @@ public class StateHandler {
             for (File file : listOfFiles) {
                 if (file.isFile() && file.getName().startsWith("PA")) {
 
-                    Object obj6 = new JSONParser().parse(new FileReader("src/main/java/com/example/demo/orgJson/randomDistricting" + String.valueOf(k) +"/" + file.getName()));
+                    Object obj6 = new JSONParser().parse(new BufferedReader(new FileReader("src/main/java/com/example/demo/orgJson/randomDistricting1/PAmergedtest0.json")));
+
+                    JSONObject total = (JSONObject) obj6;
+
+
+                    for (int l = 0; l < 19; l++) {
+
+                        String Mid = "PA" + String.valueOf(l);
+                        JSONObject each = (JSONObject) total.get(Mid);
+
 
                     String districtingName = file.getName().substring(0, file.getName().indexOf(".json"));
 
@@ -85,47 +91,47 @@ public class StateHandler {
 
                     newDistricting.setDistricts(new ArrayList<District>());
 
-                    JSONObject jo6 = (JSONObject) obj6;
 
-                    JSONObject mid = (JSONObject) jo6.get("districts");
+                        JSONObject mid = each;
 
-                    ArrayList<District> newDistrictCollection = new ArrayList<>();
+                        ArrayList<District> newDistrictCollection = new ArrayList<>();
 
-                    for (int i = 1; i < 19; i++) {
+                        for (int i = 1; i < 19; i++) {
 
-                        String name = districtingName + "_" + Integer.toString(i);
+                            String name = districtingName + "_" + Integer.toString(i);
 
-                        District toAddDistrict = new District(name);
+                            District toAddDistrict = new District(name);
 
-                        toAddDistrict.setDistrictingID(newDistricting);
+                            toAddDistrict.setDistrictingID(newDistricting);
 
-                        JSONArray dArray = (JSONArray) mid.get(Integer.toString(i));
+                            JSONArray dArray = (JSONArray) mid.get(Integer.toString(i));
 
-                        //System.out.println(toAddDistrict.getPrecincts());
+                            //System.out.println(toAddDistrict.getPrecincts());
 
-                        for (int j = 0; j < ((JSONObject) dArray.get(0)).keySet().size(); j++) {
+                            for (int j = 0; j < ((JSONObject) dArray.get(0)).keySet().size(); j++) {
 
-                            String id = ((JSONObject) dArray.get(0)).keySet().toArray()[j].toString();
+                                String id = ((JSONObject) dArray.get(0)).keySet().toArray()[j].toString();
 
-                            Precinct toAdd = newAllPrecint.get(id);
+                                Precinct toAdd = newAllPrecint.get(id);
 
-                            //System.out.println(toAdd.getPrecinctID());
-                            toAddDistrict.getPrecincts().add(toAdd);
-                            toAdd.getDistrictCollection().add(toAddDistrict);
+                                //System.out.println(toAdd.getPrecinctID());
+                                toAddDistrict.getPrecincts().add(toAdd);
+                                toAdd.getDistrictCollection().add(toAddDistrict);
 
+
+                            }
+
+
+                            newDistricting.getDistricts().add(toAddDistrict);
+                            newDistrictCollection.add(toAddDistrict);
 
                         }
-
-
-                        newDistricting.getDistricts().add(toAddDistrict);
-                        newDistrictCollection.add(toAddDistrict);
-
-                    }
 //                    System.out.println("start save");
 //                    System.out.println(newDistrictCollection);
-                    //districtRepository.saveAll(newDistrictCollection);
-                    jobAdd.getDistrictings().add(newDistricting);
+                        //districtRepository.saveAll(newDistrictCollection);
+                        jobAdd.getDistrictings().add(newDistricting);
 
+                    }
                 }
             }
 //            precintRepository.saveAll(newAllPrecint.values());
@@ -134,6 +140,7 @@ public class StateHandler {
         PA.getJobs().add(jobAdd);
         }
         System.out.println("finish");
+        System.out.println(PA.getJobs().get(0).getDistrictings().size());
     }
 
     @Transactional
