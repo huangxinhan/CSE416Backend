@@ -30,6 +30,9 @@ public class StateHandler {
     private final StateRepository stateRepository;
     private final JobSummaryRepository jobSummaryRepository;
     private State state;
+    private State PA;
+    private State NY;
+    private State MD;
     private ArrayList<Precinct> allPrecinct;
     private Districting defaultDistricing;
     private Job selectedJob;
@@ -48,6 +51,9 @@ public class StateHandler {
         this.jobRepository = jobRepository;
         this.stateRepository = stateRepository;
         this.jobSummaryRepository = jobSummaryRepository;
+        this.PA = stateRepository.findById("PENNSYLVANIA").get();
+        this.defaultDistricing = state.getEnactedDistricting();
+
     }
 
     @Transactional
@@ -66,8 +72,19 @@ public class StateHandler {
 
     public void selectState(String stateId)
     {
-        this.state = stateRepository.findById(stateId).get();
-        this.defaultDistricing = state.getEnactedDistricting();
+        if(stateId == "PENNSYLVANIA")
+        {
+            state = PA;
+        }
+        else if(stateId == "NEWYORK")
+        {
+            state = NY;
+        }
+        else
+        {
+            state = MD;
+        }
+
         List<Precinct> allP = state.getPrecincts();
         for(Precinct p : allP)
         {
