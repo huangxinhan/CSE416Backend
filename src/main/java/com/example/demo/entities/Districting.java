@@ -43,6 +43,8 @@ public class Districting implements Serializable{
 
     }
 
+
+
     public Districting(String districtingID) {
         this.districtingID = districtingID;
     }
@@ -51,6 +53,13 @@ public class Districting implements Serializable{
         this.districtingID = districtingID;
         this.districts = districts;
     }
+
+    public Districting(String districtingID, double compactness, double populationPercentDifference) {
+        this.districtingID = districtingID;
+        this.compactness = compactness;
+        this.populationPercentDifference = populationPercentDifference;
+    }
+
     @Id
     public String getDistrictingID() {
         return districtingID;
@@ -60,7 +69,7 @@ public class Districting implements Serializable{
         this.districtingID = districtingID;
     }
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL)
 
     public List<District> getDistricts() {
         return districts;
@@ -184,12 +193,12 @@ public class Districting implements Serializable{
         this.precinctBoundaries = precinctBoundaries;
     }
 
-    @Transient
+//    @Transient
     public double getPopulationPercentDifference() {
         return populationPercentDifference;
     }
 
-    @Transient
+//    @Transient
     public double getGraphCompactness() {
         return graphCompactness;
     }

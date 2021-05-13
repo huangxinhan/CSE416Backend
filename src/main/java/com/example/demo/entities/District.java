@@ -79,7 +79,7 @@ public class District implements Serializable{
         this.districtNumber = districtNumber;
     }
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.ALL)
     @Fetch(value = FetchMode.SUBSELECT)
     public List<Precinct> getPrecincts() {
         return precincts;
@@ -150,7 +150,7 @@ public class District implements Serializable{
 
     public void setVotingAgePopulation(Long votingAgePopulation){this.votingAgePopulation = votingAgePopulation;}
 
-    @Transient
+
     public Long getAfricanAmericanPopulation() {
         return AfricanAmericanPopulation;
     }
@@ -158,7 +158,7 @@ public class District implements Serializable{
     public void setAfricanAmericanPopulation(Long africanAmericanPopulation) {
         AfricanAmericanPopulation = africanAmericanPopulation;
     }
-    @Transient
+
     public Long getAsianPopulation() {
         return AsianPopulation;
     }
@@ -166,7 +166,7 @@ public class District implements Serializable{
     public void setAsianPopulation(Long asianPopulation) {
         AsianPopulation = asianPopulation;
     }
-    @Transient
+
     public Long getHispanicPopulation() {
         return HispanicPopulation;
     }
