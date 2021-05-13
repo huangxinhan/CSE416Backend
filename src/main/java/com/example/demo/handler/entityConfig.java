@@ -211,10 +211,10 @@ public class entityConfig {
                 Job jobAdd = new Job(jobName);
                 jobAdd.setJobSummary(PAJSColleciton.get(k-1));
                 jobAdd.setDistrictings(new ArrayList<Districting>());
-                ArrayList<Precinct> PA_Precinct_Collection = (ArrayList<Precinct>) precinctRepository.findAll();
+                List<Precinct> PA_Precinct_Collection =  PA.getPrecincts();
                 File folder = new File("src/main/java/com/example/demo/orgJson/randomDistricting" + String.valueOf(k));
                 File[] listOfFiles = folder.listFiles();
-                ArrayList<Precinct> allPrecinct = (ArrayList<Precinct>) PA_Precinct_Collection;
+                List<Precinct> allPrecinct =  PA_Precinct_Collection;
                 HashMap<String, Precinct> newAllPrecint = new HashMap<>();
                 for (int i = 0; i < allPrecinct.size(); i++) {
                     newAllPrecint.put(allPrecinct.get(i).getPrecinctID(), allPrecinct.get(i));
