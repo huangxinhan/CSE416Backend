@@ -51,10 +51,13 @@ public class servelet {
     @PostMapping("/constraints")
     public void setConstraints(@RequestBody Constraints constraints) {
         System.out.println(constraints.getCompactnessType());
+        stateHandler.filterDistrictings();
     }
+
     @PostMapping("/weights")
     public void setWeights(@RequestBody HashMap<Measures,Double> weights) {
-        System.out.println(weights);
+        //System.out.println(weights);
+
     }
 
     @PostMapping("/state")
