@@ -206,9 +206,11 @@ public class entityConfig {
             PAJSColleciton.add(PAJS3);
             // PA
             State PA = stateRepository.findById("PENNSYLVANIA").get();
+            PA.setJobs(new ArrayList<Job>());
             for (int k = 1; k < 4; k++) {
                 String jobName = "PA_JOB" + String.valueOf(k);
                 Job jobAdd = new Job(jobName);
+
                 jobAdd.setJobSummary(PAJSColleciton.get(k-1));
                 jobAdd.setDistrictings(new ArrayList<Districting>());
                 List<Precinct> PA_Precinct_Collection =  PA.getPrecincts();
@@ -288,12 +290,11 @@ public class entityConfig {
                     }
                 }
 //            precintRepository.saveAll(newAllPrecint.values());
-
-                if(PA.getJobs() == null)
-                    PA.setJobs(new ArrayList<Job>());
-                PA.getJobs().add(jobAdd);
+//
+             PA.getJobs().add(jobAdd);
 
             }
+            System.out.println(PA.getJobs().size());
             stateRepository.save(PA);
             System.out.println("finish");
 
