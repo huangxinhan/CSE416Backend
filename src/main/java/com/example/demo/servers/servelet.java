@@ -1,4 +1,5 @@
 package com.example.demo.servers;
+import java.io.IOException;
 import java.util.*;
 
 import com.example.demo.entities.*;
@@ -49,7 +50,7 @@ public class servelet {
     }
 
     @PostMapping("/constraints")
-    public void setConstraints(@RequestBody Constraints constraints) {
+    public void setConstraints(@RequestBody Constraints constraints) throws IOException, ParseException {
         System.out.println(constraints.getCompactnessType());
         stateHandler.filterDistrictings(constraints);
     }

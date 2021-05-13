@@ -87,12 +87,12 @@ public class StateHandler {
 
     public JSONObject calculateDefaultDistrictBoundary() throws ParseException {
         //Job job = new Job();
-        state.getJobs().get(1).calculateDistrictingGeometry(state.getJobs().get(1).getDistrictings().get(3));
-        //job.calculateDistrictingGeometry(state.getEnactedDistricting());
-        state.getJobs().get(1).getDistrictings().get(3).setDistrictBoundaryJSON();
+        Job job = new Job();
+        job.calculateDistrictingGeometry(state.getEnactedDistricting());
+        state.getEnactedDistricting().setDistrictBoundaryJSON();
         JSONObject districtingBoundaries = new JSONObject();
         districtingBoundaries.put("type", "FeatureCollection");
-        districtingBoundaries.put("features", state.getJobs().get(1).getDistrictings().get(3).getDistrictBoundaries());
+        districtingBoundaries.put("features", state.getEnactedDistricting().getDistrictBoundaries());
         return districtingBoundaries;
     }
 
