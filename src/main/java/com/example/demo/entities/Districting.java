@@ -371,13 +371,13 @@ public class Districting implements Serializable{
     public void calculateObjectiveFunctionScore(HashMap<Measures, Double> weights, PopulationType populationType){
         //now this method here will call various other methods to calculate the objective function score.
         double objectiveFunctionScore = 0;
-        objectiveFunctionScore += this.calculateOFScoreByPopulationEquality(populationType);
+        objectiveFunctionScore += this.calculateOFScoreByPopulationEquality(populationType, weights);
 
 
     }
 
     //Need to change so that the population type can change.
-    public double calculateOFScoreByPopulationEquality(PopulationType populationType){
+    public double calculateOFScoreByPopulationEquality(PopulationType populationType, HashMap<Measures, Double> weights){
         int numberOfCDs = this.getDistricts().size();
         double sum = 0;
         long total_population = 0;
@@ -399,6 +399,11 @@ public class Districting implements Serializable{
                 sum += Math.pow(this.getDistricts().get(i).getVotingAgePopulation() / idealPopulation, 2);
             }
         }
-        return sum;
+        double weight = weights.get(Measures.POPULATION_EQUALITY);
+        return weight * sum;
+    }
+
+    public double calculateOFScoreByAverageDistricting(){
+        return 0;
     }
 }
