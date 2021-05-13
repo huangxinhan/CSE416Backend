@@ -171,7 +171,7 @@ public class Job implements Serializable{
         this.topDistrictingsBySimilarity = topDistrictingsBySimilarity;
     }
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 
     public JobSummary getJobSummary() {
         return jobSummary;
