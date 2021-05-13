@@ -51,7 +51,7 @@ public class servelet {
     @PostMapping("/constraints")
     public void setConstraints(@RequestBody Constraints constraints) {
         System.out.println(constraints.getCompactnessType());
-        stateHandler.filterDistrictings();
+        stateHandler.filterDistrictings(constraints);
     }
 
     @PostMapping("/weights")
@@ -66,9 +66,46 @@ public class servelet {
         return (stateHandler.getState().getJobs().get(0).getJobSummary());
 
     }
+
     @PostMapping("/job")
-    public void getJobID(@RequestBody String jobID) {
+    public void getJobID(@RequestBody String job) {
+        String jobID="";
+        //if (stateName.charAt(0)=='P') {
+        if (job.charAt(0) == '1') {
+            jobID = "PA_JOB1";
+        }
+        if (job.charAt(0) == '2') {
+            jobID = "PA_JOB2";
+        }
+        if (job.charAt(0) == '3') {
+            jobID = "PA_JOB3";
+        }
+        // }
+//        if (stateName.charAt(0)=='N') {
+//            if (job.charAt(0) == '1') {
+//                jobID = "NY_JOB1";
+//            }
+//            if (job.charAt(0) == '2') {
+//                jobID = "NY_JOB2";
+//            }
+//            if (job.charAt(0) == '3') {
+//                jobID = "NY_JOB3";
+//            }
+//        }
+//        if (stateName.charAt(0)=='M') {
+//            if (job.charAt(0) == '1') {
+//                jobID = "MD_JOB1";
+//            }
+//            if (job.charAt(0) == '2') {
+//                jobID = "MD_JOB2";
+//            }
+//            if (job.charAt(0) == '3') {
+//                jobID = "MD_JOB3";
+//            }
+//        }
         System.out.println(jobID);
+        stateHandler.selectJob(jobID);
+
         //return (stateHandler.getState().getJobs().get(0).getJobSummary());
     }
 }

@@ -208,7 +208,7 @@ public class entityConfig {
             State PA = stateRepository.findById("PENNSYLVANIA").get();
             PA.setJobs(new ArrayList<Job>());
             for (int k = 1; k < 4; k++) {
-                System.out.println(k);
+                //System.out.println(k);
                 String jobName = "PA_JOB" + String.valueOf(k);
                 Job jobAdd = new Job(jobName);
 

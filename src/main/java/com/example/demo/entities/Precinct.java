@@ -267,11 +267,12 @@ public class Precinct implements Serializable{
     public void onEdge(){
         for (int i = 0; i < this.getNeighbours().size(); i++){
             Precinct neighbour = this.getNeighbours().get(i);
+            //System.out.println(this.getCurrentDistrictId());
             if (this.getCurrentDistrictId() == neighbour.getCurrentDistrictId()){
                 this.setOnEdge(false);
             }
             else{
-                this.setOnEdge((true));
+                this.setOnEdge(true);
                 break;
             }
         }

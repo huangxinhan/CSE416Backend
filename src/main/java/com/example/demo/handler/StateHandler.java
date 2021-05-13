@@ -34,7 +34,9 @@ public class StateHandler {
     private State ND;
     private Districting defaultPA;
     private ArrayList<Districting> candidateDistrtings;
+    private Job selectedJob;
     private ArrayList<State> collection;
+    private ConstrainedDistrictings constrainedDistrictings = new ConstrainedDistrictings();
 
 
 
@@ -69,15 +71,11 @@ public class StateHandler {
     public void selectJob( String jobID)
     {
         Job selectedJob = jobRepository.findById(jobID).get();
-        List<Districting> allDistricting = selectedJob.getDistrictings();
-        for(int i =0; i< allDistricting.size(); i++)
-        {
-            candidateDistrtings.add(allDistricting.get(i));
-        }
-        // have all candidate districting
+        this.selectedJob = selectedJob;
+        this.selectedJob.setConstrainedDistrictings(new ConstrainedDistrictings());
     }
 
-    public void fiterDistricing( Constraints c)
+    public void fiterDistrictings( Constraints constraints )
     {
 
     }
@@ -105,9 +103,10 @@ public class StateHandler {
         return PA.getEnactedDistricting().getPrecinctBoundaries();
     }
 
-    public void filterDistrictings(){
+    public void filterDistrictings(Constraints constraints){
         //this will filter the 100k districtings down to about 1k districtings
-        Job currentJob = PA.getJobs().get(0); //will change when we have several jobs
+        Job currentJob = this.selectedJob;
+        currentJob.setConstraints(constraints);
         currentJob.filterPopEqualityDistrictings();
         currentJob.filterCompactnessGraph();
         currentJob.filterMajorMinorDistrictings();

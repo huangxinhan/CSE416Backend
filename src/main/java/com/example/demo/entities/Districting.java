@@ -316,16 +316,10 @@ public class Districting implements Serializable{
                 }
 
         }
-        System.out.println(mostPopulousPopulationTotal);
-        System.out.println(leastPopulousPopulationTotal);
-        System.out.println(mostPopulousPopulationVAP);
-        System.out.println(leastPopulousPopulationVAP);
         //the percent difference in this case is 100 x abs(A-B)/((A+B)/2))
         double percentDifferenceTotal = 100 * Math.abs(((double)mostPopulousPopulationTotal - (double)leastPopulousPopulationTotal)/(((double)mostPopulousPopulationTotal + (double)leastPopulousPopulationTotal)/2));
         double percentDifferenceVAP = 100 * Math.abs(((double)mostPopulousPopulationVAP - (double)leastPopulousPopulationVAP)/(((double)mostPopulousPopulationVAP + (double)leastPopulousPopulationVAP)/2));
         //Here we store the percent difference to use in the objective function later
-        System.out.println(percentDifferenceTotal);
-        System.out.println(percentDifferenceVAP);
         this.setPopulationPercentDifference(percentDifferenceTotal);
         this.setPopulationPercentDifferenceVAP(percentDifferenceVAP);
     }
