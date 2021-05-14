@@ -419,7 +419,6 @@ public class Job implements Serializable{
         ArrayList<Districting> tempDistrictings = new ArrayList<>();
         for (int i = 0; i < this.getConstrainedDistrictings().getDistrictings().size(); i++){
             int number = this.getDistrictings().get(i).calculateNumberOfMajorityMinorityDistricts(race, majorMinorThres);
-            System.out.println(number);
             if (number >= numberOfMMDistricts){
                 tempDistrictings.add(this.getConstrainedDistrictings().getDistrictings().get(i));
             }
