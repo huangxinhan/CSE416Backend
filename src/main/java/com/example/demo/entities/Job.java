@@ -436,8 +436,15 @@ public class Job implements Serializable{
     //FINAL STEP OF FILTER, NEEDS PRECINCT INFORMATION
     public void filterIncumbentProtectDistrictings(){
         int counter = 0;
-        ArrayList<String> protectedIncumbents = this.getConstraints().getProtectedIncumbents();
+        HashMap<String, Boolean> incumbentHash = this.getConstraints().getIncumbentValue();
+        ArrayList<String> protectedIncumbents = new ArrayList<>();
         ArrayList<Districting> tempDistrictings = new ArrayList<>();
+        for(String o:incumbentHash.keySet()){
+            if(incumbentHash.get(o).equals(true)){
+                protectedIncumbents.add(o);
+            }
+        }
+        System.out.println("List of incumbents:" + protectedIncumbents);
         for (int i = 0; i < this.getConstrainedDistrictings().getDistrictings().size(); i++){
             if (this.getConstrainedDistrictings().getDistrictings().get(i).calculateIncumbentDistricts(protectedIncumbents) == false){
                 tempDistrictings.add(this.getConstrainedDistrictings().getDistrictings().get(i));

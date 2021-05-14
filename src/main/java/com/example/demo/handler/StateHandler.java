@@ -231,7 +231,7 @@ public class StateHandler {
         }
 
         currentJob.filterMajorMinorDistrictings();
-        //currentJob.filterIncumbentProtectDistrictings();
+        currentJob.filterIncumbentProtectDistrictings();
         System.out.println("Remaining Districtings Left: ");
         System.out.println(currentJob.getConstrainedDistrictings().getDistrictings().size());
     }

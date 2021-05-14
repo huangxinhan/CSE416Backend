@@ -5,6 +5,7 @@ import com.example.demo.entities.enums.PopulationType;
 import com.example.demo.entities.enums.RaceType;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Constraints {
     private CompactnessType compactnessType;
@@ -15,13 +16,13 @@ public class Constraints {
     private int numberOfMajorityMinorityDistricts;
     private double populationEqualityThres;
     private Long populationValue;
-    private ArrayList<Boolean> incumbentValue;
+    private HashMap<String, Boolean> incumbentValue;
     private ArrayList<String> protectedIncumbents;
 
     public Constraints(){
 
     }
-    public Constraints(CompactnessType compactnessType, PopulationType populationType, double compactnessValue, RaceType minorityType, double majorMinorThres, int numberOfMajorityMinorityDistricts, double populationEqualityThres, Long populationValue, ArrayList<Boolean> incumbentValue) {
+    public Constraints(CompactnessType compactnessType, PopulationType populationType, double compactnessValue, RaceType minorityType, double majorMinorThres, int numberOfMajorityMinorityDistricts, double populationEqualityThres, Long populationValue, HashMap<String, Boolean> incumbentValue) {
         this.compactnessType = compactnessType;
         this.populationType = populationType;
         this.compactnessValue = compactnessValue;
@@ -89,11 +90,11 @@ public class Constraints {
         this.populationValue = populationValue;
     }
 
-    public ArrayList<Boolean> getIncumbentValue() {
+    public HashMap<String, Boolean> getIncumbentValue() {
         return incumbentValue;
     }
 
-    public void setIncumbentValue(ArrayList<Boolean> incumbentValue) {
+    public void setIncumbentValue(HashMap<String, Boolean> incumbentValue) {
         this.incumbentValue = incumbentValue;
     }
 

@@ -271,8 +271,8 @@ public class Districting implements Serializable{
                 if (raceType == raceType.AFRICAN_AMERICAN){
                     Long totalMinorityPopulation = this.getTotalMinorityPopulationByType(raceType);
                     double currentThreshold = (double)this.getDistricts().get(i).getAfricanAmericanPopulation()/(double)totalMinorityPopulation;
-                    System.out.println("Current Threshold: " + currentThreshold);
-                    System.out.println("Threshold: " + threshold);
+//                    System.out.println("Current Threshold: " + currentThreshold);
+//                    System.out.println("Threshold: " + threshold);
                     if (currentThreshold >= threshold){
                         numberOfMajorMinorDistricts += 1;
                     }
