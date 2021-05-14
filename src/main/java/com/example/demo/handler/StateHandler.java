@@ -121,11 +121,11 @@ public class StateHandler {
         filterDistrictings(constraints);
         //Job job = new Job();
         Job job = new Job();
-        job.calculateDistrictingGeometry(selectedJob.getConstrainedDistrictings().getDistrictings().get(5));
-        selectedJob.getConstrainedDistrictings().getDistrictings().get(5).setDistrictBoundaryJSON();
+        job.calculateDistrictingGeometry(selectedJob.getConstrainedDistrictings().getDistrictings().get(4));
+        selectedJob.getConstrainedDistrictings().getDistrictings().get(4).setDistrictBoundaryJSON();
         JSONObject districtingBoundaries = new JSONObject();
         districtingBoundaries.put("type", "FeatureCollection");
-        districtingBoundaries.put("features", selectedJob.getConstrainedDistrictings().getDistrictings().get(5).getDistrictBoundaries());
+        districtingBoundaries.put("features", selectedJob.getConstrainedDistrictings().getDistrictings().get(4).getDistrictBoundaries());
         return districtingBoundaries;
     }
 
@@ -243,9 +243,9 @@ public class StateHandler {
             currentJob.getConstrainedDistrictings().getDistrictings().add(newDistricting);
         }
 
-//        currentJob.filterMajorMinorDistrictings();
-//        currentJob.filterIncumbentProtectDistrictings();
-        selectedJob = currentJob;
+        currentJob.filterMajorMinorDistrictings();
+        currentJob.filterIncumbentProtectDistrictings();
+        //selectedJob = currentJob;
     }
 
 
