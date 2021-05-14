@@ -33,7 +33,7 @@ public class StateHandler {
     private State PA;
     private State NY;
     private State MD;
-    private ArrayList<Precinct> allPrecinct;
+    private ArrayList<Precinct> allPrecinct = new ArrayList<>();
     private Districting defaultDistricing;
     private Job selectedJob;
     private ArrayList<State> collection;
@@ -52,8 +52,7 @@ public class StateHandler {
         this.stateRepository = stateRepository;
         this.jobSummaryRepository = jobSummaryRepository;
         this.PA = stateRepository.findById("PENNSYLVANIA").get();
-        this.defaultDistricing = state.getEnactedDistricting();
-
+        selectState("PENNSYLVANIA");
     }
 
     @Transactional
@@ -84,7 +83,7 @@ public class StateHandler {
         {
             state = MD;
         }
-
+        this.defaultDistricing = state.getEnactedDistricting();
         List<Precinct> allP = state.getPrecincts();
         for(Precinct p : allP)
         {
@@ -100,16 +99,18 @@ public class StateHandler {
         this.selectedJob.setConstrainedDistrictings(new ConstrainedDistrictings());
     }
 
-
+    public State getPA(){
+        return PA;
+    }
 
     public JSONObject calculateDefaultDistrictBoundary() throws ParseException {
         //Job job = new Job();
         Job job = new Job();
-        job.calculateDistrictingGeometry(state.getEnactedDistricting());
-        state.getEnactedDistricting().setDistrictBoundaryJSON();
+        job.calculateDistrictingGeometry(PA.getEnactedDistricting());
+        PA.getEnactedDistricting().setDistrictBoundaryJSON();
         JSONObject districtingBoundaries = new JSONObject();
         districtingBoundaries.put("type", "FeatureCollection");
-        districtingBoundaries.put("features", state.getEnactedDistricting().getDistrictBoundaries());
+        districtingBoundaries.put("features", PA.getEnactedDistricting().getDistrictBoundaries());
         return districtingBoundaries;
     }
 
@@ -139,6 +140,7 @@ public class StateHandler {
 
         for( Districting districting : remainingDistricting)
         {
+            System.out.println(districting.getDistrictingID());
 
             HashMap<String, Precinct> newAllPrecint = new HashMap<>();
             for (int i = 0; i < allPrecinct.size(); i++) {
@@ -229,7 +231,7 @@ public class StateHandler {
         }
 
         currentJob.filterMajorMinorDistrictings();
-        currentJob.filterIncumbentProtectDistrictings();
+        //currentJob.filterIncumbentProtectDistrictings();
         System.out.println("Remaining Districtings Left: ");
         System.out.println(currentJob.getConstrainedDistrictings().getDistrictings().size());
     }

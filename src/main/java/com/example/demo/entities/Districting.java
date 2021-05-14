@@ -70,8 +70,8 @@ public class Districting implements Serializable{
         this.districtingID = districtingID;
     }
 
-    @OneToMany(cascade = CascadeType.ALL)
-
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
     public List<District> getDistricts() {
         return districts;
     }
@@ -270,21 +270,23 @@ public class Districting implements Serializable{
             for (int i = 0; i < this.getDistricts().size(); i++){
                 if (raceType == raceType.AFRICAN_AMERICAN){
                     Long totalMinorityPopulation = this.getTotalMinorityPopulationByType(raceType);
-                    double currentThreshold = this.getDistricts().get(i).getAfricanAmericanPopulation()/totalMinorityPopulation;
+                    double currentThreshold = (double)this.getDistricts().get(i).getAfricanAmericanPopulation()/(double)totalMinorityPopulation;
+                    System.out.println("Current Threshold: " + currentThreshold);
+                    System.out.println("Threshold: " + threshold);
                     if (currentThreshold >= threshold){
                         numberOfMajorMinorDistricts += 1;
                     }
                 }
                 else if (raceType == raceType.ASIAN){
                     Long totalMinorityPopulation = this.getTotalMinorityPopulationByType(raceType);
-                    double currentThreshold = this.getDistricts().get(i).getAsianPopulation()/totalMinorityPopulation;
+                    double currentThreshold = (double)this.getDistricts().get(i).getAsianPopulation()/(double)totalMinorityPopulation;
                     if (currentThreshold >= threshold){
                         numberOfMajorMinorDistricts += 1;
                     }
                 }
                 else if (raceType == raceType.HISPANIC){
                     Long totalMinorityPopulation = this.getTotalMinorityPopulationByType(raceType);
-                    double currentThreshold = this.getDistricts().get(i).getHispanicPopulation()/totalMinorityPopulation;
+                    double currentThreshold = (double)this.getDistricts().get(i).getHispanicPopulation()/(double)totalMinorityPopulation;
                     if (currentThreshold >= threshold){
                         numberOfMajorMinorDistricts += 1;
                     }
