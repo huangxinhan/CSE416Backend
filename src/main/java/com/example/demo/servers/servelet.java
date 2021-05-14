@@ -38,7 +38,7 @@ public class servelet {
     }
 
     @GetMapping("/getStateDistrictBoundary/PA")
-    public JSONObject calculateDefaultDistrictBoundary() throws ParseException {
+    public JSONObject calculateDefaultDistrictBoundary() throws ParseException, IOException {
         JSONObject districtingJson = stateHandler.calculateDefaultDistrictBoundary();
         return districtingJson;
     }

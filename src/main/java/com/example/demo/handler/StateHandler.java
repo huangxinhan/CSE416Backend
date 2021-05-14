@@ -1,6 +1,9 @@
 package com.example.demo.handler;
 
 import com.example.demo.entities.*;
+import com.example.demo.entities.enums.CompactnessType;
+import com.example.demo.entities.enums.PopulationType;
+import com.example.demo.entities.enums.RaceType;
 import org.hibernate.Hibernate;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -103,14 +106,26 @@ public class StateHandler {
         return PA;
     }
 
-    public JSONObject calculateDefaultDistrictBoundary() throws ParseException {
+    public JSONObject calculateDefaultDistrictBoundary() throws ParseException, IOException {
+        Constraints constraints = new Constraints();
+        constraints.setCompactnessType(CompactnessType.GRAPH_COMPACTNESS);
+        constraints.setPopulationType(PopulationType.TOTAL);
+        constraints.setCompactnessValue(5000);
+        constraints.setMinorityType(RaceType.AFRICAN_AMERICAN);
+        constraints.setMajorMinorThres(0.3);
+        constraints.setNumberOfMajorityMinorityDistricts(3);
+        constraints.setPopulationEqualityThres(500);
+        constraints.setPopulationValue(4l);
+        constraints.setIncumbentValue(null);
+        selectJob(PA.getJobs().get(0).getJobID());
+        filterDistrictings(constraints);
         //Job job = new Job();
         Job job = new Job();
-        job.calculateDistrictingGeometry(PA.getEnactedDistricting());
-        PA.getEnactedDistricting().setDistrictBoundaryJSON();
+        job.calculateDistrictingGeometry(selectedJob.getConstrainedDistrictings().getDistrictings().get(5));
+        selectedJob.getConstrainedDistrictings().getDistrictings().get(5).setDistrictBoundaryJSON();
         JSONObject districtingBoundaries = new JSONObject();
         districtingBoundaries.put("type", "FeatureCollection");
-        districtingBoundaries.put("features", PA.getEnactedDistricting().getDistrictBoundaries());
+        districtingBoundaries.put("features", selectedJob.getConstrainedDistrictings().getDistrictings().get(5).getDistrictBoundaries());
         return districtingBoundaries;
     }
 
@@ -127,7 +142,7 @@ public class StateHandler {
 
     public void filterDistrictings(Constraints constraints) throws IOException, ParseException {
         //this will filter the 100k districtings down to about 1k districtings
-        Job currentJob = this.selectedJob;
+        Job currentJob = selectedJob;
         currentJob.setConstraints(constraints);
         currentJob.filterPopEqualityDistrictings();
         currentJob.filterCompactnessGraph();
@@ -219,20 +234,18 @@ public class StateHandler {
 
 
                 newDistricting.getDistricts().add(toAddDistrict);
-
+                //System.out.println(newDistricting.getDistricts().get(0).getPrecincts());
             }
 //                    System.out.println("start save");
 //                    System.out.println(newDistrictCollection);
             //districtRepository.saveAll(newDistrictCollection);
 
-
             currentJob.getConstrainedDistrictings().getDistrictings().add(newDistricting);
         }
 
-        currentJob.filterMajorMinorDistrictings();
-        currentJob.filterIncumbentProtectDistrictings();
-        System.out.println("Remaining Districtings Left: ");
-        System.out.println(currentJob.getConstrainedDistrictings().getDistrictings().size());
+//        currentJob.filterMajorMinorDistrictings();
+//        currentJob.filterIncumbentProtectDistrictings();
+        selectedJob = currentJob;
     }
 
 

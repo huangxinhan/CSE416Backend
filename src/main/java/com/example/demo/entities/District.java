@@ -271,6 +271,7 @@ public class District implements Serializable{
 
     public boolean hasMultipleIncumbents(ArrayList<String> protectedIncumbents){
         int counter = 0;
+        System.out.println(this.getPrecincts().size());
         for (int i = 0; i < this.getPrecincts().size(); i++){
             if (protectedIncumbents.contains(this.getPrecincts().get(i).getIncumbentName())){
                 counter++;
