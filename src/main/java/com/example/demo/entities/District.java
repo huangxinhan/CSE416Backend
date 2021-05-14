@@ -136,7 +136,7 @@ public class District implements Serializable{
     public void setBorderGeometry(Geometry borderGeometry) {
         this.borderGeometry = borderGeometry;
     }
-    @Transient
+
     public Long getTotalPopulation() {
         return totalPopulation;
     }
@@ -145,7 +145,7 @@ public class District implements Serializable{
         this.totalPopulation = totalPopulation;
     }
 
-    @Transient
+
     public Long getVotingAgePopulation(){return votingAgePopulation;}
 
     public void setVotingAgePopulation(Long votingAgePopulation){this.votingAgePopulation = votingAgePopulation;}
@@ -254,7 +254,7 @@ public class District implements Serializable{
             }
         }
         this.setEdgeNodes(edgeNodes);
-        System.out.println("number of edge nodes found:" + edgeNodes);
+
         return edgeNodes;
     }
 
@@ -271,7 +271,7 @@ public class District implements Serializable{
 
     public boolean hasMultipleIncumbents(ArrayList<String> protectedIncumbents){
         int counter = 0;
-        System.out.println(this.getPrecincts().size());
+        //System.out.println(this.getPrecincts().size());
         for (int i = 0; i < this.getPrecincts().size(); i++){
             if (protectedIncumbents.contains(this.getPrecincts().get(i).getIncumbentName())){
                 counter++;

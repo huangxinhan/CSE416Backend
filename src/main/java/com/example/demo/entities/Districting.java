@@ -222,14 +222,14 @@ public class Districting implements Serializable{
     }
 
     public ArrayList<Long> retrieveTotalPopulationArray(){
-        ArrayList<Long> tempPopulationArray = new ArrayList<Long>();
+        ArrayList<Long> tempPopulationArray = new ArrayList<>();
         for (int i = 0; i < this.getDistricts().size(); i++){
             tempPopulationArray.add(this.getDistricts().get(i).getTotalPopulation());
         }
         return tempPopulationArray;
     }
 
-    public ArrayList<Long> retrievePopulationArrayByType(Enum<RaceType> raceType){
+    public ArrayList<Long> retrievePopulationArrayByType(RaceType raceType){
         ArrayList<Long> tempPopulationArray = new ArrayList<Long>();
         for (int i = 0; i < this.getDistricts().size(); i++){
             if(raceType == RaceType.AFRICAN_AMERICAN){
@@ -318,6 +318,11 @@ public class Districting implements Serializable{
                 }
 
         }
+        System.out.println("mostPopulousTotal: " + mostPopulousPopulationTotal);
+        System.out.println("leastPopulousTotal: " + leastPopulousPopulationTotal);
+        System.out.println("mostPopulousVAP: " + mostPopulousPopulationVAP);
+        System.out.println("leastPopulousVAP " + leastPopulousPopulationVAP);
+
         //the percent difference in this case is 100 x abs(A-B)/((A+B)/2))
         double percentDifferenceTotal = 100 * Math.abs(((double)mostPopulousPopulationTotal - (double)leastPopulousPopulationTotal)/(((double)mostPopulousPopulationTotal + (double)leastPopulousPopulationTotal)/2));
         double percentDifferenceVAP = 100 * Math.abs(((double)mostPopulousPopulationVAP - (double)leastPopulousPopulationVAP)/(((double)mostPopulousPopulationVAP + (double)leastPopulousPopulationVAP)/2));

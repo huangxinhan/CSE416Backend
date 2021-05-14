@@ -373,7 +373,7 @@ public class Job implements Serializable{
         for (int i = 0; i < this.getDistrictings().size(); i++){
             //System.out.println(this.getDistrictings().get(i).getPopulationPercentDifference());
             //User can set between 1% to 10% difference
-            if(this.getDistrictings().get(i).getPopulationPercentDifference() < (populationEqualityThres * 100)){
+            if(this.getDistrictings().get(i).getPopulationPercentDifference() < (populationEqualityThres * 100)){ //GOTTA FIX
                 //If the population difference is less than the user's input threshold,
                 //Then we add it to the constrained Districtings
                 tempDistrictings.add(this.getDistrictings().get(i));

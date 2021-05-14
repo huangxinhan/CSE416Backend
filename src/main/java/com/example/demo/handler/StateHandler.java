@@ -41,6 +41,7 @@ public class StateHandler {
     private Job selectedJob;
     private ArrayList<State> collection;
     private ConstrainedDistrictings constrainedDistrictings = new ConstrainedDistrictings();
+    private Plot plot = new Plot();
 
 
 
@@ -100,6 +101,8 @@ public class StateHandler {
         Job selectedJob = jobRepository.findById(jobID).get();
         this.selectedJob = selectedJob;
         this.selectedJob.setConstrainedDistrictings(new ConstrainedDistrictings());
+        this.selectedJob.getConstrainedDistrictings().setPlot(new Plot());
+        this.selectedJob.getConstrainedDistrictings().setEnactedDistricting(state.getEnactedDistricting());
     }
 
     public State getPA(){
@@ -155,7 +158,7 @@ public class StateHandler {
 
         for( Districting districting : remainingDistricting)
         {
-            System.out.println(districting.getDistrictingID());
+            //System.out.println(districting.getDistrictingID());
 
             HashMap<String, Precinct> newAllPrecint = new HashMap<>();
             for (int i = 0; i < allPrecinct.size(); i++) {
@@ -177,7 +180,7 @@ public class StateHandler {
             }
 
 
-            Object obj6 = new JSONParser().parse(new FileReader("src/main/java/com/example/demo/orgJson/randomDistricting" + jobID +"/" + fName + ".json"));
+            Object obj6 = new JSONParser().parse(new BufferedReader(new FileReader("src/main/java/com/example/demo/orgJson/randomDistricting" + jobID +"/" + fName + ".json")));
 
 
             Districting newDistricting = new Districting(districting.getDistrictingID());
@@ -232,7 +235,7 @@ public class StateHandler {
 
                 }
 
-
+                toAddDistrict.calculateAllPopulation();
                 newDistricting.getDistricts().add(toAddDistrict);
                 //System.out.println(newDistricting.getDistricts().get(0).getPrecincts());
             }
@@ -245,6 +248,8 @@ public class StateHandler {
 
         currentJob.filterMajorMinorDistrictings();
         currentJob.filterIncumbentProtectDistrictings();
+
+        currentJob.calculateAverageDistricting(constraints.getMinorityType());
         //selectedJob = currentJob;
     }
 

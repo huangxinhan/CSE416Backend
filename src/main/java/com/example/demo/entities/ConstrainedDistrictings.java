@@ -117,6 +117,9 @@ public class ConstrainedDistrictings {
     }
 
     public ArrayList<Double> calculateEnactedPercentages(RaceType raceType){
+        for (int i = 0; i < this.getEnactedDistricting().getDistricts().size(); i++){
+            this.getEnactedDistricting().getDistricts().get(i).calculateAllPopulation();
+        }
         ArrayList<Long> populationArray = this.getEnactedDistricting().retrievePopulationArrayByType(raceType);
         ArrayList<Long> totalPopulationArray = this.getEnactedDistricting().retrieveTotalPopulationArray();
         ArrayList<Double> populationPercentageArray = new ArrayList<Double>();
@@ -143,10 +146,13 @@ public class ConstrainedDistrictings {
         }
         //now here we have an arraylist of list of sorted percentages to calculate average districting
         this.calculateMeans(percentageList);
+        System.out.println("means: " + this.getMeans());
         this.calculateClosestToAvgDistricting(this.getMeans(), raceType);
         this.getPlot().setMinorityType(raceType);
         this.getPlot().setPopulationPercentages(percentageList);
         this.getPlot().setEnactedDistrictingData(this.calculateEnactedPercentages(raceType));
+        System.out.println("plot population Percentages: " + this.getPlot().getPopulationPercentages());
+        System.out.println("plot enacted Districting Data: " + this.getPlot().getEnactedDistrictingData());
     }
 
     public void calculateMeans(ArrayList<ArrayList<Double>> percentageList){
@@ -180,13 +186,13 @@ public class ConstrainedDistrictings {
             double difference = 0;
             for (int j = 0; j < this.getDistrictings().get(i).getDistricts().size(); j++){
                 if (raceType == raceType.AFRICAN_AMERICAN) {
-                    difference += Math.pow((means.get(j) - this.getDistrictings().get(i).getDistricts().get(j).getAfricanAmericanPopulation()), 2);
+                    difference += Math.pow((means.get(i) - this.getDistrictings().get(i).getDistricts().get(j).getAfricanAmericanPopulation()), 2);
                 }
                 if (raceType == raceType.ASIAN) {
-                    difference += Math.pow((means.get(j) - this.getDistrictings().get(i).getDistricts().get(j).getAsianPopulation()),2);
+                    difference += Math.pow((means.get(i) - this.getDistrictings().get(i).getDistricts().get(j).getAsianPopulation()),2);
                 }
                 if (raceType == raceType.HISPANIC) {
-                    difference += Math.pow((means.get(j) - this.getDistrictings().get(i).getDistricts().get(j).getHispanicPopulation()),2);
+                    difference += Math.pow((means.get(i) - this.getDistrictings().get(i).getDistricts().get(j).getHispanicPopulation()),2);
                 }
             }
             this.getDistrictings().get(i).setDeviationFromAverage(difference);
@@ -195,5 +201,6 @@ public class ConstrainedDistrictings {
 
         int minimumDistrictingIndex = differences.indexOf(Collections.min(differences));
         this.setClosesestDistrictingToTheAverage(this.getDistrictings().get(minimumDistrictingIndex));
+        System.out.println("min districting index: " + minimumDistrictingIndex);
     }
 }
