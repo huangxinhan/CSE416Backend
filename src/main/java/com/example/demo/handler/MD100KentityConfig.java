@@ -20,35 +20,34 @@ import java.io.FileNotFoundException;
 
 
 @Configuration
-public class entityConfig {
+public class MD100KentityConfig {
 
 
     @Bean
     CommandLineRunner commandLineRaunner(precintRepository precinctRepository, countyRepository countyRepository, DistrictRepository districtRepository, DistrictingRepository districtingRepository, StateRepository stateRepository) throws IOException, ParseException {
 
 
-
         return args -> {
 
-            JobSummary PAJS1 = new JobSummary("PA_JOB1_SUM","PENNSYLVANIA","3","18","50","1");
-            JobSummary PAJS2 = new JobSummary("PA_JOB2_SUM","PENNSYLVANIA","3","18","60","2");
-            JobSummary PAJS3 = new JobSummary("PA_JOB3_SUM","PENNSYLVANIA","3","18","70","3");
-            ArrayList<JobSummary> PAJSColleciton = new ArrayList<JobSummary>();
-            PAJSColleciton.add(PAJS1);
-            PAJSColleciton.add(PAJS2);
-            PAJSColleciton.add(PAJS3);
+            JobSummary MDJS1 = new JobSummary("MD_JOB1_SUM","MARYLAND","3","18","50","1");
+            JobSummary MDJS2 = new JobSummary("MD_JOB2_SUM","MARYLAND","3","18","60","2");
+            JobSummary MDJS3 = new JobSummary("MD_JOB3_SUM","MARYLAND","3","18","70","3");
+            ArrayList<JobSummary> MDJSColleciton = new ArrayList<JobSummary>();
+            MDJSColleciton.add(MDJS1);
+            MDJSColleciton.add(MDJS2);
+            MDJSColleciton.add(MDJS3);
             // PA
-            State PA = stateRepository.findById("PENNSYLVANIA").get();
+            State PA = stateRepository.findById("MARYLAND").get();
             PA.setJobs(new ArrayList<Job>());
             for (int k = 1; k < 4; k++) {
                 //System.out.println(k);
-                String jobName = "PA_JOB" + String.valueOf(k);
+                String jobName = "MD_JOB" + String.valueOf(k);
                 Job jobAdd = new Job(jobName);
 
-                jobAdd.setJobSummary(PAJSColleciton.get(k-1));
+                jobAdd.setJobSummary(MDJSColleciton.get(k-1));
                 jobAdd.setDistrictings(new ArrayList<Districting>());
                 List<Precinct> PA_Precinct_Collection =  PA.getPrecincts();
-                File folder = new File("src/main/java/com/example/demo/orgJson/PArandomDistricting" + String.valueOf(k));
+                File folder = new File("src/main/java/com/example/demo/orgJson/MDrandomDistricting" + String.valueOf(k));
                 File[] listOfFiles = folder.listFiles();
                 List<Precinct> allPrecinct =  PA_Precinct_Collection;
                 HashMap<String, Precinct> newAllPrecint = new HashMap<>();
@@ -56,9 +55,9 @@ public class entityConfig {
                     newAllPrecint.put(allPrecinct.get(i).getPrecinctID(), allPrecinct.get(i));
                 }
                 for (File file : listOfFiles) {
-                    if (file.isFile() && file.getName().startsWith("PA")) {
+                    if (file.isFile() && (file.getName().startsWith("PA") | file.getName().startsWith("NY") | file.getName().startsWith("MD") )) {
 
-                        Object obj6 = new JSONParser().parse(new FileReader("src/main/java/com/example/demo/orgJson/PArandomDistricting" + String.valueOf(k) +"/" + file.getName()));
+                        Object obj6 = new JSONParser().parse(new FileReader("src/main/java/com/example/demo/orgJson/MDrandomDistricting" + String.valueOf(k) +"/" + file.getName()));
 
                         String districtingName = file.getName().substring(0, file.getName().indexOf(".json"));
 
@@ -74,7 +73,7 @@ public class entityConfig {
 
                         ArrayList<District> ToSaveNewDistrictCollection = new ArrayList<>();
 
-                        for (int i = 1; i < 19; i++) {
+                        for (int i = 1; i < 9; i++) {
 
                             String name = districtingName + "_" + Integer.toString(i);
 
@@ -127,7 +126,7 @@ public class entityConfig {
                 }
 //            precintRepository.saveAll(newAllPrecint.values());
 //
-             PA.getJobs().add(jobAdd);
+                PA.getJobs().add(jobAdd);
 
             }
             System.out.println(PA.getJobs().size());

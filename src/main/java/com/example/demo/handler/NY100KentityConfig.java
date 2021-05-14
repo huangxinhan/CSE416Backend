@@ -1,54 +1,51 @@
 package com.example.demo.handler;
 
-import java.beans.Transient;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.lang.reflect.Array;
-import java.util.*;
-
 import com.example.demo.entities.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.*;
-import org.locationtech.jts.geom.Geometry;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.locationtech.jts.io.geojson.GeoJsonReader;
-import java.io.FileNotFoundException;
+
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 
 @Configuration
-public class entityConfig {
+public class NY100KentityConfig {
 
 
     @Bean
     CommandLineRunner commandLineRaunner(precintRepository precinctRepository, countyRepository countyRepository, DistrictRepository districtRepository, DistrictingRepository districtingRepository, StateRepository stateRepository) throws IOException, ParseException {
 
 
-
         return args -> {
 
-            JobSummary PAJS1 = new JobSummary("PA_JOB1_SUM","PENNSYLVANIA","3","18","50","1");
-            JobSummary PAJS2 = new JobSummary("PA_JOB2_SUM","PENNSYLVANIA","3","18","60","2");
-            JobSummary PAJS3 = new JobSummary("PA_JOB3_SUM","PENNSYLVANIA","3","18","70","3");
-            ArrayList<JobSummary> PAJSColleciton = new ArrayList<JobSummary>();
-            PAJSColleciton.add(PAJS1);
-            PAJSColleciton.add(PAJS2);
-            PAJSColleciton.add(PAJS3);
+            JobSummary NYJS1 = new JobSummary("NY_JOB1_SUM","NEWYORK","3","18","50","1");
+            JobSummary NYJS2 = new JobSummary("NY_JOB2_SUM","NEWYORK","3","18","60","2");
+            JobSummary NYJS3 = new JobSummary("NY_JOB3_SUM","NEWYORK","3","18","70","3");
+            ArrayList<JobSummary> NYJSColleciton = new ArrayList<JobSummary>();
+            NYJSColleciton.add(NYJS1);
+            NYJSColleciton.add(NYJS2);
+            NYJSColleciton.add(NYJS3);
             // PA
-            State PA = stateRepository.findById("PENNSYLVANIA").get();
+            State PA = stateRepository.findById("NEWYORK").get();
             PA.setJobs(new ArrayList<Job>());
             for (int k = 1; k < 4; k++) {
                 //System.out.println(k);
-                String jobName = "PA_JOB" + String.valueOf(k);
+                String jobName = "NY_JOB" + String.valueOf(k);
                 Job jobAdd = new Job(jobName);
 
-                jobAdd.setJobSummary(PAJSColleciton.get(k-1));
+                jobAdd.setJobSummary(NYJSColleciton.get(k-1));
                 jobAdd.setDistrictings(new ArrayList<Districting>());
                 List<Precinct> PA_Precinct_Collection =  PA.getPrecincts();
-                File folder = new File("src/main/java/com/example/demo/orgJson/PArandomDistricting" + String.valueOf(k));
+                File folder = new File("src/main/java/com/example/demo/orgJson/NYrandomDistricting" + String.valueOf(k));
                 File[] listOfFiles = folder.listFiles();
                 List<Precinct> allPrecinct =  PA_Precinct_Collection;
                 HashMap<String, Precinct> newAllPrecint = new HashMap<>();
@@ -56,9 +53,9 @@ public class entityConfig {
                     newAllPrecint.put(allPrecinct.get(i).getPrecinctID(), allPrecinct.get(i));
                 }
                 for (File file : listOfFiles) {
-                    if (file.isFile() && file.getName().startsWith("PA")) {
+                    if (file.isFile() && (file.getName().startsWith("PA") | file.getName().startsWith("NY") | file.getName().startsWith("MD") )) {
 
-                        Object obj6 = new JSONParser().parse(new FileReader("src/main/java/com/example/demo/orgJson/PArandomDistricting" + String.valueOf(k) +"/" + file.getName()));
+                        Object obj6 = new JSONParser().parse(new FileReader("src/main/java/com/example/demo/orgJson/NYrandomDistricting" + String.valueOf(k) +"/" + file.getName()));
 
                         String districtingName = file.getName().substring(0, file.getName().indexOf(".json"));
 
@@ -74,7 +71,7 @@ public class entityConfig {
 
                         ArrayList<District> ToSaveNewDistrictCollection = new ArrayList<>();
 
-                        for (int i = 1; i < 19; i++) {
+                        for (int i = 1; i < 30; i++) {
 
                             String name = districtingName + "_" + Integer.toString(i);
 
@@ -127,7 +124,7 @@ public class entityConfig {
                 }
 //            precintRepository.saveAll(newAllPrecint.values());
 //
-             PA.getJobs().add(jobAdd);
+                PA.getJobs().add(jobAdd);
 
             }
             System.out.println(PA.getJobs().size());
