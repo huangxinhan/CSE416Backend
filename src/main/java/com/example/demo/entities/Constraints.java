@@ -70,7 +70,7 @@ public class Constraints {
     }
 
     public void setMajorMinorThres(double majorMinorThres) {
-        majorMinorThres = majorMinorThres;
+        this.majorMinorThres = majorMinorThres;
     }
 
     public double getPopulationEqualityThres() {

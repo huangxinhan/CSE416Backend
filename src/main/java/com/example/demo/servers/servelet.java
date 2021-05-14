@@ -51,7 +51,6 @@ public class servelet {
 
     @PostMapping("/constraints")
     public void setConstraints(@RequestBody Constraints constraints) throws IOException, ParseException {
-        System.out.println(constraints.getCompactnessType());
         stateHandler.filterDistrictings(constraints);
     }
 

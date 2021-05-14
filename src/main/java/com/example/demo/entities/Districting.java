@@ -280,14 +280,14 @@ public class Districting implements Serializable{
                 else if (raceType == raceType.ASIAN){
                     Long totalMinorityPopulation = this.getTotalMinorityPopulationByType(raceType);
                     double currentThreshold = (double)this.getDistricts().get(i).getAsianPopulation()/(double)totalMinorityPopulation;
-                    if (currentThreshold >= threshold){
+                    if (currentThreshold  >= threshold){
                         numberOfMajorMinorDistricts += 1;
                     }
                 }
                 else if (raceType == raceType.HISPANIC){
                     Long totalMinorityPopulation = this.getTotalMinorityPopulationByType(raceType);
                     double currentThreshold = (double)this.getDistricts().get(i).getHispanicPopulation()/(double)totalMinorityPopulation;
-                    if (currentThreshold >= threshold){
+                    if (currentThreshold  >= threshold){
                         numberOfMajorMinorDistricts += 1;
                     }
                 }
