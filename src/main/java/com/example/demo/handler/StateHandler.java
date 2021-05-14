@@ -202,11 +202,10 @@ public class StateHandler {
 
                 JSONArray dArray = (JSONArray) mid.get(Integer.toString(i));
 
-                //System.out.println(toAddDistrict.getPrecincts());
+                for (int j = 0; j < dArray.size(); j++) {
 
-                for (int j = 0; j < ((JSONObject) dArray.get(0)).keySet().size(); j++) {
+                    String id = (String) dArray.get(j).toString();
 
-                    String id = ((JSONObject) dArray.get(0)).keySet().toArray()[j].toString();
 
                     Precinct toAdd = newAllPrecint.get(id);
 
