@@ -96,8 +96,11 @@ public class StateHandler {
         }
     }
 
+    public Job getSelectedJob() {
+        return selectedJob;
+    }
 
-    public void selectJob( String jobID)
+    public void selectJob(String jobID)
     {
         Job selectedJob = jobRepository.findById(jobID).get();
         this.selectedJob = selectedJob;
@@ -270,6 +273,10 @@ public class StateHandler {
 
         currentJob.filterMajorMinorDistrictings();
         currentJob.filterIncumbentProtectDistrictings();
+
+        if (currentJob.getConstrainedDistrictings().getDistrictings().size() == 0){
+            currentJob.getConstrainedDistrictings().getDistrictings().add(currentJob.getDistrictings().get(0));
+        }
 
         currentJob.calculateAverageDistricting(constraints.getMinorityType());
         //selectedJob = currentJob;

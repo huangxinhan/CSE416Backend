@@ -50,8 +50,17 @@ public class servelet {
     }
 
     @PostMapping("/constraints")
-    public void setConstraints(@RequestBody Constraints constraints) throws IOException, ParseException {
+    public HashMap<String, Integer> setConstraints(@RequestBody Constraints constraints) throws IOException, ParseException {
         stateHandler.filterDistrictings(constraints);
+        Job job = stateHandler.getSelectedJob();
+        HashMap<String,Integer> constraintsResults= new HashMap<>();
+        constraintsResults.put("filteredByMMDCount",job.getFilteredByMMDCount());
+        constraintsResults.put("filteredByPopConstraintCount",job.getFilteredByPopConstraintCount());
+        constraintsResults.put("filteredByCompactnessCount",job.getFilteredByCompactnessCount());
+        constraintsResults.put("filteredByIncumbentCount",job.getFilteredByIncumbentCount());
+        constraintsResults.put("constrainedDistrictings", job.getConstrainedDistrictings().getDistrictings().size());
+        System.out.println(constraintsResults);
+        return constraintsResults;
     }
 
     @PostMapping("/weights")
