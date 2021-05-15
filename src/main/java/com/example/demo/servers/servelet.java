@@ -62,6 +62,7 @@ public class servelet {
 
     @PostMapping("/state")
     public JobSummary getJobs(@RequestBody String state) {
+        stateHandler.selectState(state);
         System.out.println("JobSummary" + stateHandler.getState().getJobs().get(0).getJobSummary());
         return (stateHandler.getState().getJobs().get(0).getJobSummary());
 

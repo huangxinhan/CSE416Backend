@@ -76,11 +76,11 @@ public class StateHandler {
 
     public void selectState(String stateId)
     {
-        if(stateId == "PENNSYLVANIA")
+        if(stateId.charAt(0) == 'P')
         {
             state = stateRepository.findById("PENNSYLVANIA").get();
         }
-        else if(stateId == "NEWYORK")
+        else if(stateId.charAt(0) == 'N')
         {
             state = stateRepository.findById("NEWYORK").get();
         }
