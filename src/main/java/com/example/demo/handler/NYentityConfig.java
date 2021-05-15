@@ -1,4 +1,5 @@
 package com.example.demo.handler;
+import java.util.Random;
 
 import java.beans.Transient;
 import java.io.File;
@@ -260,13 +261,52 @@ public class NYentityConfig {
 
                 newPrecinct.setTotalPopulation((Long) precinctINFO.get("POP100"));
 
-                newPrecinct.setAfricanAmericanPopulation((Long) precinctINFO.get("ADJ_BLACK"));
+                // total minortiy 6% - 30%
 
-                newPrecinct.setAsianPopulation((Long) precinctINFO.get("ADJ_ASIAN"));
+                class RandomGaussian {
 
-                newPrecinct.setHispanicPopulation((Long) precinctINFO.get("UNADJHISP"));
+                    private Random fRandom = new Random();
 
-                newPrecinct.setVotingAgePopulation((Long) precinctINFO.get("ADJ_VAP"));
+                    private double getGaussian(double aMean, double aVariance){
+                        return aMean + fRandom.nextGaussian() * aVariance;
+                    }
+
+                    }
+                RandomGaussian gaussian = new RandomGaussian();
+                double MEAN = 18.3f;
+                double VARIANCE = 7.0f;
+
+                double result;
+
+                while(true)
+                {
+                    result = gaussian.getGaussian(MEAN, VARIANCE);
+
+                    if(result >=1 && result <=35)
+                        break;
+
+                }
+
+                int totalMinority =  (int) (newPrecinct.getTotalPopulation() * result);
+
+                double hisPR = gaussian.getGaussian(45, 15);;
+
+                long hisP = (int)(hisPR * totalMinority);
+
+                Random fRandom = new Random();
+
+                long blackP = (int)((totalMinority - hisP) * (fRandom.nextDouble()));
+
+
+
+
+                newPrecinct.setAfricanAmericanPopulation(blackP);
+
+                newPrecinct.setAsianPopulation((Long) precinctINFO.get(totalMinority - blackP - hisP));
+
+                newPrecinct.setHispanicPopulation((Long) precinctINFO.get(hisP));
+
+                newPrecinct.setVotingAgePopulation((Long) precinctINFO.get("VAP"));
 
                 allprecinct.put(precintId, newPrecinct);
 
