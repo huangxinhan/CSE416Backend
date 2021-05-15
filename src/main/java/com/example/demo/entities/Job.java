@@ -233,7 +233,7 @@ public class Job implements Serializable{
         this.filteredByIncumbentCount = filteredByIncumbentCount;
     }
 
-    public void calculateTopDistrictingsByOF(HashMap<Measures, Double> measures, Enum<RaceType> raceType) {
+    public void calculateTopDistrictingsByOF(HashMap<Measures, Double> measures, RaceType raceType) {
 
     }
 
@@ -360,7 +360,7 @@ public class Job implements Serializable{
     //sets the objective function score for each districtings
     public void calculateDistrictingScoresByObjectiveFunction(){
         for (int i = 0; i < this.getConstrainedDistrictings().getDistrictings().size(); i++){
-            this.getConstrainedDistrictings().getDistrictings().get(i).calculateObjectiveFunctionScore(this.getWeights(), this.getConstraints().getPopulationType(), this.getConstraints().getMinorityType(),this.getConstrainedDistrictings().getMeans());
+            this.getConstrainedDistrictings().getDistrictings().get(i).calculateObjectiveFunctionScore(this.getWeights(), this.getConstraints().getPopulationType(), this.getConstraints().getMinorityType(),this.getConstrainedDistrictings().getMeans(),i);
         }
     }
 

@@ -13,6 +13,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 @Entity
 public class Districting implements Serializable{
@@ -426,12 +427,12 @@ public class Districting implements Serializable{
         this.setPrecinctBoundaries(outerProperties);
     }
 
-    public void calculateObjectiveFunctionScore(HashMap<Measures, Double> weights, PopulationType populationType, RaceType minorityType, ArrayList<Double> means){
+    public void calculateObjectiveFunctionScore(HashMap<Measures, Double> weights, PopulationType populationType, RaceType minorityType, ArrayList<Double> means, int index){
         //now this method here will call various other methods to calculate the objective function score.
         double objectiveFunctionScore = 0;
         objectiveFunctionScore += this.calculateOFScoreByPopulationEquality(populationType, weights);
-        objectiveFunctionScore += this.calculateOFScoreByAverageDistricting(minorityType, weights, means);
-
+        objectiveFunctionScore += this.calculateOFScoreByAverageDistricting(minorityType, weights, means, index);
+        System.out.println("current OF Score" + objectiveFunctionScore);
     }
 
     //Need to change so that the population type can change.
@@ -441,45 +442,48 @@ public class Districting implements Serializable{
         long total_population = 0;
         if (populationType == PopulationType.TOTAL) {
             for (int i = 0; i < this.getDistricts().size(); i++) {
-                total_population += this.getDistricts().get(i).getTotalPopulation();
+                total_population += (double)this.getDistricts().get(i).getTotalPopulation();
             }
-            long idealPopulation = total_population / this.getDistricts().size();
+            double idealPopulation = (double)total_population / (double)this.getDistricts().size();
             for (int i = 0; i < this.getDistricts().size(); i++) {
-                sum += Math.pow(this.getDistricts().get(i).getTotalPopulation() / idealPopulation, 2);
+                sum += Math.pow(((double) this.getDistricts().get(i).getTotalPopulation() / (double)idealPopulation)-1, 2);
             }
         }
         else if (populationType == PopulationType.VAP) {
-            for (int i = 0; i < this.getDistricts().size(); i++) {
-                total_population += this.getDistricts().get(i).getVotingAgePopulation();
+            for (int i = 0; i < (double)this.getDistricts().size(); i++) {
+                total_population += (double)this.getDistricts().get(i).getVotingAgePopulation();
             }
-            long idealPopulation = total_population / this.getDistricts().size();
+            double idealPopulation = (double)total_population / (double)this.getDistricts().size();
             for (int i = 0; i < this.getDistricts().size(); i++) {
-                sum += Math.pow(this.getDistricts().get(i).getVotingAgePopulation() / idealPopulation, 2);
+                sum += Math.pow(((double)this.getDistricts().get(i).getVotingAgePopulation() / (double)idealPopulation)-1, 2);
             }
         }
         double weight = weights.get(Measures.POPULATION_EQUALITY);
-        return weight * sum;
+        double final_score = weight * Math.sqrt(sum);
+        System.out.println("objective function score for pop eq is: " + final_score);
+        return final_score;
     }
 
-    public double calculateOFScoreByAverageDistricting(RaceType minorityType, HashMap<Measures, Double> weights, ArrayList<Double> means){
+    public double calculateOFScoreByAverageDistricting(RaceType minorityType, HashMap<Measures, Double> weights, ArrayList<Double> means, int index){
         double sum = 0;
         //deviation from the means
         if (minorityType == RaceType.AFRICAN_AMERICAN) {
             for (int i = 0; i < this.getDistricts().size(); i++) {
-                sum += Math.pow((this.getDistricts().get(i).getAfricanAmericanPopulation() / this.getDistricts().get(i).getTotalPopulation() - means.get(i)), 2);
+                sum += Math.pow((((double)this.getDistricts().get(i).getAfricanAmericanPopulation() /(double) this.getDistricts().get(i).getTotalPopulation()) - means.get(index)), 2);
             }
             //then normalize it or something here...
         }
         else if (minorityType == RaceType.ASIAN) {
             for (int i = 0; i < this.getDistricts().size(); i++) {
-                sum += Math.pow((this.getDistricts().get(i).getAsianPopulation() / this.getDistricts().get(i).getTotalPopulation() - means.get(i)), 2);
+                sum += Math.pow((((double)this.getDistricts().get(i).getAsianPopulation() / (double)this.getDistricts().get(i).getTotalPopulation()) - means.get(index)), 2);
             }
         }
         else if (minorityType == RaceType.HISPANIC) {
             for (int i = 0; i < this.getDistricts().size(); i++) {
-                sum += Math.pow((this.getDistricts().get(i).getHispanicPopulation() / this.getDistricts().get(i).getTotalPopulation() - means.get(i)), 2);
+                sum += Math.pow((((double)this.getDistricts().get(i).getHispanicPopulation() / (double)this.getDistricts().get(i).getTotalPopulation()) - means.get(index)), 2);
             }
         }
+        System.out.println("Objective Function Score By Average Districting is " + sum);
         return sum;
     }
 }

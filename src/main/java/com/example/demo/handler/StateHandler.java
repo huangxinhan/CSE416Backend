@@ -2,6 +2,7 @@ package com.example.demo.handler;
 
 import com.example.demo.entities.*;
 import com.example.demo.entities.enums.CompactnessType;
+import com.example.demo.entities.enums.Measures;
 import com.example.demo.entities.enums.PopulationType;
 import com.example.demo.entities.enums.RaceType;
 import org.hibernate.Hibernate;
@@ -141,6 +142,12 @@ public class StateHandler {
         }
         state.getEnactedDistricting().setPrecinctBoundaryJSON();
         return state.getEnactedDistricting().getPrecinctBoundaries();
+    }
+
+    public void calculateObjectiveFunctionScores(HashMap<Measures, Double> weights){
+        Job currentJob = selectedJob;
+        currentJob.setWeights(weights);
+        currentJob.calculateDistrictingScoresByObjectiveFunction();
     }
 
     public void filterDistrictings(Constraints constraints) throws IOException, ParseException {

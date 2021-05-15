@@ -56,8 +56,8 @@ public class servelet {
 
     @PostMapping("/weights")
     public void setWeights(@RequestBody HashMap<Measures,Double> weights) {
-        //System.out.println(weights);
-
+        System.out.println(weights);
+        stateHandler.calculateObjectiveFunctionScores(weights);
     }
 
     @PostMapping("/state")
