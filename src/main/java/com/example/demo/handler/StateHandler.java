@@ -56,9 +56,9 @@ public class StateHandler {
         this.jobRepository = jobRepository;
         this.stateRepository = stateRepository;
         this.jobSummaryRepository = jobSummaryRepository;
-        this.PA = stateRepository.findById("PENNSYLVANIA").get();
-        selectState("PENNSYLVANIA");
+
     }
+
 
     @Transactional
     public List<Precinct> getPrecint() throws ParseException {
@@ -78,15 +78,15 @@ public class StateHandler {
     {
         if(stateId == "PENNSYLVANIA")
         {
-            state = PA;
+            state = stateRepository.findById("PENNSYLVANIA").get();
         }
         else if(stateId == "NEWYORK")
         {
-            state = NY;
+            state = stateRepository.findById("NEWYORK").get();
         }
         else
         {
-            state = MD;
+            state = stateRepository.findById("MARYLAND").get();
         }
         this.defaultDistricing = state.getEnactedDistricting();
         List<Precinct> allP = state.getPrecincts();
@@ -186,8 +186,23 @@ public class StateHandler {
                 jobID = "3";
             }
 
+            String fileLocator;
 
-            Object obj6 = new JSONParser().parse(new BufferedReader(new FileReader("src/main/java/com/example/demo/orgJson/randomDistricting" + jobID +"/" + fName + ".json")));
+            if(this.state.getStateID() == "PENNSYLVANIA")
+            {
+                fileLocator = "PA";
+            }
+            else if(this.state.getStateID() == "NEWYORK")
+            {
+                fileLocator = "NY";
+            }
+            else
+            {
+                fileLocator = "MD";
+            }
+
+
+            Object obj6 = new JSONParser().parse(new BufferedReader(new FileReader("src/main/java/com/example/demo/orgJson/" + fileLocator +"randomDistricting" + jobID +"/" + fName + ".json")));
 
 
             Districting newDistricting = new Districting(districting.getDistrictingID());
