@@ -268,8 +268,19 @@ public class StateHandler {
 
                     String id = (String) dArray.get(j).toString();
 
+                    Precinct toAdd;
 
-                    Precinct toAdd = newAllPrecint.get(id);
+                    if(this.state.getStateID() == "NEWYORK")
+                    {   toAdd = newAllPrecint.get("NY" + id);}
+                    else if(this.state.getStateID() == "MARYLAND")
+                    {
+                        toAdd = newAllPrecint.get("MD" + id);
+                    }
+                    else
+                    {
+                        toAdd = newAllPrecint.get(id);
+                    }
+
 
                     toAdd.setCurrentDistrictId(toAddDistrict.getDistrictID());
 
