@@ -17,6 +17,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.locationtech.jts.io.geojson.GeoJsonReader;
 import java.io.FileNotFoundException;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 
 @Configuration
@@ -227,7 +229,7 @@ public class MDentityConfig {
             for (int i = 0; i < countyProperties.size(); i++) {
                 JSONObject precinctINFO = countyProperties.get(i);
 
-                String countyId = (String) precinctINFO.get("county");
+                String countyId = "MD" + (String) precinctINFO.get("county");
 
                 County newCounty = new County(countyId);
 
@@ -246,7 +248,7 @@ public class MDentityConfig {
 
                 JSONObject precinctINFO = precinctProperties.get(i);
 
-                String precintId = (String) precinctINFO.get("NAME");
+                String precintId = (String) "MD" + precinctINFO.get("NAME");
 
                 Precinct newPrecinct = new Precinct(precintId);
 
@@ -275,13 +277,14 @@ public class MDentityConfig {
 
                 District tempDistrict = alldistrict.get(districtID);
 
-                String countyID = (precintId.split(" ")[0]);
+                String countyID = (precintId.split(" Precinct")[0]);
 
                 County tempCounty = allcounty.get(countyID);
-
+                System.out.println(countyID);
                 newPrecinct.setCountyID(tempCounty);
                 newPrecinct.getDistrictCollection().add(tempDistrict);
                 newPrecinct.setDefaultDistrictID(tempDistrict);
+                System.out.println(tempCounty);
 
                 tempCounty.getPrecincts().add(newPrecinct);
                 tempDistrict.getPrecincts().add(newPrecinct);
@@ -300,7 +303,11 @@ public class MDentityConfig {
             /////////////////////////////////////
 
             Object obj4 = new JSONParser().parse(new FileReader("src/main/java/com/example/demo/orgJson/MD_precincts_seawulf.json"));
-            ArrayList<Precinct> modifiedPrecincts = (ArrayList<Precinct>) precinctRepository.findAll();
+            List<Precinct> modifiedPrecincts = (List<Precinct>) precinctRepository.findByprecinctIDContaining("MD").stream().collect(Collectors.toList());
+            System.out.println("filtering" + modifiedPrecincts.size());
+
+
+            //TimeUnit.MINUTES.sleep(5);
             HashMap<String,Precinct> newAllPrecinct = new HashMap<>();
             for(int i =0 ;i < modifiedPrecincts.size() ;i++)
             {
@@ -313,7 +320,7 @@ public class MDentityConfig {
 
                 JSONObject jo4 = (JSONObject) obj4;
 
-                JSONObject seaWulfprecinct = (JSONObject) jo4.get(i);
+                JSONObject seaWulfprecinct = (JSONObject) jo4.get(i.substring(2));
                 System.out.println(i);
                 if (seaWulfprecinct == null) {
                     System.out.println(i);
@@ -344,10 +351,11 @@ public class MDentityConfig {
             //countyRepository.saveAll(allcounty.values());
             //districtRepository.saveAll(alldistrict.values());
 
-
+            System.out.println("dfs");
             Districting de = new Districting("MDX");
 
-            List<District> result = districtRepository.findAll();
+            List<District> result = districtRepository.findBydistrictIDContaining("MD").stream().collect(Collectors.toList());
+
             ArrayList<District> dDistrict = new ArrayList<>();
             for(int i =0 ; i< result.size(); i++)
             {
@@ -400,7 +408,8 @@ public class MDentityConfig {
 
 
 
-            List<County> result3 = countyRepository.findAll();
+            List<County> result3 = countyRepository.findBycountyIDContaining("MD").stream().collect(Collectors.toList());
+
             ArrayList<County> dcounty = new ArrayList<>();
             for(int i =0 ; i< result3.size(); i++)
             {
@@ -411,7 +420,8 @@ public class MDentityConfig {
 
             newState.setCounties(dcounty);
 
-            List<Precinct> result1 = precinctRepository.findAll();
+            List<Precinct> result1 = precinctRepository.findByprecinctIDContaining("MD").stream().collect(Collectors.toList());;
+
             ArrayList<Precinct> dcounty1 = new ArrayList<>();
             for(int i =0 ; i< result1.size(); i++)
             {

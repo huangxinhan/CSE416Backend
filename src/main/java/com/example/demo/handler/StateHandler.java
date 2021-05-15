@@ -19,6 +19,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 import static org.junit.Assert.assertEquals;
 
@@ -56,7 +57,25 @@ public class StateHandler {
         this.jobRepository = jobRepository;
         this.stateRepository = stateRepository;
         this.jobSummaryRepository = jobSummaryRepository;
+        class RandomGaussian {
 
+            private Random fRandom = new Random();
+
+            private double getGaussian(double aMean, double aVariance){
+                return aMean + fRandom.nextGaussian() * aVariance;
+            }
+
+        }
+        RandomGaussian gaussian = new RandomGaussian();
+        double MEAN = 45.3f;
+        double VARIANCE = 15.0f;
+
+
+        for(int b =0; b < 30; b++) {
+            double result = gaussian.getGaussian(MEAN, VARIANCE);
+
+            System.out.println(result);
+        }
     }
 
 
