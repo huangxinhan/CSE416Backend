@@ -57,25 +57,7 @@ public class StateHandler {
         this.jobRepository = jobRepository;
         this.stateRepository = stateRepository;
         this.jobSummaryRepository = jobSummaryRepository;
-        class RandomGaussian {
 
-            private Random fRandom = new Random();
-
-            private double getGaussian(double aMean, double aVariance){
-                return aMean + fRandom.nextGaussian() * aVariance;
-            }
-
-        }
-        RandomGaussian gaussian = new RandomGaussian();
-        double MEAN = 45.3f;
-        double VARIANCE = 15.0f;
-
-
-        for(int b =0; b < 30; b++) {
-            double result = gaussian.getGaussian(MEAN, VARIANCE);
-
-            System.out.println(result);
-        }
     }
 
 
@@ -297,7 +279,7 @@ public class StateHandler {
 //                    System.out.println("start save");
 //                    System.out.println(newDistrictCollection);
             //districtRepository.saveAll(newDistrictCollection);
-
+            newDistricting.setCounties(this.state.getCounties());
             currentJob.getConstrainedDistrictings().getDistrictings().add(newDistricting);
         }
 

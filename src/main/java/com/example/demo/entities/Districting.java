@@ -39,6 +39,7 @@ public class Districting implements Serializable{
     private double populationPercentDifference;
     private double populationPercentDifferenceVAP;
     private double graphCompactness;
+    private ArrayList<County> counties;
 
 
     public Districting(){
@@ -79,6 +80,14 @@ public class Districting implements Serializable{
 
     public void setDistricts(List<District> districts) {
         this.districts = districts;
+    }
+
+    public ArrayList<County> getCounties() {
+        return counties;
+    }
+
+    public void setCounties(ArrayList<County> counties) {
+        this.counties = counties;
     }
 
     @Transient
@@ -433,6 +442,62 @@ public class Districting implements Serializable{
         objectiveFunctionScore += this.calculateOFScoreByPopulationEquality(populationType, weights);
         objectiveFunctionScore += this.calculateOFScoreByAverageDistricting(minorityType, weights, means, index);
         System.out.println("current OF Score" + objectiveFunctionScore);
+    }
+
+
+    public double calculateOFScoryBySplitCounty(HashMap<Measures, Double> weights)
+    {
+        double score =0;
+
+        HashMap<String, Integer> countyCounter = new HashMap<>();
+        ArrayList<County> countyList = this.getCounties();
+        for(County county : countyList)
+        {
+            countyCounter.put(county.getCountyID(), 0);
+        }
+
+        for(District d: this.getDistricts())
+        {
+            ArrayList<String> appearCounty  = new ArrayList<>();
+
+            for( Precinct p : d.getPrecincts())
+            {
+                if( ! appearCounty.contains(p.getCountyID().getCountyID()))
+                {
+                    appearCounty.add(p.getCountyID().getCountyID());
+                }
+
+            }
+
+            for(String name : appearCounty)
+            {
+                countyCounter.put(name,countyCounter.get(name) +1);
+            }
+
+        }
+
+        int threeCounter = 0;
+
+        int twoCountr = 0;
+
+        for( int time : countyCounter.values())
+        {
+            if(time >=3)
+            {
+                threeCounter += 1;
+
+                continue;
+            }
+
+            if(time >=2)
+            {
+                twoCountr +=1;
+            }
+        }
+
+        score = (twoCountr + 10 * threeCounter)/200.0;
+
+        return score;
     }
 
     //Need to change so that the population type can change.

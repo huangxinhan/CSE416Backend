@@ -10,7 +10,6 @@ import org.locationtech.jts.io.geojson.GeoJsonWriter;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -130,8 +129,8 @@ public class State implements Serializable{
 
     @OneToMany(fetch = FetchType.EAGER)
     @Fetch(value = FetchMode.SUBSELECT)
-    public List<County> getCounties() {
-        return counties;
+    public ArrayList<County> getCounties() {
+        return (ArrayList<County>) counties;
     }
 
     public void setCounties(List<County> counties) {
