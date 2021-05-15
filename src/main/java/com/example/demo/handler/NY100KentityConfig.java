@@ -83,7 +83,17 @@ public class NY100KentityConfig {
 
                             //System.out.println(toAddDistrict.getPrecincts());
 
+                            int number = 0;
+
+                            //System.out.println(toAddDistrict.getPrecincts());
+
                             for (int j = 0; j < dArray.size(); j++) {
+
+                                if(j == (dArray.size() -1 ))
+                                {
+                                    number = Integer.parseInt( dArray.get(j).toString());
+                                    break;
+                                }
 
                                 String id = dArray.get(j).toString();
 
@@ -96,6 +106,8 @@ public class NY100KentityConfig {
                                 toAdd.getDistrictCollection().add(toAddDistrict);
 
                             }
+
+                            toAddDistrict.setDistrictNumber(number);
 
 
                             newDistricting.getDistricts().add(toAddDistrict);
