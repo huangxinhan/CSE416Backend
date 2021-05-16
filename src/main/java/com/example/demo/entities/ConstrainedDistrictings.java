@@ -186,17 +186,18 @@ public class ConstrainedDistrictings {
             double difference = 0;
             for (int j = 0; j < this.getDistrictings().get(i).getDistricts().size(); j++){
                 if (raceType == raceType.AFRICAN_AMERICAN) {
-                    difference += Math.pow((means.get(i) - this.getDistrictings().get(i).getDistricts().get(j).getAfricanAmericanPopulation()), 2);
+                    difference += Math.pow((means.get(i) - (double)this.getDistrictings().get(i).getDistricts().get(j).getAfricanAmericanPopulation())/(double) this.getDistrictings().get(i).getDistricts().get(j).getTotalPopulation(), 2);
                 }
                 if (raceType == raceType.ASIAN) {
-                    difference += Math.pow((means.get(i) - this.getDistrictings().get(i).getDistricts().get(j).getAsianPopulation()),2);
+                    difference += Math.pow((means.get(i) - (double)this.getDistrictings().get(i).getDistricts().get(j).getAsianPopulation())/(double) this.getDistrictings().get(i).getDistricts().get(j).getTotalPopulation(),2);
                 }
                 if (raceType == raceType.HISPANIC) {
-                    difference += Math.pow((means.get(i) - this.getDistrictings().get(i).getDistricts().get(j).getHispanicPopulation()),2);
+                    difference += Math.pow((means.get(i) - (double)this.getDistrictings().get(i).getDistricts().get(j).getHispanicPopulation())/(double) this.getDistrictings().get(i).getDistricts().get(j).getTotalPopulation(),2);
                 }
             }
-            this.getDistrictings().get(i).setDeviationFromAverage(difference);
-            differences.add(difference);
+            double final_difference = Math.sqrt(difference);
+            this.getDistrictings().get(i).setDeviationFromAverage(final_difference);
+            differences.add(final_difference);
         }
 
         int minimumDistrictingIndex = differences.indexOf(Collections.min(differences));

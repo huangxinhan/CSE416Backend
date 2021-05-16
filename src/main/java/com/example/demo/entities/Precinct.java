@@ -1,5 +1,6 @@
 package com.example.demo.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@JsonIgnoreProperties({ "coordinates" })
 public class Precinct implements Serializable{
 
     private District defaultDistrictID;
@@ -103,7 +105,8 @@ public class Precinct implements Serializable{
         this.precinctID = precinctID;
     }
 
-    @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @JsonIgnoreProperties
 
     public District getDefaultDistrictID() {
         return defaultDistrictID;
@@ -113,8 +116,9 @@ public class Precinct implements Serializable{
         this.defaultDistrictID = defaultDistrictID;
     }
 
-    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @Fetch(value = FetchMode.SUBSELECT)
+    @JsonIgnoreProperties
     public List<District> getDistrictCollection() {
         return DistrictCollection;
     }
@@ -123,7 +127,8 @@ public class Precinct implements Serializable{
         DistrictCollection = districtID;
     }
 
-    @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @JsonIgnoreProperties
 
     public County getCountyID() {
         return countyID;
@@ -189,6 +194,7 @@ public class Precinct implements Serializable{
     @ManyToMany(fetch = FetchType.EAGER)
 
     @Transactional
+    @JsonIgnoreProperties
     public List<Precinct> getNeighbours() {
         return neighbours;
     }
@@ -206,7 +212,7 @@ public class Precinct implements Serializable{
         this.compactness = compactness;
     }
 
-
+    @JsonIgnoreProperties({"coordinates"})
     public Geometry getCoordinates() {
         return coordinates;
     }

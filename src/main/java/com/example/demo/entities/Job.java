@@ -360,8 +360,43 @@ public class Job implements Serializable{
     //sets the objective function score for each districtings
     public void calculateDistrictingScoresByObjectiveFunction(){
         for (int i = 0; i < this.getConstrainedDistrictings().getDistrictings().size(); i++){
-            this.getConstrainedDistrictings().getDistrictings().get(i).calculateObjectiveFunctionScore(this.getWeights(), this.getConstraints().getPopulationType(), this.getConstraints().getMinorityType(),this.getConstrainedDistrictings().getMeans(),i);
+            this.getConstrainedDistrictings().getDistrictings().get(i).calculateObjectiveFunctionScore(this.getWeights(), this.getConstraints().getPopulationType(), this.getConstraints().getMinorityType(),this.getConstrainedDistrictings().getMeans(),i, this.getConstrainedDistrictings().getPlot().getEnactedDistrictingData());
         }
+//        private ArrayList<Districting> topDistrictingsByOFScore;
+//        private ArrayList<Districting> topDistrictingsByEnacted;
+//        private ArrayList<Districting> topDistrictingsByHighScoreMajMinDistricts;
+//        private ArrayList<Districting> topDistrictingsBySigmaAvg;
+//        private ArrayList<Districting> topDistrictingsBySigmaEnacted;
+//        private ArrayList<Districting> topDistrictingsByCompactness;
+//        private ArrayList<Districting> topDistrictingsByAreaPairDeviation;
+//        private ArrayList<Districting> topDistrictingsBySimilarity;
+
+        //sort the stuff in the constrained districtings by OF score first
+        this.getConstrainedDistrictings().getDistrictings().sort(Comparator.comparing(Districting::getObjectiveFunctionScore));
+        ArrayList<Districting> tempDistrictingByOF = new ArrayList<>();
+        for (int i = 0; i < 10; i++){
+            System.out.println("Objective function score values: " + this.constrainedDistrictings.getDistrictings().get(this.constrainedDistrictings.getDistrictings().size() - i - 1).getObjectiveFunctionScore());
+            tempDistrictingByOF.add(this.constrainedDistrictings.getDistrictings().get(this.constrainedDistrictings.getDistrictings().size() - i - 1));
+        }
+        this.setTopDistrictingsByOFScore(tempDistrictingByOF);
+
+        this.getConstrainedDistrictings().getDistrictings().sort(Comparator.comparing(Districting::getNumberOfMajorityMinorityDistricts));
+        ArrayList<Districting> tempDistrictingByMM = new ArrayList<>();
+        for (int i = 0; i < 10; i++){
+            System.out.println("Number of MM Districts " + this.constrainedDistrictings.getDistrictings().get(this.constrainedDistrictings.getDistrictings().size() - i - 1).getNumberOfMajorityMinorityDistricts());
+            tempDistrictingByMM.add(this.constrainedDistrictings.getDistrictings().get(this.constrainedDistrictings.getDistrictings().size() - i - 1));
+        }
+
+        this.setTopDistrictingsByHighScoreMajMinDistricts(tempDistrictingByMM);
+
+        this.getConstrainedDistrictings().getDistrictings().sort(Comparator.comparing((Districting::getDeviationFromEnactedPop)));
+        ArrayList<Districting> tempDistrctingByEnactedPop = new ArrayList<>();
+        for (int i = 0; i < 10; i++){
+            System.out.println("Deviation from enacted " + this.constrainedDistrictings.getDistrictings().get(this.constrainedDistrictings.getDistrictings().size() - i - 1).getDeviationFromEnactedPop());
+            tempDistrctingByEnactedPop.add(this.constrainedDistrictings.getDistrictings().get(this.constrainedDistrictings.getDistrictings().size() - i - 1));
+        }
+        this.setTopDistrictingsByEnacted(tempDistrctingByEnactedPop);
+
     }
 
     //STEP 1 OF FITLER, ONLY NEEDS DISTRICTING INFORMATION
@@ -371,7 +406,6 @@ public class Job implements Serializable{
         double populationEqualityThres = this.getConstraints().getPopulationEqualityThres();
         ArrayList<Districting> tempDistrictings = new ArrayList<>();
         for (int i = 0; i < this.getDistrictings().size(); i++){
-            System.out.println(populationEqualityThres * 100);
             //User can set between 1% to 10% difference
             if(this.getDistrictings().get(i).getPopulationPercentDifference() < (populationEqualityThres * 10)){ //GOTTA FIX
                 //If the population difference is less than the user's input threshold,
@@ -395,6 +429,7 @@ public class Job implements Serializable{
         ArrayList<Districting> tempDistrictings = new ArrayList<>();
         for (int i = 0; i < this.getConstrainedDistrictings().getDistrictings().size(); i++){
             double compactness = this.getConstrainedDistrictings().getDistrictings().get(i).getGraphCompactness();
+            System.out.println("compactness: " + compactness);
             //The lower the compactness value the better it should be
             //Therefore we delete all the districtings with the compactness value that is greater the user threshold
             if (compactness <= compactnessValue){
@@ -420,7 +455,9 @@ public class Job implements Serializable{
         for (int i = 0; i < this.getConstrainedDistrictings().getDistrictings().size(); i++){
             int number = this.getDistrictings().get(i).calculateNumberOfMajorityMinorityDistricts(race, majorMinorThres);
             if (number >= numberOfMMDistricts){
+                this.getConstrainedDistrictings().getDistrictings().get(i).setNumberOfMajorityMinorityDistricts(number);
                 tempDistrictings.add(this.getConstrainedDistrictings().getDistrictings().get(i));
+                //System.out.println("temp districting's mm count" + this.getConstrainedDistrictings().getDistrictings().get(i).getNumberOfMajorityMinorityDistricts());
             }
             else{
                 counter++;

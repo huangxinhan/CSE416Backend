@@ -51,6 +51,8 @@ public class servelet {
 
     @PostMapping("/constraints")
     public HashMap<String, Integer> setConstraints(@RequestBody Constraints constraints) throws IOException, ParseException {
+        System.out.println("major minor thres is," + constraints.getMajorMinorThres());
+        System.out.println(constraints.getMajorMinorThres());
         stateHandler.filterDistrictings(constraints);
         Job job = stateHandler.getSelectedJob();
         HashMap<String,Integer> constraintsResults= new HashMap<>();
@@ -59,14 +61,19 @@ public class servelet {
         constraintsResults.put("filteredByCompactnessCount",job.getFilteredByCompactnessCount());
         constraintsResults.put("filteredByIncumbentCount",job.getFilteredByIncumbentCount());
         constraintsResults.put("constrainedDistrictings", job.getConstrainedDistrictings().getDistrictings().size());
-        System.out.println(constraintsResults);
         return constraintsResults;
     }
 
     @PostMapping("/weights")
-    public void setWeights(@RequestBody HashMap<Measures,Double> weights) {
+    public  ArrayList<ArrayList<Districting>> setWeights(@RequestBody HashMap<Measures,Double> weights) throws ParseException{
         System.out.println(weights);
         stateHandler.calculateObjectiveFunctionScores(weights);
+        Job job = stateHandler.getSelectedJob();
+        ArrayList<ArrayList<Districting>> topDistrictings = new ArrayList<>();
+        topDistrictings.add(job.getTopDistrictingsByOFScore());
+        topDistrictings.add(job.getTopDistrictingsByHighScoreMajMinDistricts());
+        topDistrictings.add(job.getTopDistrictingsByEnacted());
+        return topDistrictings;
     }
 
     @PostMapping("/state")

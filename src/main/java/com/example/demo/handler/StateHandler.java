@@ -77,6 +77,7 @@ public class StateHandler {
 
     public void selectState(String stateId)
     {
+        System.out.println(stateId);
         if(stateId.charAt(0) == 'P')
         {
             state = stateRepository.findById("PENNSYLVANIA").get();
@@ -89,6 +90,7 @@ public class StateHandler {
         {
             state = stateRepository.findById("MARYLAND").get();
         }
+        System.out.println("done");
         this.defaultDistricing = state.getEnactedDistricting();
         List<Precinct> allP = state.getPrecincts();
         for(Precinct p : allP)
@@ -148,10 +150,25 @@ public class StateHandler {
         return state.getEnactedDistricting().getPrecinctBoundaries();
     }
 
-    public void calculateObjectiveFunctionScores(HashMap<Measures, Double> weights){
+    public void calculateObjectiveFunctionScores(HashMap<Measures, Double> weights) throws ParseException {
         Job currentJob = selectedJob;
         currentJob.setWeights(weights);
         currentJob.calculateDistrictingScoresByObjectiveFunction();
+
+
+
+//        for (int i = 0; i < currentJob.getConstrainedDistrictings().getDistrictings().size(); i++){
+//            for (int j = 0; j < currentJob.getConstrainedDistrictings().getDistrictings().get(i).getDistricts().size(); j++){
+//                currentJob.getConstrainedDistrictings().getDistrictings().get(i).getDistricts().get(j).setPrecincts(null);
+////                for (int k = 0; k < currentJob.getConstrainedDistrictings().getDistrictings().get(i).getDistricts().get(j).getPrecincts().size(); k++){
+////                    //System.out.println("precinct coordinates: " + currentJob.getConstrainedDistrictings().getDistrictings().get(i).getDistricts().get(j).getPrecincts().get(k).getCoordinates());
+////                    currentJob.getConstrainedDistrictings().getDistrictings().get(i).getDistricts().get(j).getPrecincts().get(k).setDistrictCollection(new ArrayList<>());
+////                    currentJob.getConstrainedDistrictings().getDistrictings().get(i).getDistricts().get(j).getPrecincts().get(k).setNeighbours(new ArrayList<>());
+////                    currentJob.getConstrainedDistrictings().getDistrictings().get(i).getDistricts().get(j).getPrecincts().get(k).setDefaultDistrictID(null);
+////                    currentJob.getConstrainedDistrictings().getDistrictings().get(i).getDistricts().get(j).getPrecincts().get(k).setCountyID(null);
+////                }
+//            }
+//        }
     }
 
     public void filterDistrictings(Constraints constraints) throws IOException, ParseException {
@@ -247,7 +264,9 @@ public class StateHandler {
                 JSONArray dArray = (JSONArray) mid.get(Integer.toString(i));
 
                 for (int j = 0; j < dArray.size(); j++) {
-
+                    if (j == dArray.size()-1){
+                        continue;
+                    }
                     String id = (String) dArray.get(j).toString();
 
                     Precinct toAdd;
@@ -263,7 +282,7 @@ public class StateHandler {
                         toAdd = newAllPrecint.get(id);
                     }
 
-
+                    //System.out.println(id);
                     toAdd.setCurrentDistrictId(toAddDistrict.getDistrictID());
 
                     //System.out.println(toAdd.getPrecinctID())
@@ -274,12 +293,18 @@ public class StateHandler {
 
                 toAddDistrict.calculateAllPopulation();
                 newDistricting.getDistricts().add(toAddDistrict);
+                newDistricting.calculateGraphCompactness();
+                newDistricting.calculatePopulationConstraintAll();
                 //System.out.println(newDistricting.getDistricts().get(0).getPrecincts());
             }
 //                    System.out.println("start save");
 //                    System.out.println(newDistrictCollection);
             //districtRepository.saveAll(newDistrictCollection);
-            newDistricting.setCounties(this.state.getCounties());
+            ArrayList<County> tempCounties = new ArrayList<>();
+            for (int i = 0; i< this.state.getCounties().size(); i++){
+                tempCounties.add(this.state.getCounties().get(i));
+            }
+            newDistricting.setCounties(tempCounties);
             currentJob.getConstrainedDistrictings().getDistrictings().add(newDistricting);
         }
 
@@ -291,6 +316,26 @@ public class StateHandler {
         }
 
         currentJob.calculateAverageDistricting(constraints.getMinorityType());
+
+//        for (int i = 0; i < currentJob.getConstrainedDistrictings().getDistrictings().size(); i++){
+////            currentJob.calculateDistrictingGeometry(currentJob.getConstrainedDistrictings().getDistrictings().get(i));
+////            currentJob.getConstrainedDistrictings().getDistrictings().get(i).setDistrictBoundaryJSON();
+////            JSONObject districtingBoundaries = new JSONObject();
+////            districtingBoundaries.put("type", "FeatureCollection");
+////            districtingBoundaries.put("features", currentJob.getConstrainedDistrictings().getDistrictings().get(i).getDistrictBoundaries());
+////            currentJob.getConstrainedDistrictings().getDistrictings().get(i).setDistrictingBoundary(districtingBoundaries);
+////            System.out.println("done with one!" + i);
+//
+//            for (int j = 0; j < currentJob.getConstrainedDistrictings().getDistrictings().get(i).getDistricts().size(); j++){
+//                //currentJob.getConstrainedDistrictings().getDistrictings().get(i).getDistricts().get(j).setPrecincts(new ArrayList<Precinct>());
+//                for (int k = 0; k < currentJob.getConstrainedDistrictings().getDistrictings().get(i).getDistricts().get(j).getPrecincts().size(); k++){
+//                    currentJob.getConstrainedDistrictings().getDistrictings().get(i).getDistricts().get(j).getPrecincts().get(k).setDistrictCollection(new ArrayList<>());
+//                    currentJob.getConstrainedDistrictings().getDistrictings().get(i).getDistricts().get(j).getPrecincts().get(k).setNeighbours(new ArrayList<>());
+//                    currentJob.getConstrainedDistrictings().getDistrictings().get(i).getDistricts().get(j).getPrecincts().get(k).setDefaultDistrictID(null);
+//                    currentJob.getConstrainedDistrictings().getDistrictings().get(i).getDistricts().get(j).getPrecincts().get(k).setCountyID(null);
+//                }
+//            }
+//        }
         //selectedJob = currentJob;
     }
 
