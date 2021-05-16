@@ -73,6 +73,7 @@ public class servelet {
         topDistrictings.add(job.getTopDistrictingsByOFScore());
         topDistrictings.add(job.getTopDistrictingsByHighScoreMajMinDistricts());
         topDistrictings.add(job.getTopDistrictingsByEnacted());
+        //topDistrictings.add(job.getTopDistrictingsByAreaPairDeviation());
         return topDistrictings;
     }
 

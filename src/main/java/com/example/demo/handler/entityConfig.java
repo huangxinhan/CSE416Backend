@@ -43,6 +43,24 @@ public class entityConfig {
                 int k =2;
                 //System.out.println(k);
                 String jobName = "PA_JOB" + String.valueOf(k);
+            if(PA.getJobs().size() ==0)
+            {
+                Job job1 = new Job("PA_JOB1");
+                job1.setJobSummary(PAJSColleciton.get(0));
+                job1.setDistrictings(new ArrayList<Districting>());
+                PA.setJobs(new ArrayList<Job>());
+                PA.getJobs().add(job1);
+                Job job2 = new Job(jobName);
+                job2.setJobSummary(PAJSColleciton.get(1));
+                job2.setDistrictings(new ArrayList<Districting>());
+                PA.getJobs().add(job2);
+
+                Job job3 = new Job("PA_JOB3");
+                job1.setJobSummary(PAJSColleciton.get(2));
+                job1.setDistrictings(new ArrayList<Districting>());
+                PA.getJobs().add(job3);
+                stateRepository.save(PA);
+            }
                 Job jobAdd = PA.getJobs().get(k-1);
 
 //                jobAdd.setJobSummary(PAJSColleciton.get(k-1));
@@ -56,7 +74,7 @@ public class entityConfig {
                     newAllPrecint.put(allPrecinct.get(i).getPrecinctID(), allPrecinct.get(i));
                 }
 
-                int fn =jobAdd.getDistrictings().size()+1;
+                int fn =jobAdd.getDistrictingCollectionNumber()+1;
                 int counter =0;
                 ArrayList<Districting> dHolder = new ArrayList<>();
                 for (; fn< listOfFiles.length; fn++) {
@@ -138,13 +156,13 @@ public class entityConfig {
                         }
 
 
-                        newDistricting.setJob(jobAdd);
+                        newDistricting.setJob(jobAdd.getJobID());
                         dHolder.add(newDistricting);
 
                     }
                     counter ++;
 
-                    if(counter ==20000)
+                    if(counter ==10000)
                     {
                         jobAdd.setDistrictingCollectionNumber(jobAdd.getDistrictingCollectionNumber() + dHolder.size());
                         jobRepository.save(jobAdd);

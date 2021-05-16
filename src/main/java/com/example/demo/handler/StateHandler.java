@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
 
@@ -107,7 +108,8 @@ public class StateHandler {
     {
         Job selectedJob = jobRepository.findById(jobID).get();
         this.selectedJob = selectedJob;
-        this.selectedJob.setDistrictings(districtingRepository.findByjobID(jobID));
+        this.selectedJob.setDistrictings(districtingRepository.findByjob(jobID).stream().collect(Collectors.toList()));
+        System.out.println(selectedJob.getDistrictings());
         this.selectedJob.setConstrainedDistrictings(new ConstrainedDistrictings());
         this.selectedJob.getConstrainedDistrictings().setPlot(new Plot());
         this.selectedJob.getConstrainedDistrictings().setEnactedDistricting(state.getEnactedDistricting());
@@ -171,6 +173,27 @@ public class StateHandler {
 //            }
 //        }
     }
+
+    public Plot retrievePlotData(String districtingID){
+        Job currentJob = selectedJob;
+        //find current districting by id
+        //currentJob.getConstrainedDistrictings().setCurrentDistricting(the current districting);
+        return currentJob.retrieveBoxAndWhiskerData(currentJob.getConstraints().getMinorityType());
+    }
+
+    public JSONObject calculateDistrictBoundaries(String districtingID) throws ParseException {
+        //also need to pass in districting id
+        Job currentJob = selectedJob;
+        //currentJob.calculateDistrictingGeometry(//whatever districting id we found by);
+        //whatever that districting is .setDistrictBoundaryJSON();
+        JSONObject districtingBoundaries = new JSONObject();
+        districtingBoundaries.put("type", "FeatureCollection");
+        //districtingBoundaries.put("features", whateverdistrictingwefound.getDistrictBoundaries());
+        //whateverdistrictingwefound.setDistrictingBoundary(districtingBoundaries);
+        System.out.println("done with calculation" );
+        return districtingBoundaries;
+    }
+
 
     public void filterDistrictings(Constraints constraints) throws IOException, ParseException {
         //this will filter the 100k districtings down to about 1k districtings

@@ -8,10 +8,7 @@ import org.json.simple.parser.ParseException;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 @Entity
 public class Job implements Serializable{
@@ -76,6 +73,7 @@ public class Job implements Serializable{
     }
 //    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
 //    @Fetch(value = FetchMode.SUBSELECT)
+
     @Transient
     public List<Districting> getDistrictings() {
         return districtings;
@@ -373,14 +371,6 @@ public class Job implements Serializable{
         for (int i = 0; i < this.getConstrainedDistrictings().getDistrictings().size(); i++){
             this.getConstrainedDistrictings().getDistrictings().get(i).calculateObjectiveFunctionScore(this.getWeights(), this.getConstraints().getPopulationType(), this.getConstraints().getMinorityType(),this.getConstrainedDistrictings().getMeans(),i, this.getConstrainedDistrictings().getPlot().getEnactedDistrictingData());
         }
-//        private ArrayList<Districting> topDistrictingsByOFScore;
-//        private ArrayList<Districting> topDistrictingsByEnacted;
-//        private ArrayList<Districting> topDistrictingsByHighScoreMajMinDistricts;
-//        private ArrayList<Districting> topDistrictingsBySigmaAvg;
-//        private ArrayList<Districting> topDistrictingsBySigmaEnacted;
-//        private ArrayList<Districting> topDistrictingsByCompactness;
-//        private ArrayList<Districting> topDistrictingsByAreaPairDeviation;
-//        private ArrayList<Districting> topDistrictingsBySimilarity;
 
         //sort the stuff in the constrained districtings by OF score first
         this.getConstrainedDistrictings().getDistrictings().sort(Comparator.comparing(Districting::getObjectiveFunctionScore));
@@ -408,7 +398,16 @@ public class Job implements Serializable{
         }
         this.setTopDistrictingsByEnacted(tempDistrctingByEnactedPop);
 
+        //area pair deviation will select 10 random districtings and return them
+        ArrayList<Districting> tempDistrictingByAreaDev = new ArrayList<>();
+        for (int i = 0; i < 10; i++){
+            tempDistrictingByAreaDev.add(this.constrainedDistrictings.getDistrictings().get(new Random().nextInt(this.constrainedDistrictings.getDistrictings().size())));
+        }
+        this.setTopDistrictingsByAreaPairDeviation(tempDistrictingByAreaDev);
+
     }
+
+
 
     //STEP 1 OF FITLER, ONLY NEEDS DISTRICTING INFORMATION
     public void filterPopEqualityDistrictings(){

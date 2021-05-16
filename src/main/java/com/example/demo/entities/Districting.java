@@ -41,7 +41,7 @@ public class Districting implements Serializable{
     private double graphCompactness;
     private ArrayList<County> counties;
     private JSONObject districtingBoundary; //this is the geo json that can be returned.
-    private Job job;
+    private String job;
 
     public Districting(){
 
@@ -73,12 +73,12 @@ public class Districting implements Serializable{
         this.districtingID = districtingID;
     }
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    public Job getJob() {
+
+    public String getJob() {
         return job;
     }
 
-    public void setJob(Job job) {
+    public void setJob(String job) {
         this.job = job;
     }
 
@@ -225,7 +225,6 @@ public class Districting implements Serializable{
         return graphCompactness;
     }
 
-
     public double getPopulationPercentDifferenceVAP() {
         return populationPercentDifferenceVAP;
     }
@@ -250,6 +249,7 @@ public class Districting implements Serializable{
     public void setDistrictingBoundary(JSONObject districtingBoundary) {
         this.districtingBoundary = districtingBoundary;
     }
+
 
     public ArrayList<Long> retrieveTotalPopulationArray(){
         ArrayList<Long> tempPopulationArray = new ArrayList<>();
@@ -526,7 +526,7 @@ public class Districting implements Serializable{
         score = (twoCountr + 10 * threeCounter)/300.0;
         System.out.println(weights.get(Measures.SPLIT_COUNTIES) * score);
         this.setSplitCountyScore(weights.get(Measures.SPLIT_COUNTIES) * score);
-        return weights.get(Measures.SPLIT_COUNTIES) * score;
+        return weights.get(Measures.SPLIT_COUNTIES) * (1 - score);
     }
 
     //Need to change so that the population type can change.
