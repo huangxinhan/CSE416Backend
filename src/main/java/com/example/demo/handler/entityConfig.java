@@ -56,8 +56,8 @@ public class entityConfig {
                 PA.getJobs().add(job2);
 
                 Job job3 = new Job("PA_JOB3");
-                job1.setJobSummary(PAJSColleciton.get(2));
-                job1.setDistrictings(new ArrayList<Districting>());
+                job3.setJobSummary(PAJSColleciton.get(2));
+                job3.setDistrictings(new ArrayList<Districting>());
                 PA.getJobs().add(job3);
                 stateRepository.save(PA);
             }
