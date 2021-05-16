@@ -3,19 +3,19 @@ package com.example.demo.entities;
 import com.example.demo.entities.enums.Measures;
 import com.example.demo.entities.enums.PopulationType;
 import com.example.demo.entities.enums.RaceType;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.json.simple.JSONObject;
+import org.locationtech.jts.geom.Geometry;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Entity
+@JsonIgnoreProperties({ "precinctBoundaries", "counties" })
 public class Districting implements Serializable{
     private String districtingID;
 
@@ -40,6 +40,7 @@ public class Districting implements Serializable{
     private double populationPercentDifferenceVAP;
     private double graphCompactness;
     private ArrayList<County> counties;
+    private JSONObject districtingBoundary; //this is the geo json that can be returned.
 
 
     public Districting(){
@@ -82,6 +83,7 @@ public class Districting implements Serializable{
         this.districts = districts;
     }
 
+    @Transient
     public ArrayList<County> getCounties() {
         return counties;
     }
@@ -231,6 +233,15 @@ public class Districting implements Serializable{
         this.populationPercentDifference = populationPercentDifference;
     }
 
+    @Transient
+    public JSONObject getDistrictingBoundary() {
+        return districtingBoundary;
+    }
+
+    public void setDistrictingBoundary(JSONObject districtingBoundary) {
+        this.districtingBoundary = districtingBoundary;
+    }
+
     public ArrayList<Long> retrieveTotalPopulationArray(){
         ArrayList<Long> tempPopulationArray = new ArrayList<>();
         for (int i = 0; i < this.getDistricts().size(); i++){
@@ -279,10 +290,11 @@ public class Districting implements Serializable{
         int numberOfMajorMinorDistricts = 0;
             for (int i = 0; i < this.getDistricts().size(); i++){
                 if (raceType == raceType.AFRICAN_AMERICAN){
+                    //System.out.println("african american");
                     Long totalMinorityPopulation = this.getTotalMinorityPopulationByType(raceType);
                     double currentThreshold = (double)this.getDistricts().get(i).getAfricanAmericanPopulation()/(double)totalMinorityPopulation;
-//                    System.out.println("Current Threshold: " + currentThreshold);
-//                    System.out.println("Threshold: " + threshold);
+                    //System.out.println("Current Threshold: " + currentThreshold);
+                    //System.out.println("Threshold: " + threshold);
                     if (currentThreshold >= threshold){
                         numberOfMajorMinorDistricts += 1;
                     }
@@ -302,6 +314,10 @@ public class Districting implements Serializable{
                     }
                 }
             }
+            //set the number of majority minority districts
+            //System.out.println("number of mm districts is " + numberOfMajorMinorDistricts);
+            this.setNumberOfMajorityMinorityDistricts(numberOfMajorMinorDistricts);
+        System.out.println("number of mm districts got " + this.getNumberOfMajorityMinorityDistricts());
         return numberOfMajorMinorDistricts;
     }
 
@@ -436,12 +452,15 @@ public class Districting implements Serializable{
         this.setPrecinctBoundaries(outerProperties);
     }
 
-    public void calculateObjectiveFunctionScore(HashMap<Measures, Double> weights, PopulationType populationType, RaceType minorityType, ArrayList<Double> means, int index){
+    public void calculateObjectiveFunctionScore(HashMap<Measures, Double> weights, PopulationType populationType, RaceType minorityType, ArrayList<Double> means, int index, ArrayList<Double> enactedDistrictingData){
         //now this method here will call various other methods to calculate the objective function score.
         double objectiveFunctionScore = 0;
         objectiveFunctionScore += this.calculateOFScoreByPopulationEquality(populationType, weights);
         objectiveFunctionScore += this.calculateOFScoreByAverageDistricting(minorityType, weights, means, index);
+        objectiveFunctionScore += this.calculateOFScoryBySplitCounty(weights);
+        objectiveFunctionScore += this.calculateOFScoreByDeviationFromEnactedPlan(minorityType, weights, means, index, enactedDistrictingData);
         System.out.println("current OF Score" + objectiveFunctionScore);
+        this.setObjectiveFunctionScore(objectiveFunctionScore);
     }
 
 
@@ -495,9 +514,10 @@ public class Districting implements Serializable{
             }
         }
 
-        score = (twoCountr + 10 * threeCounter)/200.0;
-
-        return score;
+        score = (twoCountr + 10 * threeCounter)/300.0;
+        System.out.println(weights.get(Measures.SPLIT_COUNTIES) * score);
+        this.setSplitCountyScore(weights.get(Measures.SPLIT_COUNTIES) * score);
+        return weights.get(Measures.SPLIT_COUNTIES) * score;
     }
 
     //Need to change so that the population type can change.
@@ -512,6 +532,7 @@ public class Districting implements Serializable{
             double idealPopulation = (double)total_population / (double)this.getDistricts().size();
             for (int i = 0; i < this.getDistricts().size(); i++) {
                 sum += Math.pow(((double) this.getDistricts().get(i).getTotalPopulation() / (double)idealPopulation)-1, 2);
+                this.getDistricts().get(i).setPopulationEquality(sum);
             }
         }
         else if (populationType == PopulationType.VAP) {
@@ -526,29 +547,75 @@ public class Districting implements Serializable{
         double weight = weights.get(Measures.POPULATION_EQUALITY);
         double final_score = weight * Math.sqrt(sum);
         System.out.println("objective function score for pop eq is: " + final_score);
+        if (populationType == PopulationType.TOTAL){
+            this.setPopulationPercentDifference(final_score);
+        }
+        else if (populationType == PopulationType.TOTAL){
+            this.setPopulationPercentDifferenceVAP(final_score);
+        }
         return final_score;
     }
 
     public double calculateOFScoreByAverageDistricting(RaceType minorityType, HashMap<Measures, Double> weights, ArrayList<Double> means, int index){
         double sum = 0;
+        System.out.println("Got the dev from avg " + weights.get(Measures.DEVIATION_FROM_AVERAGE));
         //deviation from the means
         if (minorityType == RaceType.AFRICAN_AMERICAN) {
             for (int i = 0; i < this.getDistricts().size(); i++) {
                 sum += Math.pow((((double)this.getDistricts().get(i).getAfricanAmericanPopulation() /(double) this.getDistricts().get(i).getTotalPopulation()) - means.get(index)), 2);
+                this.getDistricts().get(i).setDeviationAverage(sum);
             }
             //then normalize it or something here...
         }
         else if (minorityType == RaceType.ASIAN) {
             for (int i = 0; i < this.getDistricts().size(); i++) {
                 sum += Math.pow((((double)this.getDistricts().get(i).getAsianPopulation() / (double)this.getDistricts().get(i).getTotalPopulation()) - means.get(index)), 2);
+                this.getDistricts().get(i).setDeviationAverage(sum);
             }
         }
         else if (minorityType == RaceType.HISPANIC) {
             for (int i = 0; i < this.getDistricts().size(); i++) {
                 sum += Math.pow((((double)this.getDistricts().get(i).getHispanicPopulation() / (double)this.getDistricts().get(i).getTotalPopulation()) - means.get(index)), 2);
+                this.getDistricts().get(i).setDeviationAverage(sum);
             }
         }
-        System.out.println("Objective Function Score By Average Districting is " + sum);
-        return sum;
+        System.out.println("Objective Function Score By Average Districting is " + weights.get(Measures.DEVIATION_FROM_AVERAGE) * sum);
+        return weights.get(Measures.DEVIATION_FROM_AVERAGE) * sum;
+    }
+
+    public double calculateOFScoreByDeviationFromEnactedPlan(RaceType minorityType, HashMap<Measures, Double> weights, ArrayList<Double> means, int index, ArrayList<Double> enactedDistrictingData){
+        double sum = 0;
+        ArrayList<District> tempDistricts = new ArrayList<>();
+        for (int i = 0; i < this.getDistricts().size(); i++){
+            tempDistricts.add(this.getDistricts().get(i));
+        }
+        if (minorityType == RaceType.AFRICAN_AMERICAN){
+            //now we have a temp districts of the districts
+            tempDistricts.sort(Comparator.comparing((District::getDistrictNumber)));
+            for (int i = 0; i < tempDistricts.size(); i++){
+                sum += Math.pow(((double)tempDistricts.get(i).getAfricanAmericanPopulation() / (double)tempDistricts.get(i).getTotalPopulation())-enactedDistrictingData.get(i), 2);
+                tempDistricts.get(i).setDeviationEnacted(sum);
+            }
+        }
+        else if (minorityType == RaceType.HISPANIC){
+            //now we have a temp districts of the districts
+            tempDistricts.sort(Comparator.comparing((District::getDistrictNumber)));
+            for (int i = 0; i < tempDistricts.size(); i++){
+                sum += Math.pow(((double)tempDistricts.get(i).getHispanicPopulation() / (double)tempDistricts.get(i).getTotalPopulation())-enactedDistrictingData.get(i), 2);
+                tempDistricts.get(i).setDeviationEnacted(sum);
+            }
+        }
+
+        else if (minorityType == RaceType.ASIAN){
+            //now we have a temp districts of the districts
+            tempDistricts.sort(Comparator.comparing((District::getDistrictNumber)));
+            for (int i = 0; i < tempDistricts.size(); i++){
+                sum += Math.pow(((double)tempDistricts.get(i).getAsianPopulation() / (double)tempDistricts.get(i).getTotalPopulation())-enactedDistrictingData.get(i), 2);
+                tempDistricts.get(i).setDeviationEnacted(sum);
+            }
+        }
+        System.out.println("Objective Function score by deviation from enacted: " + Math.sqrt(weights.get(Measures.DEVIATION_FROM_ENACTEDPOP) * sum));
+        this.setDeviationFromEnactedPop(Math.sqrt(weights.get(Measures.DEVIATION_FROM_ENACTEDPOP) * sum));
+        return Math.sqrt(weights.get(Measures.DEVIATION_FROM_ENACTEDPOP) * sum);
     }
 }

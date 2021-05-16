@@ -1,5 +1,6 @@
 package com.example.demo.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@JsonIgnoreProperties({ "borderGeometry", "borderGeometryJson", "precinctBoundariesJson", "districtingID", "precincts", "districtingID", "edgeNodes", "involvedCounties"})
 public class District implements Serializable{
 
     private String districtID;
@@ -37,6 +39,8 @@ public class District implements Serializable{
     private Long AsianPopulation;
     private Long HispanicPopulation;
     private Districting districtingID;
+    private double populationEquality;
+    private double deviationAverage;
 
     private double objectiveFunctionScore;
 
@@ -237,6 +241,24 @@ public class District implements Serializable{
 
     public void setPrecinctBoundariesJson(ArrayList<JSONObject>  precinctBoundariesJson) {
         this.precinctBoundariesJson = precinctBoundariesJson;
+    }
+
+    @Transient
+    public double getPopulationEquality() {
+        return populationEquality;
+    }
+
+    public void setPopulationEquality(double populationEquality) {
+        this.populationEquality = populationEquality;
+    }
+
+    @Transient
+    public double getDeviationAverage() {
+        return deviationAverage;
+    }
+
+    public void setDeviationAverage(double deviationAverage) {
+        this.deviationAverage = deviationAverage;
     }
 
     public void appendPrecinct(Precinct precinct){

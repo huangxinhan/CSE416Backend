@@ -129,8 +129,8 @@ public class State implements Serializable{
 
     @OneToMany(fetch = FetchType.EAGER)
     @Fetch(value = FetchMode.SUBSELECT)
-    public ArrayList<County> getCounties() {
-        return (ArrayList<County>) counties;
+    public List<County> getCounties() {
+        return counties;
     }
 
     public void setCounties(List<County> counties) {

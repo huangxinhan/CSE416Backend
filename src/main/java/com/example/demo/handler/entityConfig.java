@@ -48,6 +48,7 @@
 //                jobAdd.setJobSummary(PAJSColleciton.get(k-1));
 //                jobAdd.setDistrictings(new ArrayList<Districting>());
 //                List<Precinct> PA_Precinct_Collection =  PA.getPrecincts();
+//
 //                File folder = new File("src/main/java/com/example/demo/orgJson/PArandomDistricting" + String.valueOf(k));
 //                File[] listOfFiles = folder.listFiles();
 //                List<Precinct> allPrecinct =  PA_Precinct_Collection;
@@ -99,7 +100,7 @@
 //                                }
 //
 //                                String id = dArray.get(j).toString();
-//
+//                                //System.out.println(id);
 //                                Precinct toAdd = newAllPrecint.get(id);
 //
 //                                toAdd.setCurrentDistrictId(toAddDistrict.getDistrictID());
