@@ -353,10 +353,10 @@ public class Districting implements Serializable{
                 }
 
         }
-        System.out.println("mostPopulousTotal: " + mostPopulousPopulationTotal);
-        System.out.println("leastPopulousTotal: " + leastPopulousPopulationTotal);
-        System.out.println("mostPopulousVAP: " + mostPopulousPopulationVAP);
-        System.out.println("leastPopulousVAP " + leastPopulousPopulationVAP);
+        //System.out.println("mostPopulousTotal: " + mostPopulousPopulationTotal);
+        //System.out.println("leastPopulousTotal: " + leastPopulousPopulationTotal);
+        //System.out.println("mostPopulousVAP: " + mostPopulousPopulationVAP);
+        //System.out.println("leastPopulousVAP " + leastPopulousPopulationVAP);
 
         //the percent difference in this case is 100 x abs(A-B)/((A+B)/2))
         double percentDifferenceTotal = 100 * Math.abs(((double)mostPopulousPopulationTotal - (double)leastPopulousPopulationTotal)/(((double)mostPopulousPopulationTotal + (double)leastPopulousPopulationTotal)/2));
@@ -423,7 +423,7 @@ public class Districting implements Serializable{
         double graphCompactness = totalCompactness/(double)compactnessArray.size();
         //store the graph compactness measure for easier calculation for the objective function
         this.setGraphCompactness(graphCompactness);
-        System.out.println("GRAPH COMPACTNESS IS " + graphCompactness);
+        //System.out.println("GRAPH COMPACTNESS IS " + graphCompactness);
         return graphCompactness;
     }
 
@@ -472,6 +472,15 @@ public class Districting implements Serializable{
         this.setObjectiveFunctionScore(objectiveFunctionScore);
     }
 
+    public double calculateOFScoreByCompactness(HashMap<Measures, Double> weights){
+        double score = 0;
+        double sum = 0;
+        for (int i = 0; i < this.getDistricts().size(); i++){
+            sum += this.getDistricts().get(i).getCompactness(); //0.23423 blah blah
+        }
+        score = weights.get(Measures.GRAPH_COMPACTNESS) * (this.getDistricts().size() - sum);
+        return score;
+    }
 
     public double calculateOFScoryBySplitCounty(HashMap<Measures, Double> weights)
     {
@@ -525,7 +534,7 @@ public class Districting implements Serializable{
 
         score = (twoCountr + 10 * threeCounter)/300.0;
         System.out.println(weights.get(Measures.SPLIT_COUNTIES) * score);
-        this.setSplitCountyScore(weights.get(Measures.SPLIT_COUNTIES) * score);
+        this.setSplitCountyScore(1 - weights.get(Measures.SPLIT_COUNTIES) * score);
         return weights.get(Measures.SPLIT_COUNTIES) * (1 - score);
     }
 
@@ -555,9 +564,9 @@ public class Districting implements Serializable{
         }
         double weight = weights.get(Measures.POPULATION_EQUALITY);
         double final_score = weight * Math.sqrt(sum);
-        System.out.println("objective function score for pop eq is: " + final_score);
-        this.setPopulationEqualityDifference(final_score);
-        return final_score;
+        System.out.println("objective function score for pop eq is: " + (1 - final_score));
+        this.setPopulationEqualityDifference(1 - final_score);
+        return 1 - final_score;
     }
 
     public double calculateOFScoreByAverageDistricting(RaceType minorityType, HashMap<Measures, Double> weights, ArrayList<Double> means, int index){
@@ -583,9 +592,9 @@ public class Districting implements Serializable{
                 this.getDistricts().get(i).setDeviationAverage(sum);
             }
         }
-        System.out.println("Objective Function Score By Average Districting is " + weights.get(Measures.DEVIATION_FROM_AVERAGE) * Math.sqrt(sum));
-
-        return weights.get(Measures.DEVIATION_FROM_AVERAGE) * Math.sqrt(sum);
+        System.out.println("Objective Function Score By Average Districting is " + (1 - weights.get(Measures.DEVIATION_FROM_AVERAGE) * Math.sqrt(sum)));
+        this.setDeviationFromAverage((1 - weights.get(Measures.DEVIATION_FROM_AVERAGE) * Math.sqrt(sum)));
+        return 1 - weights.get(Measures.DEVIATION_FROM_AVERAGE) * Math.sqrt(sum);
     }
 
     public double calculateOFScoreByDeviationFromEnactedPlan(RaceType minorityType, HashMap<Measures, Double> weights, ArrayList<Double> means, int index, ArrayList<Double> enactedDistrictingData){
@@ -619,8 +628,8 @@ public class Districting implements Serializable{
                 tempDistricts.get(i).setDeviationEnacted(sum);
             }
         }
-        System.out.println("Objective Function score by deviation from enacted: " + Math.sqrt(weights.get(Measures.DEVIATION_FROM_ENACTEDPOP) * sum));
-        this.setDeviationFromEnactedPop(weights.get(Measures.DEVIATION_FROM_ENACTEDPOP) * Math.sqrt(sum));
-        return Math.sqrt(weights.get(Measures.DEVIATION_FROM_ENACTEDPOP) * sum);
+        System.out.println("Objective Function score by deviation from enacted: " + (1 - Math.sqrt(weights.get(Measures.DEVIATION_FROM_ENACTEDPOP) * sum)));
+        this.setDeviationFromEnactedPop(1 - (weights.get(Measures.DEVIATION_FROM_ENACTEDPOP) * Math.sqrt(sum)));
+        return Math.sqrt(1 - (weights.get(Measures.DEVIATION_FROM_ENACTEDPOP) * sum));
     }
 }

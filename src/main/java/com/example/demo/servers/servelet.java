@@ -69,11 +69,22 @@ public class servelet {
         System.out.println(weights);
         stateHandler.calculateObjectiveFunctionScores(weights);
         Job job = stateHandler.getSelectedJob();
+        for (int i = 0; i < 10; i++){
+            job.getTopDistrictingsByOFScore().get(i).calculateGraphCompactness();
+            job.getTopDistrictingsByHighScoreMajMinDistricts().get(i).calculateGraphCompactness();
+            job.getTopDistrictingsByEnacted().get(i).calculateGraphCompactness();
+            job.getTopDistrictingsByAreaPairDeviation().get(i).calculateGraphCompactness();
+            job.getTopDistrictingsByOFScore().get(i).calculatePopulationConstraintAll();
+            job.getTopDistrictingsByHighScoreMajMinDistricts().get(i).calculatePopulationConstraintAll();
+            job.getTopDistrictingsByEnacted().get(i).calculatePopulationConstraintAll();
+            job.getTopDistrictingsByAreaPairDeviation().get(i).calculatePopulationConstraintAll();
+        }
         ArrayList<ArrayList<Districting>> topDistrictings = new ArrayList<>();
         topDistrictings.add(job.getTopDistrictingsByOFScore());
         topDistrictings.add(job.getTopDistrictingsByHighScoreMajMinDistricts());
         topDistrictings.add(job.getTopDistrictingsByEnacted());
-        //topDistrictings.add(job.getTopDistrictingsByAreaPairDeviation());
+        topDistrictings.add(job.getTopDistrictingsByAreaPairDeviation());
+
         return topDistrictings;
     }
 
