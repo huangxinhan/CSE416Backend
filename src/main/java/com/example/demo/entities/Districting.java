@@ -30,7 +30,7 @@ public class Districting implements Serializable{
     private double compactness;
     //incumbentDistribution: Map<district: District, List<incumbent>> Ignore
     private int majorityMinorityDistrictsNumber;
-    private int populationEqualityDifference;
+    private double populationEqualityDifference;
     private double splitCountyScore;
     private Long tempPopulationByType;
     private HashMap<County, Integer> splitCountyDetails;
@@ -165,11 +165,11 @@ public class Districting implements Serializable{
         this.majorityMinorityDistrictsNumber = majorityMinorityDistrictsNumber;
     }
     @Transient
-    public int getPopulationEqualityDifference() {
+    public double getPopulationEqualityDifference() {
         return populationEqualityDifference;
     }
 
-    public void setPopulationEqualityDifference(int populationEqualityDifference) {
+    public void setPopulationEqualityDifference(double populationEqualityDifference) {
         this.populationEqualityDifference = populationEqualityDifference;
     }
     @Transient
@@ -531,7 +531,7 @@ public class Districting implements Serializable{
             }
             double idealPopulation = (double)total_population / (double)this.getDistricts().size();
             for (int i = 0; i < this.getDistricts().size(); i++) {
-                sum += Math.pow(((double) this.getDistricts().get(i).getTotalPopulation() / (double)idealPopulation)-1, 2);
+                sum += Math.pow((((double) this.getDistricts().get(i).getTotalPopulation() / (double)idealPopulation))-1, 2);
                 this.getDistricts().get(i).setPopulationEquality(sum);
             }
         }
@@ -541,18 +541,13 @@ public class Districting implements Serializable{
             }
             double idealPopulation = (double)total_population / (double)this.getDistricts().size();
             for (int i = 0; i < this.getDistricts().size(); i++) {
-                sum += Math.pow(((double)this.getDistricts().get(i).getVotingAgePopulation() / (double)idealPopulation)-1, 2);
+                sum += Math.pow((((double)this.getDistricts().get(i).getVotingAgePopulation() / (double)idealPopulation))-1, 2);
             }
         }
         double weight = weights.get(Measures.POPULATION_EQUALITY);
         double final_score = weight * Math.sqrt(sum);
         System.out.println("objective function score for pop eq is: " + final_score);
-        if (populationType == PopulationType.TOTAL){
-            this.setPopulationPercentDifference(final_score);
-        }
-        else if (populationType == PopulationType.TOTAL){
-            this.setPopulationPercentDifferenceVAP(final_score);
-        }
+        this.setPopulationEqualityDifference(final_score);
         return final_score;
     }
 
@@ -579,8 +574,9 @@ public class Districting implements Serializable{
                 this.getDistricts().get(i).setDeviationAverage(sum);
             }
         }
-        System.out.println("Objective Function Score By Average Districting is " + weights.get(Measures.DEVIATION_FROM_AVERAGE) * sum);
-        return weights.get(Measures.DEVIATION_FROM_AVERAGE) * sum;
+        System.out.println("Objective Function Score By Average Districting is " + weights.get(Measures.DEVIATION_FROM_AVERAGE) * Math.sqrt(sum));
+
+        return weights.get(Measures.DEVIATION_FROM_AVERAGE) * Math.sqrt(sum);
     }
 
     public double calculateOFScoreByDeviationFromEnactedPlan(RaceType minorityType, HashMap<Measures, Double> weights, ArrayList<Double> means, int index, ArrayList<Double> enactedDistrictingData){
@@ -615,7 +611,7 @@ public class Districting implements Serializable{
             }
         }
         System.out.println("Objective Function score by deviation from enacted: " + Math.sqrt(weights.get(Measures.DEVIATION_FROM_ENACTEDPOP) * sum));
-        this.setDeviationFromEnactedPop(Math.sqrt(weights.get(Measures.DEVIATION_FROM_ENACTEDPOP) * sum));
+        this.setDeviationFromEnactedPop(weights.get(Measures.DEVIATION_FROM_ENACTEDPOP) * Math.sqrt(sum));
         return Math.sqrt(weights.get(Measures.DEVIATION_FROM_ENACTEDPOP) * sum);
     }
 }

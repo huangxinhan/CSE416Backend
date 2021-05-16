@@ -294,6 +294,7 @@ public class StateHandler {
                 toAddDistrict.calculateAllPopulation();
                 newDistricting.getDistricts().add(toAddDistrict);
                 newDistricting.calculateGraphCompactness();
+                newDistricting.calculatePopulationConstraintAll();
                 //System.out.println(newDistricting.getDistricts().get(0).getPrecincts());
             }
 //                    System.out.println("start save");
