@@ -107,6 +107,7 @@ public class StateHandler {
     {
         Job selectedJob = jobRepository.findById(jobID).get();
         this.selectedJob = selectedJob;
+        this.selectedJob.setDistrictings(districtingRepository.findByjobID(jobID));
         this.selectedJob.setConstrainedDistrictings(new ConstrainedDistrictings());
         this.selectedJob.getConstrainedDistrictings().setPlot(new Plot());
         this.selectedJob.getConstrainedDistrictings().setEnactedDistricting(state.getEnactedDistricting());

@@ -41,7 +41,7 @@ public class Districting implements Serializable{
     private double graphCompactness;
     private ArrayList<County> counties;
     private JSONObject districtingBoundary; //this is the geo json that can be returned.
-
+    private Job job;
 
     public Districting(){
 
@@ -71,6 +71,15 @@ public class Districting implements Serializable{
 
     public void setDistrictingID(String districtingID) {
         this.districtingID = districtingID;
+    }
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    public Job getJob() {
+        return job;
+    }
+
+    public void setJob(Job job) {
+        this.job = job;
     }
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)

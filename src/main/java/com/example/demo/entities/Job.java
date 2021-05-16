@@ -38,6 +38,7 @@ public class Job implements Serializable{
     private int filteredByPopConstraintCount;
     private int filteredByCompactnessCount;
     private int filteredByIncumbentCount;
+    private int districtingCollectionNumber;
 
     public Job(){
 
@@ -73,8 +74,9 @@ public class Job implements Serializable{
     public void setConstraints(Constraints constraints) {
         this.constraints = constraints;
     }
-    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-    @Fetch(value = FetchMode.SUBSELECT)
+//    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+//    @Fetch(value = FetchMode.SUBSELECT)
+    @Transient
     public List<Districting> getDistrictings() {
         return districtings;
     }
@@ -82,6 +84,15 @@ public class Job implements Serializable{
     public void setDistrictings(List<Districting> districtings) {
         this.districtings = districtings;
     }
+
+    public int getDistrictingCollectionNumber() {
+        return districtingCollectionNumber;
+    }
+
+    public void setDistrictingCollectionNumber(int districtingCollectionNumber) {
+        this.districtingCollectionNumber = districtingCollectionNumber;
+    }
+
     @Transient
     public List<Districting> getTempConstrainedDistrictings() {
         return tempConstrainedDistrictings;

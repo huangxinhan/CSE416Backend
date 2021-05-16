@@ -146,7 +146,8 @@ public class entityConfig {
 
                     if(counter ==20000)
                     {
-
+                        jobAdd.setDistrictingCollectionNumber(jobAdd.getDistrictingCollectionNumber() + dHolder.size());
+                        jobRepository.save(jobAdd);
                         districtingRepository.saveAll(dHolder);
                         dHolder = new ArrayList<>();
                     }
