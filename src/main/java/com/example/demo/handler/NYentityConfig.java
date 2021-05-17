@@ -28,7 +28,7 @@
 //
 //    @Bean
 //    CommandLineRunner commandLineRaunner(precintRepository precinctRepository, countyRepository countyRepository, DistrictRepository districtRepository, DistrictingRepository districtingRepository, StateRepository stateRepository) throws IOException, ParseException {
-//
+//        //stateRepository.deleteById("NEWYORK");
 //        GeoJsonReader gReader = new GeoJsonReader();
 //
 //        Object obj = new JSONParser().parse(new FileReader("src/main/java/com/example/demo/orgJson/ny_precincts_With_Neighbors_with_incumbents.json"));
@@ -363,6 +363,10 @@
 //            //TimeUnit.SECONDS.sleep(5);
 //            for(int i =0 ;i < modifiedPrecincts.size() ;i++)
 //            {
+//                if(!modifiedPrecincts.get(i).getPrecinctID().substring(0,2).equals("NY")){
+//                    System.out.println(modifiedPrecincts.get(i).getPrecinctID().substring(0,2));
+//                    continue;
+//                }
 //                newAllPrecinct.put(modifiedPrecincts.get(i).getPrecinctID(),modifiedPrecincts.get(i));
 //            }
 //            for (String i : allprecinct.keySet()) {
@@ -412,16 +416,20 @@
 //            ArrayList<District> dDistrict = new ArrayList<>();
 //            for(int i =0 ; i< result.size(); i++)
 //            {
+//                if (!result.get(i).getDistrictID().substring(0,2).equals("NY")){
+//                    System.out.println(result.get(i).getDistrictID());
+//                    continue;
+//                }
 //                result.get(i).setDistrictingID(de);
 //                dDistrict.add(result.get(i));
-//
 //            }
+//
 //
 //            de.setDistricts(dDistrict);
 //
 //            districtRepository.saveAll(dDistrict);
 //            districtingRepository.save(de);
-//
+//            System.out.println("check");
 //
 //
 //            Object obj5 = new JSONParser().parse(new FileReader("src/main/java/com/example/demo/orgJson/ny_state_bound.json"));
@@ -466,6 +474,9 @@
 //
 //            for(int i =2 ; i< result3.size(); i++)
 //            {
+//                if (!result3.get(i).getCountyID().substring(0,2).equals("NY")){
+//                    continue;
+//            }
 //                System.out.println(result3.get(i).getCountyID());
 //                dcounty.add(result3.get(i));
 //            }
@@ -476,7 +487,7 @@
 //            ArrayList<Precinct> dcounty1 = new ArrayList<>();
 //            for(int i =0 ; i< result1.size(); i++)
 //            {
-//                if (result1.get(i).getPrecinctID().contains("MD")){
+//                if (!result1.get(i).getPrecinctID().substring(0,2).equals("NY")){
 //                    continue;
 //                }
 //                dcounty1.add(result1.get(i));
