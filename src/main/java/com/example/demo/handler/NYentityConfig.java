@@ -389,7 +389,7 @@
 //                for (int j = 0; j < adjacentNode.size(); j++) {
 //                    String id = (String) adjacentNode.get(j);
 //
-//                    Precinct toAdd = allprecinct.get(id);
+//                    Precinct toAdd = allprecinct.get("NY"+id);
 //
 //                    neighbours.add(toAdd);
 //                }

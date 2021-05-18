@@ -271,6 +271,11 @@ public class District implements Serializable{
         ArrayList<Precinct> edgeNodes = new ArrayList<>();
         for (int i = 0; i < this.getPrecincts().size(); i++){
             this.getPrecincts().get(i).onEdge();
+            //System.out.println("get on edge" + this.getPrecincts().get(i).getNeighbours());
+            if(this.getPrecincts().get(i).getNeighbours().size() == 0){
+                //if no neighbor
+                continue;
+            }
             if(this.getPrecincts().get(i).getOnEdge() == true){
                 edgeNodes.add(this.getPrecincts().get(i));
             }

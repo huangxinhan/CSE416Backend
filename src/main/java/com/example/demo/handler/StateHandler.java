@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
@@ -104,8 +105,7 @@ public class StateHandler {
         return selectedJob;
     }
 
-    public void selectJob(String jobID)
-    {
+    public void selectJob(String jobID) throws InterruptedException {
         Job selectedJob = jobRepository.findById(jobID).get();
         this.selectedJob = selectedJob;
         this.selectedJob.setDistrictings(districtingRepository.findByjob(jobID).stream().collect(Collectors.toList()));
@@ -119,7 +119,7 @@ public class StateHandler {
         return PA;
     }
 
-    public JSONObject calculateDefaultDistrictBoundary() throws ParseException, IOException {
+    public JSONObject calculateDefaultDistrictBoundary() throws ParseException, IOException, InterruptedException {
         Constraints constraints = new Constraints();
         constraints.setCompactnessType(CompactnessType.GRAPH_COMPACTNESS);
         constraints.setPopulationType(PopulationType.TOTAL);
@@ -177,26 +177,46 @@ public class StateHandler {
     public Plot retrievePlotData(String districtingID){
         Job currentJob = selectedJob;
         //find current districting by id
-        //currentJob.getConstrainedDistrictings().setCurrentDistricting(the current districting);
+        Districting tempDistricting = new Districting();
+        for (int i = 0; i < currentJob.getConstrainedDistrictings().getDistrictings().size(); i++){
+            System.out.println("constraint ids" + currentJob.getConstrainedDistrictings().getDistrictings().get(i).getDistrictingID());
+            System.out.println("what we got is" + districtingID);
+            if (currentJob.getConstrainedDistrictings().getDistrictings().get(i).getDistrictingID().equals(districtingID)){
+                tempDistricting = currentJob.getConstrainedDistrictings().getDistrictings().get(i);
+                System.out.println("lol found");
+                break;
+            }
+        }
+        currentJob.getConstrainedDistrictings().setCurrentDistricting(tempDistricting);
         return currentJob.retrieveBoxAndWhiskerData(currentJob.getConstraints().getMinorityType());
     }
 
     public JSONObject calculateDistrictBoundaries(String districtingID) throws ParseException {
         //also need to pass in districting id
         Job currentJob = selectedJob;
-        //currentJob.calculateDistrictingGeometry(//whatever districting id we found by);
-        //whatever that districting is .setDistrictBoundaryJSON();
+        Districting tempDistricting = new Districting();
+        for (int i = 0; i < currentJob.getConstrainedDistrictings().getDistrictings().size(); i++){
+            if (currentJob.getConstrainedDistrictings().getDistrictings().get(i).getDistrictingID().equals(districtingID)){
+                tempDistricting = currentJob.getConstrainedDistrictings().getDistrictings().get(i);
+                System.out.println("lol found");
+                break;
+            }
+        }
+
+        currentJob.calculateDistrictingGeometry(tempDistricting);
+        tempDistricting.setDistrictBoundaryJSON();
         JSONObject districtingBoundaries = new JSONObject();
         districtingBoundaries.put("type", "FeatureCollection");
-        //districtingBoundaries.put("features", whateverdistrictingwefound.getDistrictBoundaries());
-        //whateverdistrictingwefound.setDistrictingBoundary(districtingBoundaries);
+        districtingBoundaries.put("features", tempDistricting.getDistrictBoundaries());
+        tempDistricting.setDistrictingBoundary(districtingBoundaries);
         System.out.println("done with calculation" );
         return districtingBoundaries;
     }
 
 
-    public void filterDistrictings(Constraints constraints) throws IOException, ParseException {
+    public void filterDistrictings(Constraints constraints) throws IOException, ParseException, InterruptedException {
         //this will filter the 100k districtings down to about 1k districtings
+
         Job currentJob = selectedJob;
         currentJob.setConstraints(constraints);
         currentJob.filterPopEqualityDistrictings();
@@ -207,16 +227,21 @@ public class StateHandler {
         //remainingDistricting.subList(0,3000);
 
         currentJob.getConstrainedDistrictings().setDistrictings(new ArrayList<Districting>());
-
+        HashMap<String, Precinct> newAllPrecint = new HashMap<>();
+        for (int i = 0; i < allPrecinct.size(); i++) {
+            newAllPrecint.put(allPrecinct.get(i).getPrecinctID(), allPrecinct.get(i));
+        }
+        ArrayList<County> tempCounties = new ArrayList<>();
+        for (int i = 0; i< this.state.getCounties().size(); i++){
+            tempCounties.add(this.state.getCounties().get(i));
+        }
         for( Districting districting : remainingDistricting)
         {
             //System.out.println(districting.getDistrictingID());
 
-            HashMap<String, Precinct> newAllPrecint = new HashMap<>();
-            for (int i = 0; i < allPrecinct.size(); i++) {
-                newAllPrecint.put(allPrecinct.get(i).getPrecinctID(), allPrecinct.get(i));
-            }
+
             String[] haha = districting.getDistrictingID().split("_");
+
             String fName = haha[0];
             String jobID;
             if(this.selectedJob.getJobID().contains("1"))
@@ -232,6 +257,8 @@ public class StateHandler {
             }
 
             String fileLocator;
+
+
 
             if(this.state.getStateID() == "PENNSYLVANIA")
             {
@@ -324,10 +351,7 @@ public class StateHandler {
 //                    System.out.println("start save");
 //                    System.out.println(newDistrictCollection);
             //districtRepository.saveAll(newDistrictCollection);
-            ArrayList<County> tempCounties = new ArrayList<>();
-            for (int i = 0; i< this.state.getCounties().size(); i++){
-                tempCounties.add(this.state.getCounties().get(i));
-            }
+
             newDistricting.setCounties(tempCounties);
             currentJob.getConstrainedDistrictings().getDistrictings().add(newDistricting);
         }

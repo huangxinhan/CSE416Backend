@@ -303,7 +303,7 @@
 //            /////////////////////////////////////
 //
 //            Object obj4 = new JSONParser().parse(new FileReader("src/main/java/com/example/demo/orgJson/MD_precincts_seawulf.json"));
-//            List<Precinct> modifiedPrecincts = (List<Precinct>) precinctRepository.findByprecinctIDContaining("MD").stream().collect(Collectors.toList());
+//            List<Precinct> modifiedPrecincts = (List<Precinct>) precinctRepository.findByprecinctIDStartsWith("MD");
 //            System.out.println("filtering" + modifiedPrecincts.size());
 //
 //
@@ -332,7 +332,7 @@
 //                for (int j = 0; j < adjacentNode.size(); j++) {
 //                    String id = (String) adjacentNode.get(j);
 //
-//                    Precinct toAdd = allprecinct.get(id);
+//                    Precinct toAdd = allprecinct.get("MD"+ id);
 //
 //                    neighbours.add(toAdd);
 //                }
@@ -345,7 +345,8 @@
 //
 //
 //
-//
+//            System.out.println("has neighbors?" + modifiedPrecincts.get(0).getNeighbours());
+//            TimeUnit.SECONDS.sleep(6);
 //            //System.out.println(alldistrict);
 //            precinctRepository.saveAll(modifiedPrecincts);
 //            //countyRepository.saveAll(allcounty.values());
@@ -354,7 +355,7 @@
 //            System.out.println("dfs");
 //            Districting de = new Districting("MDX");
 //
-//            List<District> result = districtRepository.findBydistrictIDContaining("MD").stream().collect(Collectors.toList());
+//            List<District> result = districtRepository.findBydistrictIDStartsWith("MD");
 //
 //            ArrayList<District> dDistrict = new ArrayList<>();
 //            for(int i =0 ; i< result.size(); i++)
@@ -402,7 +403,7 @@
 //            Geometry newG = gReader.read(precinctGeos5.get(0).toString());
 //            newState.setStateBoundary(newG);
 //
-//            Districting a = districtingRepository.findById("MDX").get();
+//            Districting a = de;
 //
 //            newState.setEnactedDistricting(a);
 //
@@ -420,17 +421,14 @@
 //
 //            newState.setCounties(dcounty);
 //
-//            List<Precinct> result1 = precinctRepository.findByprecinctIDContaining("MD").stream().collect(Collectors.toList());;
 //
 //            ArrayList<Precinct> dcounty1 = new ArrayList<>();
-//            for(int i =0 ; i< result1.size(); i++)
-//            {
-//
-//                dcounty1.add(result1.get(i));
-//
+//            for (Precinct p : newAllPrecinct.values()){
+//                dcounty1.add(p);
 //            }
 //
-//            newState.setPrecincts(result1);
+//
+//            newState.setPrecincts(dcounty1);
 //
 //
 //            stateRepository.save(newState);

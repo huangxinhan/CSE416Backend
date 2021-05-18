@@ -423,7 +423,7 @@ public class Districting implements Serializable{
         double graphCompactness = totalCompactness/(double)compactnessArray.size();
         //store the graph compactness measure for easier calculation for the objective function
         this.setGraphCompactness(graphCompactness);
-        //System.out.println("GRAPH COMPACTNESS IS " + graphCompactness);
+        System.out.println("GRAPH COMPACTNESS IS " + graphCompactness);
         return graphCompactness;
     }
 

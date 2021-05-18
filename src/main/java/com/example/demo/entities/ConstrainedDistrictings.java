@@ -113,6 +113,18 @@ public class ConstrainedDistrictings {
         Collections.sort(populationPercentageArray); //sort by population
         this.setSortedCurrentDistrictingData(populationPercentageArray);
         this.getPlot().setCurrentDistrictingData(populationPercentageArray);
+        ArrayList<ArrayList<Double>> boxAndWhiskerData = new ArrayList<>();
+        for (int i = 0; i < this.getPlot().getEnactedDistrictingData().size(); i++){
+            boxAndWhiskerData.add(new ArrayList<Double>());
+        }
+        System.out.println("population percentages is : " + this.getPlot().getPopulationPercentages());
+        for (int i = 0; i < this.getPlot().getPopulationPercentages().size(); i++){
+            for (int j = 0; j < this.getPlot().getEnactedDistrictingData().size(); j++){ //0-18
+                System.out.println(this.getPlot().getPopulationPercentages().get(i).get(j));
+                boxAndWhiskerData.get(j).add(this.getPlot().getPopulationPercentages().get(i).get(j));
+            }
+        }
+        this.getPlot().setBoxAndWhiskerPercentages(boxAndWhiskerData);
         return this.getPlot();
     }
 

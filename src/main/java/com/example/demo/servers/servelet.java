@@ -38,7 +38,7 @@ public class servelet {
     }
 
     @GetMapping("/getStateDistrictBoundary/PA")
-    public JSONObject calculateDefaultDistrictBoundary() throws ParseException, IOException {
+    public JSONObject calculateDefaultDistrictBoundary() throws ParseException, IOException, InterruptedException {
         JSONObject districtingJson = stateHandler.calculateDefaultDistrictBoundary();
         return districtingJson;
     }
@@ -50,9 +50,9 @@ public class servelet {
     }
 
     @PostMapping("/constraints")
-    public HashMap<String, Integer> setConstraints(@RequestBody Constraints constraints) throws IOException, ParseException {
-        System.out.println("major minor thres is," + constraints.getMajorMinorThres());
-        System.out.println(constraints.getMajorMinorThres());
+    public HashMap<String, Integer> setConstraints(@RequestBody Constraints constraints) throws IOException, ParseException, InterruptedException {
+//        System.out.println("major minor thres is," + constraints.getMajorMinorThres());
+//        System.out.println(constraints.getMajorMinorThres());
         stateHandler.filterDistrictings(constraints);
         Job job = stateHandler.getSelectedJob();
         HashMap<String,Integer> constraintsResults= new HashMap<>();
@@ -88,18 +88,34 @@ public class servelet {
         return topDistrictings;
     }
 
+//    @PostMapping("/state")
+//    public JobSummary getJobs(@RequestBody String state) {
+//        stateHandler.selectState(state);
+//        System.out.println("JobSummary" + stateHandler.getState().getJobs().get(0).getJobSummary());
+//
+//        return (stateHandler.getState().getJobs().get(0).getJobSummary());
+//
+//    }
     @PostMapping("/state")
-    public JobSummary getJobs(@RequestBody String state) {
+    public ArrayList<JobSummary> getJobs(@RequestBody String state) {
         stateHandler.selectState(state);
         System.out.println("JobSummary" + stateHandler.getState().getJobs().get(0).getJobSummary());
-        return (stateHandler.getState().getJobs().get(0).getJobSummary());
-
+        ArrayList<JobSummary>JobSumList=new ArrayList<>();
+        JobSumList.add(stateHandler.getState().getJobs().get(0).getJobSummary());
+        JobSumList.add(stateHandler.getState().getJobs().get(1).getJobSummary());
+        JobSumList.add(stateHandler.getState().getJobs().get(2).getJobSummary());
+        System.out.println(JobSumList);
+        return JobSumList;
     }
 
     @PostMapping("/job")
-    public void getJobID(@RequestBody String job) {
+    public String getJobID(@RequestBody HashMap<String,String> jobs ) throws InterruptedException {
+        String job=jobs.get("jobid");
+        String stateName=jobs.get("stateName");
+
         String jobID="";
-        //if (stateName.charAt(0)=='P') {
+
+        if (stateName.charAt(0)=='P') {
         if (job.charAt(0) == '1') {
             jobID = "PA_JOB1";
         }
@@ -109,32 +125,47 @@ public class servelet {
         if (job.charAt(0) == '3') {
             jobID = "PA_JOB3";
         }
-        // }
-//        if (stateName.charAt(0)=='N') {
-//            if (job.charAt(0) == '1') {
-//                jobID = "NY_JOB1";
-//            }
-//            if (job.charAt(0) == '2') {
-//                jobID = "NY_JOB2";
-//            }
-//            if (job.charAt(0) == '3') {
-//                jobID = "NY_JOB3";
-//            }
-//        }
-//        if (stateName.charAt(0)=='M') {
-//            if (job.charAt(0) == '1') {
-//                jobID = "MD_JOB1";
-//            }
-//            if (job.charAt(0) == '2') {
-//                jobID = "MD_JOB2";
-//            }
-//            if (job.charAt(0) == '3') {
-//                jobID = "MD_JOB3";
-//            }
-//        }
-        System.out.println(jobID);
+         }
+        if (stateName.charAt(0)=='N') {
+            if (job.charAt(0) == '1') {
+                jobID = "NY_JOB1";
+            }
+            if (job.charAt(0) == '2') {
+                jobID = "NY_JOB2";
+            }
+            if (job.charAt(0) == '3') {
+                jobID = "NY_JOB3";
+            }
+        }
+        if (stateName.charAt(0)=='M') {
+            if (job.charAt(0) == '1') {
+                jobID = "MD_JOB1";
+            }
+            if (job.charAt(0) == '2') {
+                jobID = "MD_JOB2";
+            }
+            if (job.charAt(0) == '3') {
+                jobID = "MD_JOB3";
+            }
+        }
+
         stateHandler.selectJob(jobID);
+        return "done";
 
         //return (stateHandler.getState().getJobs().get(0).getJobSummary());
+    }
+
+    @PostMapping("/boxWhisker")
+    public Plot calculateBoxWhisker(@RequestBody String DistrictingId) {
+        String newDistrictingID = DistrictingId.substring(0, DistrictingId.length() - 1);
+        System.out.println(newDistrictingID);
+        return stateHandler.retrievePlotData(newDistrictingID);
+    }
+
+    @PostMapping("/getJson")
+    public JSONObject retrieveDistrictingJSON(@RequestBody String DistrictingId) throws ParseException {
+        String newDistrictingID = DistrictingId.substring(0, DistrictingId.length() - 1);
+        System.out.println(newDistrictingID);
+        return stateHandler.calculateDistrictBoundaries(newDistrictingID);
     }
 }

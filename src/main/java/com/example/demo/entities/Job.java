@@ -376,7 +376,7 @@ public class Job implements Serializable{
         this.getConstrainedDistrictings().getDistrictings().sort(Comparator.comparing(Districting::getObjectiveFunctionScore));
         ArrayList<Districting> tempDistrictingByOF = new ArrayList<>();
         for (int i = 0; i < 10; i++){
-            System.out.println("Objective function score values: " + this.constrainedDistrictings.getDistrictings().get(this.constrainedDistrictings.getDistrictings().size() - i - 1).getObjectiveFunctionScore());
+            //System.out.println("Objective function score values: " + this.constrainedDistrictings.getDistrictings().get(this.constrainedDistrictings.getDistrictings().size() - i - 1).getObjectiveFunctionScore());
             tempDistrictingByOF.add(this.constrainedDistrictings.getDistrictings().get(this.constrainedDistrictings.getDistrictings().size() - i - 1));
         }
         this.setTopDistrictingsByOFScore(tempDistrictingByOF);
@@ -384,7 +384,7 @@ public class Job implements Serializable{
         this.getConstrainedDistrictings().getDistrictings().sort(Comparator.comparing(Districting::getNumberOfMajorityMinorityDistricts));
         ArrayList<Districting> tempDistrictingByMM = new ArrayList<>();
         for (int i = 0; i < 10; i++){
-            System.out.println("Number of MM Districts " + this.constrainedDistrictings.getDistrictings().get(this.constrainedDistrictings.getDistrictings().size() - i - 1).getNumberOfMajorityMinorityDistricts());
+            //System.out.println("Number of MM Districts " + this.constrainedDistrictings.getDistrictings().get(this.constrainedDistrictings.getDistrictings().size() - i - 1).getNumberOfMajorityMinorityDistricts());
             tempDistrictingByMM.add(this.constrainedDistrictings.getDistrictings().get(this.constrainedDistrictings.getDistrictings().size() - i - 1));
         }
 
@@ -393,7 +393,7 @@ public class Job implements Serializable{
         this.getConstrainedDistrictings().getDistrictings().sort(Comparator.comparing((Districting::getDeviationFromEnactedPop)));
         ArrayList<Districting> tempDistrctingByEnactedPop = new ArrayList<>();
         for (int i = 0; i < 10; i++){
-            System.out.println("Deviation from enacted " + this.constrainedDistrictings.getDistrictings().get(this.constrainedDistrictings.getDistrictings().size() - i - 1).getDeviationFromEnactedPop());
+            //System.out.println("Deviation from enacted " + this.constrainedDistrictings.getDistrictings().get(this.constrainedDistrictings.getDistrictings().size() - i - 1).getDeviationFromEnactedPop());
             tempDistrctingByEnactedPop.add(this.constrainedDistrictings.getDistrictings().get(this.constrainedDistrictings.getDistrictings().size() - i - 1));
         }
         this.setTopDistrictingsByEnacted(tempDistrctingByEnactedPop);
@@ -427,7 +427,7 @@ public class Job implements Serializable{
             }
         }
         System.out.println("filtered out by population Equality: ");
-        System.out.println(counter);
+        //System.out.println(counter);
         this.setFilteredByPopConstraintCount(counter);
         this.getConstrainedDistrictings().setDistrictings(tempDistrictings);
     }

@@ -11,6 +11,7 @@ public class Plot {
     private ArrayList<ArrayList<Double>> populationPercentages;
     private ArrayList<Double> enactedDistrictingData;
     private ArrayList<Double> currentDistrictingData;
+    private ArrayList<ArrayList<Double>> boxAndWhiskerPercentages;
 
     public Plot(){
 
@@ -62,5 +63,13 @@ public class Plot {
 
     public void setCurrentDistrictingData(ArrayList<Double> currentDistrictingData) {
         this.currentDistrictingData = currentDistrictingData;
+    }
+
+    public ArrayList<ArrayList<Double>> getBoxAndWhiskerPercentages() {
+        return boxAndWhiskerPercentages;
+    }
+
+    public void setBoxAndWhiskerPercentages(ArrayList<ArrayList<Double>> boxAndWhiskerPercentages) {
+        this.boxAndWhiskerPercentages = boxAndWhiskerPercentages;
     }
 }
